@@ -33,11 +33,11 @@ body {
 /* Board Section */
 .boardbackground {
   background-color: whitesmoke;
-  padding-top: 95px;
+  padding-top: 120px;
 }
 .board {
-  width: 520px;
-  height: 220px;
+  width: 380px;
+  height: 210px;
   background-color: pink;
   text-align: center;
   margin-left: auto;
@@ -196,6 +196,19 @@ h1, h2{
   -webkit-line-clamp: 3;
   overflow: hidden;
 }  
+.cards li {
+  width: 380px;
+  max-width: 100%;
+  height: 500px;
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 430px) {
+  .cards li {
+      width: 100%; /* Full width on small screens */
+      height: auto; /* Auto height to maintain aspect ratio */
+  }
+}
 
 /* Last Section */
 
