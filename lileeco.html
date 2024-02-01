@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lilee.Co</title>
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- External Style Sheet  -->
+    <link rel="stylesheet" href="lileeco.css">
+
+    <!-- Import Boxicon CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Sevillana&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Dancing+Script:wght@400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Courgette', cursive;
+      }
+      
+      h1 {
+        font-family: 'Dancing Script', cursive;
+      }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg bg-warning-subtle" id="navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"><div class="promotion" id="promoText">
+            <span class="first-text" style="color:white">
+              <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px"></i>
+              Enjoy free delivery on Orders Over $48
+              <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px"></i>
+            </span>
+              
+            <span class="second-text" style="color:white">
+              <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px"></i>
+              Buy 2 get 1 free for Mini Bouquets
+              <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px"></i>
+            </span>
+            <span class="third-text" style="color:white">
+              <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px"></i>
+              15% off for Full-sized Valentine Bouquets
+              <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px"></i>
+            </span>
+          </div></a>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a href="https://www.instagram.com/lilee.coo?igsh=MWZveHZ5aWxpbDN0eA%3D%3D&utm_source=qr" class="ig_link"> <i class='bx bxl-instagram'></i> </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="https://wa.me/6591176048" class="ig_link"> <i class='bx bxl-whatsapp'></i> </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="https://wa.me/6591176048" class="ig_link"> <i class='bx bxl-facebook-circle'></i> </a>
+              </li>
+              
+            </ul>
+            <form class="d-inline-flex">
+              <button type="button" class="btn btn-light" id="liveToastBtn" style=" color: rgb(239, 144, 160); font-size: 18px; padding-top: 12px;">Click to order <i class='bx bxs-florist'></i> </button>
+              
+              <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div class="toast-header">
+                    <img src="./photo/logo.png" class="rounded me-2" style="width: 35px; height: 35px" alt="...">
+                    <div class="me-auto mt-1 fs-6" style= "color: rgb(239, 144, 160)" >To order or customise flowers</div>
+                    <!-- <small class="mt-1">11 mins ago</small> -->
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+                  <div class="toast-body" style="color: rgb(239, 144, 160)">
+                    Secure the perfect flowers by ordering 3-4 days ahead!
+                    <br><br>
+                    Connect with us on Whatsapp or IG for orders, customizations, or questions. We'd love to assist you!
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+    </nav>
+    <!-- End of Navigation Bar -->
+
+    <!-- Board Section -->
+    <div class="boardbackground">
+      <div class="board">
+        <h1 style="color:white">
+          Welcome to Lilee.co
+        </h1>
+        <p>
+          <ul class="info">
+            <!-- <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i> Specialise in fresh or preserved flowers 
+            </h5> -->
+            
+            <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i>Click or hover over to flowers for details
+            </h5>
+  
+            <!-- <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i>Design your own love-filled bouquet with us here
+            </h5> -->
+  
+            <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i>
+              Order, customisation and inquiry via
+              <a href="https://www.instagram.com/lilee.coo?igsh=MWZveHZ5aWxpbDN0eA%3D%3D&utm_source=qr" class="ig_link"> <i class='bx bxl-instagram'></i> </a> and
+              <a href="https://wa.me/6591176048" class="ig_link"> <i class='bx bxl-whatsapp'></i> </a>
+            </h5>
+
+            <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i>
+              Self-collection at 354 Clementi Ave 2
+            </h5>
+  
+            
+          </ul>
+        </p>
+      </div>
+    </div>
+    <!-- End of Board Section -->
+
+    <!-- Headline Section -->
+    <div class="headline py-4">
+      <div class="btn-group d-flex justify-content-center" role="group" aria-label="Basic mixed styles example">
+        <button type="button" class="btn btn-light btn-lg btn-fixed-width " style="background-color:white; color: rgb(239, 144, 160); font-size:25px" onclick="scrollToBentoFlower()">Bento Flowers</button>
+        <button type="button" class="btn btn-light btn-lg btn-fixed-width" style="background-color:white; color: rgb(239, 144, 160); font-size:25px" onclick="scrollToPaperBag()">Paper Bag</button>
+        <button type="button" class="btn btn-light btn-lg btn-fixed-width" style="background-color:white; color: rgb(239, 144, 160); font-size:25px" onclick="scrollToBloomingBox()">Blooming Box</button>
+        <button type="button" class="btn btn-light btn-lg btn-fixed-width" style="background-color:white; color: rgb(239, 144, 160); font-size:25px" onclick="scrollToCNY()">CNY 2024</button>
+        <button type="button" class="btn btn-light btn-lg btn-fixed-width " style="background-color:white; color: rgb(239, 144, 160); font-size:25px" onclick="scrollToMiniBouquets()">Valentine Mini</button>
+        <button type="button" class="btn btn-light btn-lg btn-fixed-width" style="background-color:white; color: rgb(239, 144, 160); font-size:25px" onclick="scrollToFullsizedBouquets()">Valentine Full-sized</button>
+      </div>
+    </div>
+    <!-- End of Headline Section -->
+
+    <!-- Mini Bouquets Section -->
+    <div id="miniBouquetsSection" class="box_selection" style="background-color: whitesmoke">
+      <h1 style="color: rgb(239, 144, 160) ;">Valentine Season ~ Mini Bouquets</h1>
+      <ul class="cards">
+        <li>
+          <a href="https://wa.me/6591176048" class="card">
+            <img src="/mybusiness/photo/coquette1.jpg.png" class="card__image" alt=""/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Coquette Singles
+                  </h3>           
+                  <span class="card__status">from $12  
+                  </span>
+                </div>
+              </div>
+              <p class="card__description"> 3-5 gebera daisies </p>
+            </div>
+          </a>      
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/amoursingle.png" class="card__image" alt="" style="height: 85%"/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Armour Singles</h3>
+                  <span class="card__status">from $10</span>
+                </div>          
+              </div>
+              <p class="card__description">1 big or 3-4 mini roses</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/memories.png" class="card__image" alt="" style="height: 85%"/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Memories Singles</h3>
+                  <span class="card__status">from $15</span>
+                </div>          
+              </div>
+              <p class="card__description">2 roses or carnations or gebera daisies with a polaroid</p>
+            </div>
+          </a>
+        </li>
+        <!-- <li>
+          <a href="" class="card">
+            <img src="./photo/valentine1.png" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                
+                <div class="card__header-text">
+                  <h3 class="card__title">Fortune Froster</h3>
+                  <span class="card__status">Medium for $98 / Large for $128 </span>
+                </div>
+              </div>
+              <p class="card__description">A delightful mix of orange-red, green-rgb(239, 144, 160), and rgb(239, 144, 160) roses, paired with circular green leaves and yellow-rgb(239, 144, 160) daisies</p>
+            </div>
+          </a>
+        </li> -->
+        <li>
+          <a href="" class="card">
+            <img src="./photo/lovesingle.jpg" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">LOVE Singles</h3>
+                  <span class="card__status">from $10 </span>
+                </div>
+              </div>
+              <p class="card__description">1 fresh or preserved rose</p>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- End of Mini Bouquets Section -->
+
+    <!-- Full-sized Bouquets Section -->
+    <div id="fullsizedBouquetsSection" class="box_selection" style="background-color: whitesmoke">
+      <h1 style="color: rgb(239, 144, 160)">Valentine Season ~ Full-sized Bouquets</h1>
+      <ul class="cards">
+        <li>
+          <a href="" class="card">
+            <img src="./photo/eternallove.png" class="card__image" alt=""/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Eternal Embrace</h3>            
+                  <span class="card__status">$38/$58/$88 
+                  </span>
+                </div>
+                
+              </div>
+              <p class="card__description">
+                3 stalks - $38
+                <br>
+                5 stalks - $58
+                <br>
+                10-15 stalks - $88
+               </p>
+            </div>
+          </a>      
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/seetinh.jpg" class="card__image" alt="" style="height: 85%"/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Blooming Heart</h3>
+                  <span class="card__status">$88</span>
+                </div>          
+              </div>
+              <p class="card__description">10-15 stalks of fresh roses</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/peoniesblush4.png" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Peonie Blush</h3>
+                  <span class="card__status">$128/$218/$358</span>
+                </div>
+              </div>
+              <p class="card__description">
+                  3 stalks - $128
+                  <br>
+                  5-7 stalks - $218
+                  <br>
+                  10-25 stalks - $358
+              </p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/mysweetlove.png" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                
+                <div class="card__header-text">
+                  <h3 class="card__title">My Sweet Love</h3>
+                  <span class="card__status">$58/$98 </span>
+                </div>
+              </div>
+              <p class="card__description">
+                5 stalks - $58
+                <br>
+                10-15 stalks - $98</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/meddletulips.png" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Tulips Medley</h3>
+                  <span class="card__status">$58/$98 </span>
+                </div>
+              </div>
+              <p class="card__description">
+                5 stalks - $58
+                <br>
+                10-15 stalks - $98
+                <br>
+                add on $5 for a polaroid
+              </p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/softlove1.png" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Soft Love</h3>
+                  <span class="card__status">$58/$88/$138</span>
+                </div>
+              </div>
+              <p class="card__description">
+                small - $58
+                <br>
+                medium - $88
+                <br>
+                large - $138
+              </p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="/mybusiness/photo/peoniejade1.jpg" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Peonies Jade</h3>
+                  <span class="card__status">$168/$238/$388 </span>
+                </div>
+              </div>
+              <p class="card__description">
+                small - $168
+                <br>
+                medium - $238
+                <br>
+                large - $388
+              </p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/lovedaises.png" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">LOVE Daisies</h3>
+                  <span class="card__status">$50/$80/$108 </span>
+                </div>
+              </div>
+              <p class="card__description">
+                small - $50
+                <br>
+                medium - $80
+                <br>
+                large - $108
+              </p>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- End of Full-sized Bouquet Section -->
+
+    <!-- CNY Bouquets Section -->
+    <div id="CNYBouquetsSection" class="box_selection" style="background-color: rgb(185, 32, 57)">
+      <h1 style="color: gold">Chinese New Year - 2024 Dragon Bouquets</h1>
+      <ul class="cards">
+        <li>
+          <a href="" class="card">
+            <img src="./photo/redbliss1.png.jpg" class="card__image" alt=""/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Prosperity Red Bliss</h3>            
+                  <span class="card__status">from $48 (exl wine)
+                  </span>
+                </div>
+                
+              </div>
+              <p class="card__description">
+                preserved roses, baby breath and red cherries with a small bamboo basket <br>
+              </p>
+            </div>
+          </a>      
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/CNY.png" class="card__image" alt="" style="height: 85%"/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Lunar Delight Basket</h3>
+                  <span class="card__status">$98</span>
+                </div>          
+              </div>
+              <p class="card__description">preserved flowers with charms in a bamboo basket</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/CNY3.png" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Petals Fiesta</h3>
+                  <span class="card__status">from $98 </span>
+                </div>
+              </div>
+              <p class="card__description">bright colored flowers with charms and leaves in a paper box</p>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- End of Full-sized Bouquet Section -->
+
+    <!-- Blooming Box Section  -->
+    <div id="BloomingBoxSection" class="box_selection">
+      <h1>Blooming Box</h1>
+      <ul class="cards">
+        <li>
+          <a href="" class="card">
+            <img src="/mybusiness/photo/whisperinglove.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Whispering Love</h3>            
+                  <span class="card__status">$88
+                  </span>
+                </div>
+                
+              </div>
+              <p class="card__description">pink and white-green roses with baby breath in silver hard box</p>
+            </div>
+          </a>      
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/burningheart.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Blooming Heart</h3>
+                  <span class="card__status">$128</span>
+                </div>          
+              </div>
+              <p class="card__description"> orange-red roses and leaves elegantly wrapped in a ribbon in a chic box</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/fortunefroster.jpg" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Fortune Froster</h3>
+                  <span class="card__status">$98/$128 </span>
+                </div>
+              </div>
+              <p class="card__description">orange-red, white-green and pink roses with white daisies and green leaves</p>
+            </div>
+          </a>
+        </li>
+         
+      </ul>
+    </div>
+    <!-- End of Blooming Box section -->
+
+    <!-- Paper Bag Section -->
+    <div id="PaperBagSection" class="box_selection" style="background-color: whitesmoke">
+      <h1>Paper Bag</h1>
+      <ul class="cards">
+        <li>
+          <a href="" class="card">
+            <img src="/mybusiness/photo/mistyblue.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Misty Blue</h3>            
+                  <span class="card__status">$38</span>
+                </div>
+              </div>
+              <p class="card__description">1 fresh blue/pink/white/pink hydragea</p>
+            </div>
+          </a>      
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/tulips.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Golden Glow</h3>
+                  <span class="card__status">$58</span>
+                </div>          
+              </div>
+              <p class="card__description">10-15 mix-colored stalks of tulips </p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="" class="card">
+            <img src="./photo/frostylilies.jpg" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Frosty Lilies</h3>
+                  <span class="card__status">$48 </span>
+                </div>
+              </div>
+              <p class="card__description">3-5 fresh lilies</p>
+            </div>
+          </a>
+        </li>
+         
+      </ul>
+    </div>
+    
+    <!-- Bento Flower Section -->
+    <div id="BentoFlowerSection" class="lastsection">
+      <h1 style="color:rgb(239, 144, 160)">Our Signature Bento Flower</h1>
+      <ul class="cards">
+        <li>
+          <a href="" class="card">
+            <img src="/mybusiness/photo/bentoflowers1.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Bento Box</h3>            
+                  <span class="card__status">$68</span>
+                </div>
+              </div>
+              <p class="card__description">A mixture of white and green roses, pink aster, mini daisies and white with pink baby breath</p>
+            </div>
+          </a>      
+        </li>
+      </ul>
+    </div>
+    <!-- End of Bento Flower Section -->
+
+    <!-- Last Section -->
+
+    <!-- <div class="lastsection">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <h1>Our Signature Bento Flower</h1>
+          <div class="row">
+            <div class="col-4"></div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <a href="" class="card">
+                <img src="./photo/bentoflowers1.jpg" class="card__image" alt="" />
+                <div class="card__overlay">        
+                  <div class="card__header">
+                    <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                    <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" />
+                    <div class="card__header-text">
+                      <h3 class="card__title">Frosty Lilies</h3>
+                      <span class="card__status">$48 </span>
+                    </div>
+                  </div>
+                  <p class="card__description">A delightful mix of orange-red, green-rgb(239, 144, 160), and rgb(239, 144, 160) roses, paired with circular green leaves and yellow-rgb(239, 144, 160) daisies</p>
+                </div>
+              </a>
+            </div>
+            <div class="col-4"></div>
+
+          </div>
+
+        </div>
+        <div class="col-lg-5 col-md-12 col-sm-12">
+          <h1>Craft your own bouquets</h1>
+          <div id="carouselExampleCaptions" class="carousel slide">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="./photo/blissful.png" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <p>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                      Click here to start
+                    </button>
+                    
+                    
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Start to make your new bouquet</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+
+                          <form action="submit_form.php" method="post">
+                            <div class="modal-body">
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Fullname</span>
+                                <input type="text" class="form-control" placeholder="John Tan" aria-label="Username" aria-describedby="basic-addon1">
+                              </div>
+                              
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon2">Contact number</span>
+                                <input type="text" class="form-control" placeholder="8982 9022" aria-label="Contactnumber" aria-describedby="basic-addon1">
+                                <span class="input-group-text" id="basic-addon2">IG handle (optional)</span>
+                                <input type="text" class="form-control" placeholder="kong.v.d" aria-label="Instagramhandle" aria-describedby="basic-addon1">
+                              </div>
+                          
+                              <div class="form-text" id="basic-addon4">Please briefly describe your desired bouquet
+                                <br>
+                                Example 1: Whisper Love with yellow roses and blue baby breath and daisy
+                                <br>
+                                Example 2: 10 stalks of red roses with some  with rgb(239, 144, 160) wrapping and silver bow
+                              </div>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text">Description</span>
+                                <textarea class="form-control" aria-label="Customisation"></textarea>
+                              </div>
+                              
+                              <div class="input-group mb-3">
+                                <span class="input-group-text">Delivery date</span>
+                                <input type="text" class="form-control" placeholder="27/10/2024" aria-label="Server">
+                              </div>
+                            </div>
+                          </form>
+
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="liveToastBtn">Send it to us! </button>
+                            
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </p>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img src="./photo/carousel2.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <p>Some representative placeholder content for the second slide.</p>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img src="./photo/blissful.png" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <p>Some representative placeholder content for the third slide.</p>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div> -->
+    <!-- End of Last Section -->
+
+    <!-- Footer -->
+    <footer>
+      Copyright <i class='bx bx-copyright'></i> 2024 Lilee.Co by Vu Duc Cong 
+    </footer>
+    <!-- End of footer -->
+    <!-- Import Bootstrap JavaScript and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script>
+      // Function to toggle between the first and second text
+      function togglePromoText() {
+        var promoText = document.getElementById("promoText");
+        var firstText = promoText.querySelector(".first-text");
+        var secondText = promoText.querySelector(".second-text");
+        var thirdText = promoText.querySelector(".third-text"); // Add this line
+
+        // Show the first text and hide the second and third texts
+        firstText.style.display = "block";
+        secondText.style.display = "none";
+        thirdText.style.display = "none"; // Add this line
+
+        // After 7 seconds, hide the first text and show the second text
+        setTimeout(function () {
+            firstText.style.display = "none";
+            secondText.style.display = "block";
+            thirdText.style.display = "none"; // Add this line
+
+            // After another 7 seconds, hide the second text and show the third text
+            setTimeout(function () {
+                secondText.style.display = "none";
+                thirdText.style.display = "block";
+
+                // After another 7 seconds, hide the third text and show the first text (looping)
+                setTimeout(function () {
+                    thirdText.style.display = "none";
+                    firstText.style.display = "block";
+
+                    // Continue the loop by calling the same function recursively after another 7 seconds
+                    setTimeout(togglePromoText, 5000);
+                }, 5000);
+            }, 5000);
+        }, 5000);
+      }
+
+      // Initial call to start the loop
+      togglePromoText();
+
+
+      function scrollToMiniBouquets() {
+        // Use smooth scrolling behavior to scroll to the Mini Bouquets section
+        document.getElementById('miniBouquetsSection').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+
+      function scrollToFullsizedBouquets() {
+        document.getElementById('fullsizedBouquetsSection').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+
+      function scrollToCNY() {
+        document.getElementById('CNYBouquetsSection').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+
+      function scrollToBloomingBox() {
+        document.getElementById('BloomingBoxSection').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+      
+      function scrollToPaperBag() {
+        document.getElementById('PaperBagSection').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+
+      function scrollToBentoFlower() {
+        document.getElementById('BentoFlowerSection').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+
+      const toastTrigger = document.getElementById('liveToastBtn')
+      const toastLiveExample = document.getElementById('liveToast')
+
+      if (toastTrigger) {
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        toastTrigger.addEventListener('click', () => {
+          toastBootstrap.show()
+        })
+      }
+    </script>
+    
+</body>
+</html>
+
