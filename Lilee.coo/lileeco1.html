@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lilee.Co</title>
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- External Style Sheet  -->
+    <link rel="stylesheet" href="lileeco1.css">
+
+    <!-- Import Boxicon CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Sevillana&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Dancing+Script:wght@400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Courgette', cursive;
+      }
+      
+      h1 {
+        font-family: 'Dancing Script', cursive;
+      }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg bg-warning-subtle" id="navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <div class="promotion" id="promoText" style="padding-top: 10px;">
+              <span class="first-text" style="color:rgb(202, 83, 83)">
+                <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px;"></i>
+                Free Delivery for Order above $58
+                <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px;"></i>
+              </span>
+                
+              <span class="second-text" style="color:rgb(202, 83, 83)">
+                <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px;"></i>
+                Addtional Polaroid of Only $5
+                <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px;"></i>
+              </span>
+              <span class="third-text" style="color:rgb(202, 83, 83)">
+                <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px;"></i>
+                Customisation Starting From $10  
+                <i class='bx bxs-gift' style="color: rgb(202, 83, 83); font-size: 24px;"></i>
+              </span>
+            </div>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav ms-auto mb-lg-0">
+              <!-- Headline Section -->
+              <li class="nav-item links">
+                <a href="https://www.instagram.com/lilee.coo?igsh=MWZveHZ5aWxpbDN0eA%3D%3D&utm_source=qr" class="ig_link"> <i class='bx bxl-instagram'></i> </a>
+              </li>
+
+              <li class="nav-item links">
+                <a href="https://wa.me/6591176048" class="ig_link"> <i class='bx bxl-whatsapp'></i> </a>
+              </li>
+              <li>
+                <div class="headline text-center mt-2">
+                  <div class="btn-group d-flex flex-wrap justify-content-center" role="group" aria-label="Basic mixed styles example">
+                    <button type="button" class="btn btn-light btn-lg btn-fixed-width mb-2 mb-lg-0 mx-lg-0" style="background-color:white; color: rgb(239, 144, 160); font-size:15px;" onclick="scrollToTopSeller()">Top Purchase</button>
+                    <button type="button" class="btn btn-light btn-lg btn-fixed-width mb-2 mb-lg-0 mx-lg-0" style="background-color:white; color: rgb(239, 144, 160); font-size:15px;" onclick="scrollToHauteCouture()">Haute Couture</button>
+                    <button type="button" class="btn btn-light btn-lg btn-fixed-width mb-2 mb-lg-0 mx-lg-0" style="background-color:white; color: rgb(239, 144, 160); font-size:15px;" onclick="scrollToGrandOpening()">Grand Opening</button>
+                    <button type="button" class="btn btn-light btn-lg btn-fixed-width mb-2 mb-lg-0 mx-lg-0" style="background-color:white; color: rgb(239, 144, 160); font-size:15px;" onclick="scrollToTimelessClassic()">Timeless Classic</button>
+                    <button type="button" class="btn btn-light btn-lg btn-fixed-width mb-2 mb-lg-0 mx-lg-0" style="background-color:white; color: rgb(239, 144, 160); font-size:15px;" onclick="scrollToPetiteElegance()">Petite Elegance</button>
+                    <button type="button" class="btn btn-light btn-lg btn-fixed-width mb-2 mb-lg-0 mx-lg-0" style="background-color:white; color: rgb(239, 144, 160); font-size:15px;" onclick="scrollToBentoFlower()">Customisation Collection</button>
+                    
+                  </div>
+                </div>
+              </li>       
+            </ul>
+            
+
+          </div>
+        </div>
+    </nav>
+    <!-- End of Navigation Bar -->
+
+    <!-- Board Section -->
+    <div class="boardbackground">
+      <div class="board">
+        <h1 style="color:white">
+          Welcome to Lilee.co
+        </h1>
+        <p>
+          <ul class="info">
+            <!-- <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i> Specialise in fresh or preserved flowers 
+            </h5> -->
+            
+            <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i>Hover/Click to flowers for details
+            </h5>
+  
+            <!-- <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i>Design your own love-filled bouquet with us here
+            </h5> -->
+  
+            <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i>
+              Order and inquiry via
+              <a href="https://www.instagram.com/lilee.coo?igsh=MWZveHZ5aWxpbDN0eA%3D%3D&utm_source=qr" class="ig_link"> <i class='bx bxl-instagram'></i> </a> and
+              <a href="https://wa.me/6591176048" class="ig_link"> <i class='bx bxl-whatsapp'></i> </a>
+            </h5>
+
+            <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i>
+              Self-collection: 354 Clementi Ave 2
+            </h5>
+
+            <h5>
+              <i class='bx bxs-leaf' id="leaf_icon"></i>
+              <form class="d-inline-flpx;">
+                <button type="button" class="btn btn-light" id="liveToastBtn" style=" color: rgb(239, 144, 160); font-size: 18px; padding-top: 12px;">To order or customise flowers <i class='bx bxs-florist'></i> </button>
+                
+                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                      <img src="https://i.imgur.com/sjLMNDM.png" class="rounded me-2" style="width: 35px; height: 35px;" alt="...">
+                      <div class="me-auto mt-1 fs-6" style= "color: rgb(239, 144, 160)" >To order or customise flowers</div>
+                      
+                      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body" style="color: rgb(239, 144, 160)">
+                      Free Delivery is not applicable for some areas. Kindly check your delivery location with us!
+                      <br><br>
+                      Photo for reference and illustration purposes
+                      <br><br>
+                      Connect with us on Whatsapp or IG for orders, customizations, or questions. We'd love to assist you!
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </h5>
+  
+            
+          </ul>
+        </p>
+      </div>
+    </div>
+    <!-- End of Board Section -->
+
+    <!-- Top Purchase -->
+    <div id="TopSeller" class="box_selection" style="background-color: whitesmoke">
+      <h1 style="color: rgb(239, 144, 160) ;">Top Purchase of The Month</h1>
+      <ul class="cards">
+        <li>
+          <a class="card">
+            <img src="./photo/babycoquette.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Baby Coquette
+                  </h3>           
+                  <span class="card__status">from 28$  
+                  </span>
+                </div>
+              </div>
+              <p class="card__description">
+                3 stalks - $28
+                <br>
+                5 stalks - $48
+                <br>
+                7 stalks - $68
+               </p>
+            </div>
+          </a>      
+        </li>
+        <li>
+          <a class="card">
+            <img src="./photo/sweetlove2.jpg" class="card__image" alt="" style="height: 85%"/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Sweet Love</h3>
+                  <span class="card__status">from $88</span>
+                </div>          
+              </div>
+              <p class="card__description">
+                10 stalks - $88
+                <br>
+                20 stalks - $138
+                <br>
+                30 stalks - $208
+               </p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card">
+            <img src="./photo/tulipsmedley.jpg" class="card__image" alt="" style="height: 78%"/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Tulips Medley</h3>
+                  <span class="card__status">from $68</span>
+                </div>          
+              </div>
+              <p class="card__description">
+                10 stalks - $68 
+                <br>
+                20 stalks - $128 
+                <br>
+                30 stalks - $138 
+               </p>
+            </div>
+          </a>
+        </li>
+        
+        <li>
+          <a class="card">
+            <img src="./photo/cottoncandy.jpg" class="card__image" alt="" id="photo1"/>
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Cotton Candy</h3>
+                  <span class="card__status">from $88 </span>
+                </div>
+              </div>
+              <p class="card__description">
+                10 stalks - $88
+                <br>
+                20 stalks - $138
+                <br>
+                30 stalks - $208
+               </p>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- End of Top Purchase  -->
+
+    <!-- Haute Couture Section -->
+    <div id="hautecouture" class="box_selection" style="background-color: whitesmoke">
+      <h1 style="color: rgb(239, 144, 160)">Haute Couture Bloom</h1>
+      <ul class="cards">
+        <li>
+          <a class="card">
+            <img src="./photo/peoniesblush4.png" class="card__image"  alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Peonie Blush</h3>
+                  <span class="card__status">from $128</span>
+                </div>
+              </div>
+              <p class="card__description">
+                  3 stalks - $128
+                  <br>
+                  6 stalks - $218
+                  <br>
+                  9 stalks - $358
+              </p>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a class="card">
+            <img src="./photo/darkhorse2.jpg" class="card__image" style="height: 77%" alt=""/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Dark Horse</h3>            
+                  <span class="card__status">from 198$ 
+                  </span>
+                </div>
+                
+              </div>
+              <p class="card__description">
+                10 stalks - $198
+                <br>
+                20 stalks - $368
+                <br>
+                30 stalks - $548
+               </p>
+            </div>
+          </a>      
+        </li>
+
+        <li>
+          <a class="card">
+            <img src="./photo/burningheart.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Touch of Heart</h3>
+                  <span class="card__status">One size - $118</span>
+                </div>          
+              </div>
+              <p class="card__description"> orange-red roses and leaves elegantly wrapped in a ribbon in a chic box</p>
+            </div>
+          </a>
+        </li>
+ 
+        <li>
+          <a class="card">
+            <img src="./photo/opulent.jpg" class="card__image" alt="" id="photo1" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                
+                <div class="card__header-text">
+                  <h3 class="card__title">Opulent Crimson</h3>
+                  <span class="card__status">from $118 </span>
+                </div>
+              </div>
+              <p class="card__description">
+                Small - $118
+                <br>
+                Medium - $148
+                <br>
+                Large - $208
+              </p>
+            </div>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+    <!-- End of Haute Couture Section -->
+
+    <!-- Grand Opening Section  -->
+    <div id="GrandOpening" class="box_selection">
+      <h1>Grand Opening Section</h1>
+      <ul class="cards">
+        <li>
+          <a class="card">
+            <img src="./photo/fortunefroster.jpg" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Fortune Froster</h3>
+                  <span class="card__status">from $118</span>
+                </div>
+              </div>
+              <p class="card__description">
+                Medium - $118
+                <br>
+                Large - $138
+               </p>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a class="card">
+            <img src="./photo/whisperinglove.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Whispering Love</h3>            
+                  <span class="card__status">One size - $88
+                  </span>
+                </div>
+                
+              </div>
+              <p class="card__description">pink and white-green flowers with baby breath in silver hard box</p>
+            </div>
+          </a>      
+        </li>
+
+        <li>
+          <a class="card">
+            <img src="./photo/summerbasket1.jpg" class="card__image"  alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Summer Basket</h3>            
+                  <span class="card__status">from $68
+                  </span>
+                </div>
+                
+              </div>
+              <p class="card__description">
+                Half basket - $68
+                <br>
+                Full basket - $118
+              </p>
+            </div>
+          </a>      
+        </li>
+
+        <li>
+          <a class="card">
+            <img src="./photo/bentoflowers2.jpg" class="card__image" alt="" style="height: 76%"/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Bento Flower</h3>
+                  <span class="card__status">One Size - $68</span>
+                </div>          
+              </div>
+              <p class="card__description">A mixture of orange-red roses, white-green and pink flowers with green leaves</p>
+            </div>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+    <!-- End of Grand Opening Section -->
+
+    <!-- Timeless Classic Seasons Section -->
+    <div id="TimelessClassic" class="box_selection" >
+      <h1>Timeless Classic Seasons</h1>
+      <ul class="cards">
+        <li>
+          <a class="card">
+            <img src="./photo/softlove.jpg" class="card__image" style="height: 75%" alt=""/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Light Breath</h3>            
+                  <span class="card__status">from $58
+                  </span>
+                </div>
+                
+              </div>
+              <p class="card__description">
+                Small - $58
+                <br>
+                Medium - $88
+                <br>
+                Large - $128
+              </p>
+            </div>
+          </a>      
+        </li>
+
+        <li>
+          <a class="card">
+            <img src="./photo/hellodaisies.jpg" class="card__image"  alt=""/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Hello Daisies</h3>            
+                  <span class="card__status">from $58
+                  </span>
+                </div>
+                
+              </div>
+              <p class="card__description">
+                Small - $58
+                <br>
+                Medium - $88
+                <br>
+                Large - $108
+              </p>
+            </div>
+          </a>      
+        </li>
+
+        <li>
+          <a class="card">
+            <img src="./photo/bloomingheart.jpg" class="card__image" alt="" style="height: 75%"/>
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Blooming Heart</h3>
+                  <span class="card__status">One Size - $88</span>
+                </div>          
+              </div>
+              <p class="card__description">10 stalks of red roses</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card">
+            <img src="./photo/violetvintage1.jpg" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Vintage Violet</h3>
+                  <span class="card__status">from $78 </span>
+                </div>
+              </div>
+              <p class="card__description">
+                Small - $78
+                <br>
+                Medium - $128
+                <br>
+                Large - $168
+              </p>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- End of Timeless Classic Seasons Section -->
+
+    <!-- Petite Elegance Section -->
+    <div id="PetiteElegance" class="box_selection" style="background-color: whitesmoke">
+      <h1>Petite Elegance</h1>
+      <ul class="cards">
+        <li>
+          <a class="card">
+            <img src="./photo/lovesingle1.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">LOVE Single</h3>            
+                  <span class="card__status">One Size - $10</span>
+                </div>
+              </div>
+              <p class="card__description">1 fresh large rose
+                <br>
+                Buy 5 get 1 free 
+              </p>
+            </div>
+          </a>      
+        </li>
+
+        <li>
+          <a class="card">
+            <img src="./photo/armour.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Rose Armour</h3>            
+                  <span class="card__status">One Size - $10</span>
+                </div>
+              </div>
+              <p class="card__description">1 fresh large rose
+                <br>
+                Buy 5 get 1 free 
+              </p>
+            </div>
+          </a>      
+        </li>
+
+        <li>
+          <a class="card">
+            <img src="./photo/mistyblue.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
+                <!-- <img class="card__thumb" src="./photo/santababy.jpg" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Misty Blue</h3>            
+                  <span class="card__status">One Size - $58</span>
+                </div>
+              </div>
+              <p class="card__description">1 fresh blue/pink/white/pink hydragea with bright green soft leaves</p>
+            </div>
+          </a>      
+        </li>
+        <li>
+          <a class="card">
+            <img src="./photo/tulips.jpg" class="card__image" alt="" />
+            <div class="card__overlay">
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Golden Glow</h3>
+                  <span class="card__status">One Size - $68</span>
+                </div>          
+              </div>
+              <p class="card__description">8-10 tulips of 1 colour choice </p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card">
+            <img src="./photo/frostylilies.jpg" class="card__image" alt="" />
+            <div class="card__overlay">        
+              <div class="card__header">
+                <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                 
+                <!-- <img class="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" /> -->
+                <div class="card__header-text">
+                  <h3 class="card__title">Frosty Lilies</h3>
+                  <span class="card__status">One Size - $78 </span>
+                </div>
+              </div>
+              <p class="card__description">3 fresh white classic lilies</p>
+            </div>
+          </a>
+        </li>
+         
+      </ul>
+    </div>
+    <!-- End of Petite Elegance Section -->
+    <!-- Customisation Section -->
+    <div id="BentoFlowerSection" class="box_selection" style="background-color: whitesmoke;">
+      <h1>Our Customisation Collections</h1>
+      <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" style="width: 400px; height: 500px; margin: auto;">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4" aria-label="Slide 5"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="5" aria-label="Slide 6"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="6" aria-label="Slide 7"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="7" aria-label="Slide 8"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="8" aria-label="Slide 9"></button>
+        </div>
+
+        <div class="carousel-inner">
+
+
+          <div class="carousel-item active">
+            <img src="./photo/touchoflove1.jpg" class="d-block w-100 rounded-5" style="width: 400px; height: 500px; object-fit: cover;" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="./photo/whisperinglove1.jpg" class="d-block w-100 rounded-5" style="width: 400px; height: 500px; object-fit: cover;" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="./photo/touchoflove.jpg" class="d-block w-100 rounded-5" style="width: 400px; height: 500px; object-fit: cover;" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="./photo/coquette2.jpg" class="d-block w-100 rounded-5" style="width: 400px; height: 500px; object-fit: cover;" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="./photo/bloomingheart1.jpg" class="d-block w-100 rounded-5" style="width: 400px; height: 500px; object-fit: cover;" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="./photo/preservedroses.jpg" class="d-block w-100 rounded-5" style="width: 400px; height: 500px; object-fit: cover;" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="./photo/hideandseek.jpg" class="d-block w-100 rounded-5" style="width: 400px; height: 500px; object-fit: cover;" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="./photo/chocolate.jpg" class="d-block w-100 rounded-5" style="width: 400px; height: 500px; object-fit: cover;" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <img src="./photo/strawberry.jpg" class="d-block w-100 rounded-5" style="width: 400px; height: 500px; object-fit: cover;" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+            </div>
+          </div>
+
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+    
+    
+    <!-- End of Customisation Section -->
+    
+
+    <!-- Footer -->
+    <footer>
+      Copyright <i class='bx bx-copyright'></i> 2024 Lilee.Co by Vu Duc Cong 
+    </footer>
+    <!-- End of footer -->
+    <!-- Import Bootstrap JavaScript and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script>
+      // Function to toggle between the first and second text
+      function togglePromoText() {
+        var promoText = document.getElementById("promoText");
+        var firstText = promoText.querySelector(".first-text");
+        var secondText = promoText.querySelector(".second-text");
+        var thirdText = promoText.querySelector(".third-text"); // Add this line
+
+        // Show the first text and hide the second and third texts
+        firstText.style.display = "block";
+        secondText.style.display = "none";
+        thirdText.style.display = "none"; // Add this line
+
+        // After 7 seconds, hide the first text and show the second text
+        setTimeout(function () {
+            firstText.style.display = "none";
+            secondText.style.display = "block";
+            thirdText.style.display = "none"; // Add this line
+
+            // After another 7 seconds, hide the second text and show the third text
+            setTimeout(function () {
+                secondText.style.display = "none";
+                thirdText.style.display = "block";
+
+                // After another 7 seconds, hide the third text and show the first text (looping)
+                setTimeout(function () {
+                    thirdText.style.display = "none";
+                    firstText.style.display = "block";
+
+                    // Continue the loop by calling the same function recursively after another 7 seconds
+                    setTimeout(togglePromoText, 5000);
+                }, 5000);
+            }, 5000);
+        }, 5000);
+      }
+
+      // Initial call to start the loop
+      togglePromoText();
+
+
+      function scrollToTopSeller() {
+        // Use smooth scrolling behavior to scroll to the Mini Bouquets section
+        document.getElementById('TopSeller').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+
+      function scrollToHauteCouture() {
+        document.getElementById('hautecouture').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+
+      function scrollToTimelessClassic() {
+        document.getElementById('TimelessClassic').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+
+      function scrollToGrandOpening() {
+        document.getElementById('GrandOpening').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+      
+      function scrollToPetiteElegance() {
+        document.getElementById('PetiteElegance').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+
+      function scrollToBentoFlower() {
+        document.getElementById('BentoFlowerSection').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+
+      const toastTrigger = document.getElementById('liveToastBtn')
+      const toastLiveExample = document.getElementById('liveToast')
+
+      if (toastTrigger) {
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        toastTrigger.addEventListener('click', () => {
+          toastBootstrap.show()
+        })
+      }
+    </script>
+    
+</body>
+</html>
+

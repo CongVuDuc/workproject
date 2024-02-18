@@ -12,7 +12,9 @@
 }
 
 .nav-item {
-  padding-top: 8px;
+  padding-top: 10px;
+  padding-right: 7px;
+  font-size: large;
 }
 
 :root {
@@ -37,7 +39,7 @@ body {
 }
 .board {
   width: 380px;
-  height: 210px;
+  height: 269px;
   background-color: pink;
   text-align: center;
   margin-left: auto;
@@ -75,11 +77,11 @@ h5 {
 .headline {
   margin-left: auto;
   margin-right: auto;
-  background-color: whitesmoke;
+  /* background-color: whitesmoke; */
 }
 
 .btn-fixed-width {
-  width: 160px; /* Adjust the width based on your preference */
+  
   max-width: 100%; /* Ensures the button doesn't exceed its parent's width */
 }
 /* End of Board Section */
@@ -263,6 +265,7 @@ h1, h2{
 } */
 
 footer {
+  margin-top: 20px;
   background: pink;
   color: white;
   text-align: center;
