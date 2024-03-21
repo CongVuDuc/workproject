@@ -1,3 +1,5 @@
+import { process_payment } from './payment.js'
+
 // Variables
 
 // Check if a user is logged
@@ -38,7 +40,15 @@ const app = Vue.createApp({
             }
         },
 
-        
+        checkout(cartItems, total_price, shipping_info="") {
+            // Load shipping_info to local storage for creating of Order later
+            localStorage.setItem('shipping_info', JSON.stringify(shipping_info))
+
+            // Define the payment type
+            let payment_type = "normal";
+            process_payment(payment_type, cartItems, total_price, shipping_info);
+        }
+
     },
 });
 

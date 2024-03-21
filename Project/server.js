@@ -25,7 +25,7 @@ app.get('/success', (req, res) => {
 
 //Cancel Route
 app.get('/cancel', (req, res) => {
-    res.sendFile("cancel.html", {root: "public"})
+    res.sendFile("checkout.html", {root: "public"})
 })
 
 // Stripe
@@ -33,16 +33,6 @@ let stripeGateway = stripe(process.env.stripe_api);
 console.log(stripeGateway);
 let DOMAIN = process.env.DOMAIN;
 
-
-// Create new order in Order
-app.post('/order'), async (req, res) => {
-    
-}
-
-// Create new order in Order
-app.post('/update-inventory'), async (req, res) => {
-    
-}
 
 // Trigger stripe API
 app.post('/stripe-checkout', async (req, res) => {
