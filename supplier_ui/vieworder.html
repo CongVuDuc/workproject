@@ -57,7 +57,6 @@
                             <th>Receipt No</th>
                             <th>Order Item</th>
                         </tr>
-                        
                     </thead>
                     <tbody>
                         <tr v-for="order in orders" :key="order.order_id">
@@ -67,7 +66,29 @@
                             <td>{{ order.shipping_method }}</td>
                             <td>{{ order.address }}</td>
                             <td>{{ order.contact_no }}</td>
-                            <td>{{ order.order_status }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ order.order_status }}
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="#"
+                                                @click="updateOrderStatus(order.order_id, 'CONF')">Confirmed</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#"
+                                                @click="updateOrderStatus(order.order_id, 'PREP')">Preparing</a></li>
+                                        <li><a class="dropdown-item" href="#"
+                                                @click="updateOrderStatus(order.order_id, 'SCOL')">Ready for Collection</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#"
+                                                @click="updateOrderStatus(order.order_id, 'DLVY')">Out for Delivery</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#"
+                                                @click="updateOrderStatus(order.order_id, 'CMPL')">Completed</a></li>
+                                    </ul>
+                                </div>
+                            </td>
                             <td>{{ order.timestamp }}</td>
                             <td>{{ order.receipt_no }}</td>
                             <td>
@@ -102,8 +123,6 @@
     </div>
 
     <script>
-        const getOrderURL = "https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/";
-
         const app = Vue.createApp({
             data() {
                 return {
@@ -113,25 +132,42 @@
             },
             methods: {
                 fetchOrders() {
-                    fetch(getOrderURL)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Failed to fetch data');
-                            }
-                            return response.json();
-                        })
+                    fetch("https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/")
+                        .then(response => response.json())
                         .then(data => {
-                            console.log(data); // Log the data to see its format
                             if (data.hasOwnProperty('Order')) {
-                                this.orders = data.Order;
-                                this.message = ""; // Clear loading message on successful data retrieval
+                                this.orders = data.Order; // Assuming orders are nested under 'Order' property
+                                this.message = "";
                             } else {
                                 throw new Error('Invalid data format');
                             }
                         })
                         .catch(error => {
-                            console.error('Error fetching orders:', error.message);
+                            console.error('Error fetching orders:', error);
                             this.message = 'Error fetching order data. Please try again later.';
+                        });
+                },
+                updateOrderStatus(orderId, status) {
+                    fetch(`https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/${orderId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                order_status: status
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to update order status');
+                            }
+                            // Assuming the response includes updated order data, you might want to update it in your Vue data
+                            // For simplicity, I'm just refetching all orders after update
+                            this.fetchOrders();
+                        })
+                        .catch(error => {
+                            console.error('Error updating order status:', error);
+                            // Handle error, display message, etc.
                         });
                 }
             },
@@ -139,14 +175,8 @@
                 this.fetchOrders();
             }
         });
-
+    
         const vm = app.mount('#app');
     </script>
+    
 
-    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
-        integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM'
-        crossorigin='anonymous'></script>
-
-</body>
-
-</html>
