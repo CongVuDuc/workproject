@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bouquet Inventory</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' rel='stylesheet'
+        integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' crossorigin='anonymous'>
+    <script src='https://cdn.jsdelivr.net/npm/vue@3.0.2/dist/vue.global.js'></script>
+</head>
+
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- Inventory tab -->
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Inventory</a>
+                    </li>
+                    <!-- Order tab -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="./vieworder.html">Order</a>
+                    </li>
+                    <!-- Request Change Order tab -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Request Change Order</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="app" class="container">
+        <h1>Bouquet Inventory</h1>
+        <div class="row">
+            <div class="col-lg-7">
+                <!-- Inventory Table -->
+                <table class="table table-striped" v-if="bouquets.length > 0">
+                    <thead>
+                        <tr>
+                            <th>Bouquet ID</th>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Flower Type</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="bouquet in bouquets" :key="bouquet.bouquet_id">
+                            <td>{{ bouquet.bouquet_id }}</td>
+                            <td>{{ bouquet.bouquet_name }}</td>
+                            <td>{{ bouquet.size }}</td>
+                            <td>{{ bouquet.flower_type }}</td>
+                            <td>{{ bouquet.price }}</td>
+                            <td>
+                                <input type="number" v-model="bouquet.quantity">
+                            </td>
+                            <td>
+                                <button @click="removeBouquet(bouquet.bouquet_id)" class="btn btn-danger">Remove
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-danger" v-if="bouquets.length === 0">{{ message }}</div>
+            </div>
+            <div class="col-lg-3">
+                <!-- Add Bouquet Section -->
+                <div class="mt-4">
+                    <h2>Add a New Bouquet</h2>
+                    <div class="form-group">
+                        <label for="bouquetName">Name</label>
+                        <input v-model="newBouquetName" type="text" class="form-control" id="bouquetName"
+                            placeholder="Enter bouquet name">
+                    </div>
+                    <div class="form-group">
+                        <label for="bouquetSize">Size</label>
+                        <input v-model="newBouquetSize" type="text" class="form-control" id="bouquetSize"
+                            placeholder="Enter bouquet size">
+                    </div>
+                    <div class="form-group">
+                        <label for="flowerType">Flower Type</label>
+                        <input v-model="newFlowerType" type="text" class="form-control" id="flowerType"
+                            placeholder="Enter flower type">
+                    </div>
+                    <div class="form-group">
+                        <label for="bouquetPrice">Price</label>
+                        <input v-model="newBouquetPrice" type="number" class="form-control" id="bouquetPrice"
+                            placeholder="Enter price">
+                    </div>
+                    <div class="form-group">
+                        <label for="bouquetQuantity">Quantity</label>
+                        <input v-model="newBouquetQuantity" type="number" class="form-control" id="bouquetQuantity"
+                            placeholder="Enter quantity">
+                    </div>
+                    <button @click="addBouquet" class="btn btn-primary">Add Bouquet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const getInventoryURL = "https://personal-4acjyryg.outsystemscloud.com/Inventory/rest/v1/inventory/";
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    bouquets: [],
+                    message: "Loading bouquet data...",
+                    newBouquetName: "",
+                    newBouquetSize: "",
+                    newFlowerType: "",
+                    newBouquetPrice: "",
+                    newBouquetQuantity: ""
+                };
+            },
+            methods: {
+                fetchBouquets() {
+                    fetch(getInventoryURL)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to fetch data');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data && data.Items && Array.isArray(data.Items)) {
+                                this.bouquets = data.Items;
+                                this.message = ""; // Clear loading message on successful data retrieval
+                            } else {
+                                throw new Error('Invalid data format');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching data:', error.message);
+                            this.message = 'Error fetching bouquet data. Please try again later.';
+                        });
+                },
+                removeBouquet(bouquetId) {
+                    if (confirm("Are you sure you want to delete this bouquet?")) {
+                        fetch(getInventoryURL + bouquetId, {
+                                method: 'DELETE'
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Failed to delete bouquet');
+                                }
+                                // Remove the bouquet from the UI
+                                this.bouquets = this.bouquets.filter(bouquet => bouquet.bouquet_id !== bouquetId)
+                                alert('Bouquets are successfully removed!');
+                                // Call sendSMS when bouquet is successfully removed
+                                this.sendSMS('Bouquet removed successfully!');
+                                ;
+                            })
+                            .catch(error => {
+                                console.error('Error deleting bouquet:', error.message);
+                                alert('Failed to delete bouquet. Please try again later.');
+                            });
+                    }
+                },
+                addBouquet() {
+                    if (confirm("Are you sure you want to add this bouquet?")) {
+                        const newBouquet = {
+                            bouquet_name: this.newBouquetName,
+                            size: this.newBouquetSize,
+                            flower_type: this.newFlowerType,
+                            price: this.newBouquetPrice,
+                            quantity: this.newBouquetQuantity
+                        };
+
+                        fetch(getInventoryURL, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(newBouquet)
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Failed to add bouquet');
+                                }
+                                // Reset form fields
+                                this.newBouquetName = "";
+                                this.newBouquetSize = "";
+                                this.newFlowerType = "";
+                                this.newBouquetPrice = "";
+                                this.newBouquetQuantity = "";
+                                // Refresh bouquet list
+                                this.fetchBouquets();
+                                alert('Bouquet added successfully!');
+                                // Call sendSMS when bouquet is successfully added
+                                this.sendSMS('Bouquet added successfully!');
+                            })
+                            .catch(error => {
+                                console.error('Error adding bouquet:', error.message);
+                                alert('Failed to add bouquet. Please try again later.');
+                            });
+                    }
+                },
+
+                // New method to send SMS
+                sendSMS(message) {
+                    fetch('http://localhost:5000/send_sms', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to send SMS');
+                        }
+                        console.log('SMS sent successfully!');
+                    })
+                    .catch(error => {
+                        console.error('Error sending SMS:', error.message);
+                    });
+                }
+
+            },
+            created() {
+                this.fetchBouquets();
+            }
+        });
+
+        const vm = app.mount('#app');
+    </script>
+
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
+        integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM'
+        crossorigin='anonymous'></script>
+
+</body>
+
+</html>
+
+
+
+
