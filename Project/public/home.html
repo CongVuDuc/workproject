@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lilee.co</title>
+
+    <!-- Vue.js 3CN -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- Bootstrap 5.0 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Font Awesome 5 CDN -->
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .sticky-cart {
+            position: sticky;
+            top: 10px; /* Adjust as needed */
+            z-index: 1000; /* Ensure the cart stays on top */
+            background-color: white; /* Optional: add a background color */
+            padding: 10px; /* Optional: add padding */
+            border-radius: 10px; /* Optional: add border radius */
+        }
+
+        .quantity-input-field {
+            width: 40px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid m-2">
+              <a class="navbar-brand" href="home.html" style="font-size: 30px; margin-left: 15px;">Lilee.coo</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="home.html">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="bashboard.html">Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" v-on:click="logout()" href="#">Logout</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        <div class="container my-5">
+            <div class="row">
+                <!-- Products -->
+                <div class="col-md-7">
+                    <table class="table-hover table ">
+                        <thead>
+                            <tr>
+                                <th>Bouquet Name</th>
+                                <th>Flower Type</th>
+                                <th>Size</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <div class="product" >
+                                <tr v-for="item in items">
+                                    <td>{{item.bouquet_name}}</td>
+                                    <td>{{item.flower_type}}</td>
+                                    <td>{{item.size}}</td>
+                                    <td>${{item.price}}</td>
+                                    <td>
+                                        <button v-on:click="add_to_cart(item.bouquet_id)" class="btn btn-sm btn-secondary add-cart">
+                                            Add
+                                        </button>
+                                    </td>
+                                </tr>
+                            </div> 
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Cart -->
+                <div class="col-md-5">
+                    <div class="container sticky-cart" >
+                        <h2>Cart Items</h2>
+                        <!-- Header -->
+                        <div class="card rounded-3 mb-2">
+                                <div class="card-body p-1">
+                                  <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-4 text-center align-items-center">
+                                      <p style="font-size: 14px; text-decoration: underline;">Bouquet Name</p>
+                                    </div>
+                                    <div class="col-2 text-center align-items-center">
+                                        <p style="font-size: 14px; text-decoration: underline;">Quantity</p>
+                                      </div>
+                                    <div class="col-3 text-center align-items-center">
+                                      <p style="font-size: 14px; text-decoration: underline;">Price</p>
+                                    </div>
+                                    <div class="col-2 text-center align-items-center">
+                                      <p style="font-size: 14px; text-decoration: underline;">Delete</p>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                        <!-- Cart Items -->
+                        <div class="cart-item" v-for="item of cartItems">
+                            <div class="card rounded-3 mb-2">
+                                <div class="card-body p-4">
+                                    <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-4 text-center align-items-center">
+                                        <p>{{item.bouquet_name}} ({{item.size}})</p>
+                                    </div>
+                                    <div class="col-2 text-center align-items-center">
+                                        <input class="quantity-input-field text-center" type="number" v-model="item.cart_quantity" min="1" @input="update_item_quantity(item.bouquet_id, $event.target.value)">
+                                    </div>
+                                    <div class="col-3 text-center align-items-center">
+                                        <p>${{item.price}}</p>
+                                    </div>
+                                    <div class="col-2 text-end">
+                                        <p><a v-on:click="remove_cart_item(item.bouquet_id)" href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a></p>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Total Price -->
+                        <div v-if="Object.keys(cartItems).length !== 0" class="card rounded-3 mb-2">
+                            <div class="card-body p-2">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col text-center">
+                                        <h4>Total Amount: ${{total_price}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Store Credit -->
+                        <div v-if="store_credit > 0" class="store-credit">
+                            <div class="card mb-2 p-2">
+                                <div class="row p-1">
+                                    <p>Available Store Credit: {{store_credit}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Proceed to checkout -->
+                        <div v-if="Object.keys(cartItems).length !== 0" class="card">
+                            <div class="card-body">
+                              <button v-on:click="checkout()" type="button" class="btn btn-warning btn-block w-100">Checkout</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Vue.js 3 -->
+    <script src="https://unpkg.com/vue@3.2.16"></script>
+    <script src="./js/home.js"></script>
+</body>
+</html>

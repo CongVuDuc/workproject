@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!-- Vue.js 3CN -->
+   <script src="https://unpkg.com/vue@next"></script>
+   <!-- Bootstrap 5.0 -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+   
+
+</head>
+<body>
+  <div id="app">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid m-2">
+        <a class="navbar-brand" href="home.html" style="font-size: 30px; margin-left: 15px;">Lilee.coo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="home.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="bashboard.html">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" v-on:click="logout()" href="#">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-5">
+          <div class="row">
+              <div class="col">
+                <table class="table table-border table-hover text-center align-items-center">
+                  <thead>
+                      <tr>
+                          <th>Order ID</th>
+                          <th>Order Details</th>
+                          <th>Order Status</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr v-for="order of orders" class="text-center align-items-center">
+                          <td>{{order.order_id}}</td>
+                          <td>
+                              <p v-for="item of order.OrderItem">
+                                Bouquet_name ({{item.size}}) x {{item.quantity}}
+                              </p>
+                          </td>
+                          <td>{{order.order_status}}</td>
+                          <td>
+                            <button class="btn btn-secondary">Request for Change</button>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+              </div>
+          </div>
+    </div>
+  </div>
+
+
+    <!-- Vue.js 3 -->
+    <script src="https://unpkg.com/vue@3.2.16"></script>
+    <script src="./js/dashboard.js"></script>
+
+</body>
+</html>
