@@ -1,8 +1,11 @@
+
+
 // Variables
 let cartData = {};
 let user = {};
 
-let requestBody = {};
+let requestBodyOrder = {};
+let requestBodyReceipt = {};
 
 let orderItems = [];
 let orderItem = {};
@@ -20,7 +23,7 @@ if (localStorage.getItem('cartData') && localStorage.getItem('user')) {
     shipping_info = JSON.parse(localStorage.getItem('shipping_info'));
     
     user = JSON.parse(localStorage.getItem('user'));
-    let user_id = user.user_id;
+    user_id = user.user_id;
     
     for (item of cartItems) {
         orderItem = {
@@ -33,8 +36,7 @@ if (localStorage.getItem('cartData') && localStorage.getItem('user')) {
         orderItems.push(orderItem);
     }
     
-    requestBody =
-    {
+    requestBodyOrder = {
         "cust_id" : user_id,
         "total_price" : 0.1,
         "shipping_method" : shipping_info.shipping_method,
@@ -42,11 +44,12 @@ if (localStorage.getItem('cartData') && localStorage.getItem('user')) {
         "contact_no" : shipping_info.contact_number,
         "OrderItem" : orderItems
     }; 
+
 }
 
 // Update Inventory
 async function updateInventory() {
-    console.log(cartItems, shipping_info);
+    // console.log(cartItems, shipping_info);
     for (const item of cartItems) {
         try {
             const bouquet_id = item.bouquet_id;
@@ -69,27 +72,95 @@ async function updateInventory() {
 
 // Create New Order
 async function createOrder() {
-    fetch('https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/', {
+    return fetch('https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify(requestBody)
+    body: JSON.stringify(requestBodyOrder)
     })
     .then(response => {
         if (response.ok) {
             console.log('Order created successfully');
+            return response.json(); // Parse response body as JSON
         } else {
             console.error('Failed to create order:', response.statusText);
         }
     })
+    .then(data => {
+        order_id = data.NewOrder.order_id;
+        console.log(order_id) ; // Return the fetched data
+        return order_id
+    })
     .catch(error => {
         console.error('Error creating order:', error);
+    });    
+}
+
+//Create receipt
+async function createReceipt(order_id) {
+    console.log(order_id)
+    if (order_id) {
+        requestBodyReceipt = {
+            "cust_id": user_id,
+            "subtotal": total_price,
+            "shipping_method": shipping_info.shipping_method,
+            "credits_used": 0,
+            "contact_no": shipping_info.contact_number,
+            "order_id": order_id,
+        }
+        console.log(requestBodyReceipt)
+        fetch('https://personal-4acjyryg.outsystemscloud.com/Payment/rest/v1/payment/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBodyReceipt)
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Receipt created successfully');
+            } else {
+                console.error('Failed to create receipt:', response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Error creating receipt:', error);
+        });
+    }
+    else {
+        console.error('Order ID is missing. Cannot create receipt.');
+        return;
+    }
+}
+
+// Send sms
+async function sendSms() {
+    message = "Order placed successfully!"
+    fetch('http://localhost:5005/send_sms', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to send SMS');
+        }
+        console.log('SMS sent successfully!');
+    })
+    .catch(error => {
+        console.error('Error sending SMS:', error.message);
     });
 }
 
 // Functions call
 if (localStorage.getItem('cartData') && localStorage.getItem('user')) {
-    createOrder();
-    updateInventory();
+    (async () => {
+        await updateInventory();
+        const order_id = JSON.parse(await createOrder());
+        await createReceipt(order_id);
+        sendSms();
+    })();
 }
