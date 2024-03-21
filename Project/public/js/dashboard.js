@@ -45,6 +45,7 @@ const app = Vue.createApp({
                 console.error('There was a problem with the fetch operation:', error);
                 this.errorMessage = 'An error occurred while processing your request';
             });
+            console.log(this.orders)
         }
     }
 })

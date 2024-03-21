@@ -62,7 +62,7 @@
                     </div>
                     <div class="card-body  d-flex flex-row">
                         <div class="form-outline flex-fill">
-                            <input type="numner" id="form1" class="form-control form-control-lg" />
+                            <input type="number" id="form1" class="form-control form-control-lg" />
                         </div>
                       <button type="button" class="btn btn-outline-warning ms-3">Apply</button>
                     </div>
@@ -78,10 +78,16 @@
                     </div>
                 </div>
             </div>
+            <!-- Continue Shopping -->
+            <div>
+                <a href="home.html">Continue Shoppping</a>
+            </div>
+
+            <!-- Shipping Infor -->
             </div>
             <div class="col-lg-6">
                 <h2>Shipping Information</h2>
-                <form @submit.prevent="submitForm">
+                <form id="checkout" @submit.prevent="checkout(cartItems, total_price, shipping_info)">
                     <div class="mb-3">
                         <label for="name" class="form-label">Recipient's Name</label>
                         <input type="text" class="form-control" id="name" v-model="shipping_info.name" required>
@@ -92,7 +98,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="inputGroupSelect01">Shipping Methods</label>
-                        <select class="form-select shipping_method" id="inputGroupSelect01" v-model="shipping_info.shipping_method">
+                        <select class="form-select shipping_method" id="inputGroupSelect01" v-model="shipping_info.shipping_method" required>
                           <option value="S">Self-collect</option>
                           <option selected value="D">Delivery</option>
                         </select>
@@ -103,7 +109,7 @@
                         <textarea class="form-control" id="address" v-model="shipping_info.address" required></textarea>
                     </div>
                     <div class="">
-                        <button type="button" id="checkout" class="btn btn-warning btn-block w-100">Proceed to Payment</button>
+                        <button type="submit" class="btn btn-warning btn-block w-100">Proceed to Payment</button>
                     </div>
                 </form>
             </div>
@@ -112,7 +118,7 @@
 
     <!-- Vue.js 3 -->
     <script src="https://unpkg.com/vue@3.2.16"></script>
-    <script src="./js/checkout.js"></script>
-    <script src="./js/payment.js"></script>
+    <script type="module" src="./js/checkout.js"></script>
+    <script type="module" src="./js/payment.js"></script>
 </body>
 </html>

@@ -48,21 +48,16 @@
 
 </head>
 <body>
-    <div class="sc-container">
+    <div id="app"  class="sc-container">
         <h1>Payment Successful!</h1>
         <img src="./img/success.png" alt="">
-        <button id="back" class="btn btn-secondary">Back to Homepage</button>
+        <button id="back" class="btn btn-secondary"><a href="home.html">Back to Homepage</a></button>
     </div>
 </body>
 </html>
 
-<script>
+<script src="./js/success.js">
     document.getElementById('back').addEventListener('click', () => {
-        if (localStorage.getItem('cartData')) {
-            // Remove the item from localStorage
-            localStorage.removeItem('cartData');
-            console.log('Item removed from local storage.');
-        }
         window.location.href = 'home.html'
     })
 </script>
