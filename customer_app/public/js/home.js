@@ -1,9 +1,13 @@
 // URLS
 const getAllAvailableProductsURL = "https://personal-4acjyryg.outsystemscloud.com/Inventory/rest/v1/inventory/"
 
+// Variables
+let user;
+let username;
 // Check if a user is logged
 if (localStorage.getItem('user')) {
-    username = localStorage.getItem('user');
+    user = JSON.parse(localStorage.getItem('user'));
+    username = user.username
 }
 else {
     window.location.href = 'login.html';
@@ -13,7 +17,7 @@ else {
 const app = Vue.createApp({
     created() {
         this.render_products();
-        this.loadCartItems(); // Load cart items from local storage
+        this.loadCartItems();
         this.get_store_credit();
     },
 
@@ -134,8 +138,21 @@ const app = Vue.createApp({
 
         // Get store credit from Customer
         get_store_credit() {
-            const user = JSON.parse(localStorage.getItem('user'));
-            this.store_credit = user.store_credit;
+            console.log(user)
+            console.log(username)
+            fetch(`https://personal-4acjyryg.outsystemscloud.com/Customer/rest/v1/customer/${username}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.store_credit = data['Customer'].credit;
+                })
+                .catch(error => {
+                    console.error('Error fetching store credit:', error);
+                });
         },
 
         //checkout
@@ -152,6 +169,10 @@ const app = Vue.createApp({
             }
             this.calculate_total_price();
             this.saveCartItems(); 
+        },
+
+        navigate_to_topup() {
+            window.location.href = 'topup.html';
         }
     }
 });

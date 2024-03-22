@@ -1,10 +1,11 @@
-import { process_payment } from './payment.js'
-
-// Variables
+import { process_payment_checkout } from './payment.js'
 
 // Check if a user is logged
+let user;
+let username;
 if (localStorage.getItem('user')) {
-    const user = JSON.parse(localStorage.getItem('user'));
+    user = JSON.parse(localStorage.getItem('user'));
+    username = user.username;
 }
 else {
     window.location.href = 'login.html';
@@ -13,7 +14,8 @@ else {
 // App
 const app = Vue.createApp({
     created() {
-        this.loadCartItems(); 
+        this.loadCartItems();
+        this.get_store_credit(); 
     },
 
     data() {
@@ -26,7 +28,9 @@ const app = Vue.createApp({
                 address: '',
                 contact_number: ''
             },
-            store_credit: 0
+            store_credit: 0,
+            credit_used: 0,
+            new_total_price: 0,
         };
     },
     methods: {
@@ -40,14 +44,47 @@ const app = Vue.createApp({
             }
         },
 
-        checkout(cartItems, total_price, shipping_info="") {
-            // Load shipping_info to local storage for creating of Order later
+        checkout(cartItems, total_price, shipping_info="", credit_used) {
+            
+            // Load shipping_info and set payment type to process when payment succeeds
             localStorage.setItem('shipping_info', JSON.stringify(shipping_info))
+            localStorage.setItem('payment_type', 'order');
 
-            // Define the payment type
-            let payment_type = "normal";
-            process_payment(payment_type, cartItems, total_price, shipping_info);
-        }
+            process_payment_checkout(total_price, shipping_info, credit_used);
+        },
+
+        apply_store_credit() {
+            let credit_used = document.getElementById('credit_used').value;
+            if (credit_used > 0 && credit_used < this.store_credit && credit_used <= this.total_price) {
+                this.credit_used = credit_used;
+                localStorage.setItem('credit_used', JSON.stringify(this.credit_used));
+                this.new_total_price = this.total_price - this.credit_used;
+            }
+            else if (credit_used > this.total_price && credit_used < this.store_credit) {
+                alert('Credit used cannot exceed total price.')
+            }
+            else {
+                alert('Credit used cannot exceed available store credit.')
+            }
+        },
+
+        get_store_credit() {
+            console.log(user)
+            console.log(username)
+            fetch(`https://personal-4acjyryg.outsystemscloud.com/Customer/rest/v1/customer/${username}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.store_credit = data['Customer'].credit;
+                })
+                .catch(error => {
+                    console.error('Error fetching store credit:', error);
+                });
+        },
 
     },
 });
