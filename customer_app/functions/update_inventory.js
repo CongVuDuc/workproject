@@ -1,5 +1,4 @@
 export async function update_inventory(cartItems) {
-    // console.log(cartItems, shipping_info);
     for (const item of cartItems) {
         try {
             const bouquet_id = item.bouquet_id;

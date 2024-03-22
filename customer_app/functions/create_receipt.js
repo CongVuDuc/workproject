@@ -1,5 +1,4 @@
 export async function create_receipt(order_id, requestBodyReceipt) {
-    console.log(order_id)
     if (order_id) {
         fetch('https://personal-4acjyryg.outsystemscloud.com/Payment/rest/v1/payment/', {
         method: 'POST',
