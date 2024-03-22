@@ -39,11 +39,13 @@
     </nav>
 
     <div id="app" class="container">
-        <h1>View Request Tickets</h1>
-        <div class="row">
+        <h1>View Request Ticket </h1>
+        
+        <div class="row">   
             <div class="col-lg-12">
+                <h3 v-if="Object.keys(ticket).length > 0"> Order {{ ticket.order_id}} Request {{ ticket.request_id }} </h3>
                 <!-- Order Table -->
-                <table class="table table-striped" v-if="tickets.length > 0">
+                <table class="table table-striped" v-if="Object.keys(ticket).length > 0">
                     <thead>
                         <tr>
                             <th>Order ID</th>
@@ -60,7 +62,7 @@
                         
                     </thead>
                     <tbody>
-                        <tr v-for="ticket in tickets" :key="ticket.order_id" @click="redirect(ticket.order_id, ticket.request_id)">
+                        <tr :key="ticket.order_id">
                             <td>{{ ticket.order_id }}</td>
                             <td>{{ ticket.request_id }}</td>
                             <td>{{ ticket.cust_id }}</td>
@@ -100,18 +102,23 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="text-danger" v-if="tickets.length === 0">{{ message }}</div>
+                <div class="text-danger" v-if="ticket.length === 0">{{ message }}</div>
             </div>
         </div>
     </div>
 
     <script>
-        const getReqURL = "https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('orderId');
+        const reqId = urlParams.get('reqId');
+
+        const getReqURL = `https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/${orderId}/${reqId}/`
 
         const app = Vue.createApp({
             data() {
                 return {
-                    tickets: [],
+                    ticket: [],
                     message: "Loading request data..."
                 };
             },
@@ -126,40 +133,42 @@
                         })
                         .then(data => {
                             console.log(data); // Log the data to see its format
-                            if (data.hasOwnProperty('Tickets')) {
-                                this.tickets = data.Tickets;
+                            if (data.hasOwnProperty('Ticket')) {
+                                this.ticket = data.Ticket;
                                 this.message = ""; // Clear loading message on successful data retrieval
+                                console.log(this.ticket)
                             } else {
                                 throw new Error('Invalid data format');
                             }
                         })
                         .catch(error => {
-                            console.error('Error fetching tickets:', error.message);
-                            this.message = 'Error fetching request tickets data. Please try again later.';
+                            console.error('Error fetching ticket:', error.message);
+                            this.message = 'Error fetching request ticket data. Please try again later.';
                         });
                 },
 
-                redirect(orderId, reqId) {
-                    // console.log(orderId, reqId)
+                // redirect(orderId, reqId) {
+                //     // console.log(orderId, reqId)
 
-                    
-                    window.open(`request_ticket.html?orderId=${orderId}&reqId=${reqId}`) //this line works, but need to pass parameters of orderid and reqid into it
+                //     const urlParams = new URLSearchParams(window.location.search);
+                //     const orderId = urlParams.get('orderId');
+                //     const reqId = urlParams.get('reqId');
 
-                    fetch(`https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/${orderId}/${reqId}/`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to fetch data');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log(data)
-                    })
-                    .catch(error => {
-                        console.error('Error fetching ticket:', error.message);
-                        this.message = 'Error fetching request ticket data. Please try again later.';
-                })
-                }
+                //     fetch(`https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/${orderId}/${reqId}/`)
+                //     .then(response => {
+                //         if (!response.ok) {
+                //             throw new Error('Failed to fetch data');
+                //         }
+                //         return response.json();
+                //     })
+                //     .then(data => {
+                //         console.log(data)
+                //     })
+                //     .catch(error => {
+                //         console.error('Error fetching ticket:', error.message);
+                //         this.message = 'Error fetching request ticket data. Please try again later.';
+                //     })
+                // }
 
             },
             created() {
