@@ -56,11 +56,12 @@
                             <th>Approval Status</th>
                             <th>Timestamp</th>
                             <th>Request Item</th>
+                            <th></th>
                         </tr>
                         
                     </thead>
                     <tbody>
-                        <tr v-for="ticket in tickets" :key="ticket.order_id" @click="redirect(ticket.order_id, ticket.request_id)">
+                        <tr v-for="ticket in tickets" :key="ticket.order_id">
                             <td>{{ ticket.order_id }}</td>
                             <td>{{ ticket.request_id }}</td>
                             <td>{{ ticket.cust_id }}</td>
@@ -68,7 +69,16 @@
                             <td>{{ ticket.balance_amt }}</td>
                             <td>{{ ticket.total }}</td>
                             <td>{{ ticket.new_shipping_method }}</td>
-                            <td>{{ ticket.approval_status }}</td>
+                            <!-- <td>{{ ticket.approval_status }}</td> -->
+
+                            <td>
+                                <select v-model="selectedStatus[ticket.order_id + '-' + ticket.request_id]">
+                                    <option v-for="status in approvalStatus" :value="status">{{ status }}</option>
+                                </select>
+                                <button class="btn btn-primary" @click="updateApprovalStatus(ticket.order_id, ticket.request_id)">Update</button>
+                            </td>
+
+
                             <td>{{ ticket.timestamp }}</td>
                             <td>
                                 <table v-if="ticket.RequestItem">
@@ -97,6 +107,9 @@
                                 </table>
                                 <span v-else>No items</span>
                             </td>
+                            <td>
+                                <button class="btn btn-primary" @click="redirect(ticket.order_id, ticket.request_id)">View Ticket</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -112,7 +125,8 @@
             data() {
                 return {
                     tickets: [],
-                    message: "Loading request data..."
+                    message: "Loading request data...",
+                    selectedStatus: {}
                 };
             },
             methods: {
@@ -128,6 +142,14 @@
                             console.log(data); // Log the data to see its format
                             if (data.hasOwnProperty('Tickets')) {
                                 this.tickets = data.Tickets;
+                                this.selectedStatus = {};
+                                this.tickets.forEach(ticket => {
+
+                                    // Use a unique key combining order_id and request_id
+                                    const key = `${ticket.order_id}-${ticket.request_id}`;                                    
+                                    
+                                    this.selectedStatus[key] = ticket.approval_status;
+                                });
                                 this.message = ""; // Clear loading message on successful data retrieval
                             } else {
                                 throw new Error('Invalid data format');
@@ -138,6 +160,41 @@
                             this.message = 'Error fetching request tickets data. Please try again later.';
                         });
                 },
+
+                updateApprovalStatus(orderId, reqId) {
+                    const newStatus = this.selectedStatus[orderId + '-' + reqId];
+                    fetch(`https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/${orderId}/${reqId}/${newStatus}/`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to update approval status');
+                            }
+
+                            this.fetchReqs();
+                            alert("You update has been successful!")
+                            console.log("Your update has been successful!")
+
+                            // Send SMS
+                            const statusMessage = {
+                                'REV': 'under review',
+                                'PEN': 'pending payment',
+                                'ACC': 'accepted',
+                                'REJ': 'rejected'
+                            };
+
+                            //not sure if this works might need cong to try
+                            this.sendSMS(`Your request is ${statusMessage[newStatus]}.`); 
+
+                        })
+                        .catch(error => {
+                            console.error('Error updating approval status:', error);
+                            // Handle error, display message, etc.
+                        });
+                }, 
 
                 redirect(orderId, reqId) {
                     // console.log(orderId, reqId)
@@ -159,12 +216,38 @@
                         console.error('Error fetching ticket:', error.message);
                         this.message = 'Error fetching request ticket data. Please try again later.';
                 })
+                },
+
+                sendSMS(message) {
+                    fetch('http://localhost:5000/send_sms', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to send SMS');
+                        }
+                        console.log('SMS sent successfully!');
+                    })
+                    .catch(error => {
+                        console.error('Error sending SMS:', error.message);
+                    });
                 }
+
 
             },
             created() {
                 this.fetchReqs();
-            }
+            },
+            computed: {
+                approvalStatus() {
+                    return ['REV', 'PEN', 'ACC', 'REJ']; 
+                }
+            } 
+            
         });
 
         const vm = app.mount('#app');
