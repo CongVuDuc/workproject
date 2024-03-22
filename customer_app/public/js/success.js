@@ -27,14 +27,17 @@ let payment_type = '';
 //Data to pass in process_topup
 let topup_amount = 0;
 
-if (localStorage.getItem('cartData') && localStorage.getItem('user') && localStorage.getItem('payment_type')) {
+if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
     
     // Order Data
     payment_type = (localStorage.getItem('payment_type'));
 
-    cartData = JSON.parse(localStorage.getItem('cartData'));
-    cartItems = cartData['cartItems'];
-    total_price = cartData['total_price'];
+    if (localStorage.getItem('cartData')) {
+        cartData = JSON.parse(localStorage.getItem('cartData'));
+        cartItems = cartData['cartItems'];
+        total_price = cartData['total_price'];
+    }
+    
 
     shipping_info = JSON.parse(localStorage.getItem('shipping_info'));
 
@@ -77,6 +80,7 @@ if (localStorage.getItem('cartData') && localStorage.getItem('user') && localSto
         process_request()
     }
 
+    console.log(payment_type)
     if (payment_type == 'topup') {
         process_topup()
     }
@@ -146,6 +150,10 @@ async function process_topup() {
         .catch(error => {
             console.error('Error Topping-up:', error);
         });
+        
+    // Rmb to remove these data after the function is triggered so that it won't trigger again on page reload
+    localStorage.removeItem('payment_type');
 }
+
 
 

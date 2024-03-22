@@ -40,8 +40,7 @@
 
         .quantity-input-field {
             width: 40px;
-        }
-        
+        }   
     </style>
 </head>
 <body>
@@ -66,7 +65,7 @@
                 </ul>
               </div>
             </div>
-          </nav>
+        </nav>
         <div class="container my-5">
             <div class="row">
                 <!-- Products -->
@@ -152,14 +151,21 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- Store Credit -->
-                        <div v-if="store_credit > 0" class="store-credit">
+                        <div class="store-credit">
                             <div class="card mb-2 p-2">
                                 <div class="row p-1">
-                                    <p>Available Store Credit: {{store_credit}}</p>
+                                    <div class="col">
+                                        <p>Available Store Credit: {{store_credit}}</p>
+                                    </div>
+                                    <div class="col text-end">
+                                        <button class="btn btn-success" @click="navigate_to_topup()">Top-up</button> 
+                                    </div>       
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- Proceed to checkout -->
                         <div v-if="Object.keys(cartItems).length !== 0" class="card">
                             <div class="card-body">
