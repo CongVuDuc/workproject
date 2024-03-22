@@ -144,7 +144,6 @@ app.post('/stripe-checkout', async (req, res) => {
 //One-time payment
 app.post('/one-time-payment', async (req, res) => {
     const total_amount = req.body.total_amount
-    console.log(req.body)
     const lineItems = [{
             price_data: {
                 currency: 'sgd',
