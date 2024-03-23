@@ -5,9 +5,7 @@ export function process_payment_checkout(total_price, shipping_info, credit_used
     }
 
     let total_amount = total_price - credit_used;
-    console.log(total_amount);
 
-    console.log(shipping_method);
     console.log('payment running')
 
     fetch('/stripe-checkout', {
