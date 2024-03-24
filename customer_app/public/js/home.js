@@ -32,8 +32,7 @@ const app = Vue.createApp({
 
     methods: {
         logout() {
-            localStorage.removeItem('user');
-            localStorage.removeItem('cartData')
+            localStorage.clear();
             window.location.href = 'login.html';
         },
 

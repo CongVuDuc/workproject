@@ -36,36 +36,40 @@ if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
         cartData = JSON.parse(localStorage.getItem('cartData'));
         cartItems = cartData['cartItems'];
         total_price = cartData['total_price'];
+
+        for (item of cartItems) {
+            orderItem = {
+                'bouquet_id': item.bouquet_id,
+                'bouquet_name' : item.bouquet_name,
+                'size': item.size,
+                'quantity': item.cart_quantity,
+                'price': item.price
+            };
+            orderItems.push(orderItem);
+        }
     }
     
-
-    shipping_info = JSON.parse(localStorage.getItem('shipping_info'));
+    if (localStorage.getItem('shipping_info')) {
+        shipping_info = JSON.parse(localStorage.getItem('shipping_info'));
+        requestBodyOrder = {
+            "cust_id" : user_id,
+            "total_price" : 0.1,
+            "shipping_method" : shipping_info.shipping_method,
+            "address" : shipping_info.address,
+            "contact_no" : shipping_info.contact_number,
+            "OrderItem" : orderItems
+        }; 
+    }
+    
 
     user = JSON.parse(localStorage.getItem('user'));
     user_id = JSON.stringify(user.user_id);
 
-    credit_used = JSON.parse(localStorage.getItem('credit_used'))
-    deduct_credit = parseInt(credit_used)*-1
-    
-    for (item of cartItems) {
-        orderItem = {
-            'bouquet_id': item.bouquet_id,
-            'bouquet_name' : item.bouquet_name,
-            'size': item.size,
-            'quantity': item.cart_quantity,
-            'price': item.price
-        };
-        orderItems.push(orderItem);
+    if (localStorage.getItem('credit_used')) {
+        credit_used = JSON.parse(localStorage.getItem('credit_used'))
+        deduct_credit = parseInt(credit_used)*-1
     }
     
-    requestBodyOrder = {
-        "cust_id" : user_id,
-        "total_price" : 0.1,
-        "shipping_method" : shipping_info.shipping_method,
-        "address" : shipping_info.address,
-        "contact_no" : shipping_info.contact_number,
-        "OrderItem" : orderItems
-    }; 
     // Request Data
 
     // Topup Data
