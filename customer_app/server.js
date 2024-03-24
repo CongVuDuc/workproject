@@ -9,10 +9,6 @@ import { create_receipt } from './functions/create_receipt.js';
 import { update_inventory } from './functions/update_inventory.js';
 import { send_sms } from './functions/send_sms.js'
 
-
-
-
-
 // Load variables
 dotenv.config();
 

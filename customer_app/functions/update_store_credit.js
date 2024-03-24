@@ -6,7 +6,7 @@ export function update_store_credit(user_id, store_credit) {
         },
         })
         .then(response => {
-            if (response.status == 200 || response.status == 204) {
+            if (response.ok) {
                 console.log('Customer store credit updated successfully');
             } else {
                 console.error('Failed to update customer store credit:', response.statusText);
