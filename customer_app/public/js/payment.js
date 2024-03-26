@@ -8,7 +8,7 @@ export function process_payment_checkout(total_price, shipping_info, credit_used
 
     console.log('payment running')
 
-    fetch('/stripe-checkout', {
+    fetch('http://127.0.0.1:3005/stripe-checkout', {
         method: 'post',
         headers: new Headers({'Content-Type': 'application/Json'}),
         body: JSON.stringify({
@@ -17,8 +17,9 @@ export function process_payment_checkout(total_price, shipping_info, credit_used
         })
     })
     .then((res) => res.json())
-    .then((url) => {
-        location.href = url;
+    .then((data) => {
+        // location.href = url;
+        location.href = data.url
     })
     .catch((err) => console.log(err));
 }
@@ -27,7 +28,7 @@ export function process_one_time_payment(payment_amount, credit_used=0) {
     
     let total_amount = payment_amount - credit_used;
 
-    fetch('/one-time-payment', {
+    fetch('http://127.0.0.1:3005/one-time-payment', {
         method: 'post',
         headers: new Headers({'Content-Type': 'application/Json'}),
         body: JSON.stringify({
@@ -35,8 +36,9 @@ export function process_one_time_payment(payment_amount, credit_used=0) {
         })
     })
     .then((res) => res.json())
-    .then((url) => {
-        location.href = url;
+    .then((data) => {
+        // location.href = url;
+        location.href = data.url
     })
     .catch((err) => console.log(err));
 }
