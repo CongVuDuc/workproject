@@ -139,18 +139,25 @@
                 
                 updateOrderStatus(orderId) {
                     const newStatus = this.selectedStatus[orderId];
-                    fetch(`https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/status/${orderId}/${newStatus}`, {
-                            method: 'PUT',
+                    const requestData = {
+                        order_id: orderId,
+                        order_status: newStatus
+                    };
+                    fetch("http://localhost:5100/order_handler", {
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
-                            }
+                            },
+                            body: JSON.stringify(requestData)
                         })
                         .then(response => {
+                            console.log(JSON.stringify(requestData))
                             if (!response.ok) {
                                 throw new Error('Failed to update order status');
                             }
                             // Assuming the response includes updated order data, you might want to update it in your Vue data
                             // For simplicity, I'm just refetching all orders after update
+                            console.log(response)
                             this.fetchOrders();
                             alert("You update has been successful!")
                             console.log("Your update has been successful!")
@@ -168,6 +175,7 @@
                         })
                         .catch(error => {
                             console.error('Error updating order status:', error);
+                            alert("Same order")
                             // Handle error, display message, etc.
                         });
                 },
