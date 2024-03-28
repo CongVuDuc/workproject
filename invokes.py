@@ -4,7 +4,7 @@ SUPPORTED_HTTP_METHODS = set([
     "GET", "OPTIONS", "HEAD", "POST", "PUT", "PATCH", "DELETE"
 ])
 
-def invoke_http(url, method='GET', json=None, **kwargs):
+def invoke_http(url, method='GET', json= None, **kwargs):
     """A simple wrapper for requests methods.
        url: the url of the http service;
        method: the http method;

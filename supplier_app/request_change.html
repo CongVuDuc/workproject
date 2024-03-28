@@ -173,7 +173,7 @@
                             if (!response.ok) {
                                 throw new Error('Failed to update approval status');
                             }
-
+                            console.log(response.data)
                             this.fetchReqs();
                             alert("You update has been successful!")
                             console.log("Your update has been successful!")
@@ -194,7 +194,7 @@
                             console.error('Error updating approval status:', error);
                             // Handle error, display message, etc.
                         });
-                }, 
+                },
 
                 redirect(orderId, reqId) {
                     // console.log(orderId, reqId)
