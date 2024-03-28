@@ -80,51 +80,34 @@ def processRequest(order):
     print('request_result:', request_result)
 
 
-    # Check the order result; if a failure, send it to the error microservice.
+    # Check the request result; if a failure, send it to the error microservice.
     code = request_result["Status_Code"]
     print("checking: ", code)
     message = json.dumps(request_result)
 
     if code not in range(200, 300):
-        # Inform the error microservice
-        #print('\n\n-----Invoking error microservice as order fails-----')
+
         print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
 
-        # invoke_http(error_URL, method="POST", json=order_result)
-        channel.basic_publish(exchange=exchangename, routing_key="order.error", 
+        channel.basic_publish(exchange=exchangename, routing_key="request.error", 
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-        # make message persistent within the matching queues until it is received by some receiver 
-        # (the matching queues have to exist and be durable and bound to the exchange)
 
-        # - reply from the invocation is not used;
-        # continue even if this invocation fails        
         print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", request_result)
 
         # 7. Return error
         return {
             "Status_code": 500,
-            "data": {"order_result": request_result},
+            "data": {"request_result": request_result},
             "message": "Order creation failure sent for error handling."
         }
 
-    # Notice that we are publishing to "Activity Log" only when there is no error in order creation.
-    # In http version, we first invoked "Activity Log" and then checked for error.
-    # Since the "Activity Log" binds to the queue using '#' => any routing_key would be matched 
-    # and a message sent to “Error” queue can be received by “Activity Log” too.
-
     else:
-        # 4. Record new order
-        # record the activity log anyway
-        #print('\n\n-----Invoking activity_log microservice-----')
         print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
 
-        # invoke_http(activity_log_URL, method="POST", json=order_result)            
-        channel.basic_publish(exchange=exchangename, routing_key="order.info", 
+        channel.basic_publish(exchange=exchangename, routing_key="request.info", 
             body=message)
 
-        print("\nOrder published to RabbitMQ Exchange.\n")
-    # - reply from the invocation is not used;
-    # continue even if this invocation fails
+        print("\nRequest published to RabbitMQ Exchange.\n")
 
     print('\n-----Invoking Order microservice-----\n')
 
@@ -139,24 +122,100 @@ def processRequest(order):
         "OrderItem": request_items
     }
 
-    combined_json = json.dumps(combined_data)
-
     print('combined data: ', combined_data)
-    print('combined json: ', combined_json)
 
-    order_result = invoke_http(order_URL, method='PUT', json=combined_json)
+    order_result = invoke_http(order_URL, method='PUT', json=combined_data)
 
     print('order result: ', order_result)
-    
-
 
     print('\n-----END Order microservice-----\n')
+
+    code = order_result["Status_Code"]
+    print("checking: ", code)
+    message = json.dumps(order_result)
+
+    if code not in range(200, 300):
+        print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+
+        channel.basic_publish(exchange=exchangename, routing_key="order.error", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+       
+        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", request_result)
+
+        return {
+            "Status_code": 500,
+            "data": {"order_result": request_result},
+            "message": "Order creation failure sent for error handling."
+        }
+
+    else:
+    
+        print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+
+        channel.basic_publish(exchange=exchangename, routing_key="order.info", 
+            body=message)
+
+        print("\nOrder published to RabbitMQ Exchange.\n")
+
+    
+    print('\n-----Invoking Inventory Microservice-----\n')
+
+    if "RequestItem" in ticket:
+    
+
+        for item in request_items:
+            if 'old_quantity' in item:
+                old_quantity = item['old_quantity']
+
+            else:
+                old_quantity = 0
+
+            new_id = item['new_id']
+
+            new_quantity = item['new_quantity']
+            add_quantity = new_quantity - old_quantity
+
+            inventory_URL = f"https://personal-4acjyryg.outsystemscloud.com/Inventory/rest/v1/inventory/{new_id}/{add_quantity}"
+
+            inventory_result = invoke_http(inventory_URL, method='PUT')
+
+            print(inventory_result)
+    
+
+    print('\n-----END Inventory microservice-----\n')
+
+
+    print('\n-----START Customer microservice-----\n')
+
+    cust_id = order_result['UpdatedOrder']['cust_id']
+    quantity_credited = 10 #placeholder for now, need get from UI
+
+    customer_URL = f"https://personal-4acjyryg.outsystemscloud.com/Customer/rest/v1/customer/{cust_id}/{quantity_credited}/"
+
+    customer_result = invoke_http(customer_URL, method='PUT')
+
+    print("\nCustomer Result: ", customer_result)
+
+    print('\n-----END Customer microservice-----\n')
+
+    print('\n-----START SMS microservice-----\n')
+
+    sms_URL = "http://localhost:5005/send_sms"
+
+    dummy_json = {"message": "hello sir"}
+
+    sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+
+    print('\n-----END SMS microservice-----\n')
 
     # 7. Return created order
     return {
         "Status_code": 201,
         "data": {
             "request_result": request_result,
+            "order_result" : order_result,
+            "customer_result" : customer_result,
+            "sms_response" : sms_response
         }
     }
     
@@ -166,11 +225,3 @@ if __name__ == "__main__":
     print("This is flask " + os.path.basename(__file__) +
           " for accepting a request")
     app.run(host="0.0.0.0", port=5200, debug=True)
-    # Notes for the parameters:
-    # - debug=True will reload the program automatically if a change is detected;
-    #   -- it in fact starts two instances of the same flask program,
-    #       and uses one of the instances to monitor the program changes;
-    # - host="0.0.0.0" allows the flask program to accept requests sent from any IP/host (in addition to localhost),
-    #   -- i.e., it gives permissions to hosts with any IP to access the flask program,
-    #   -- as long as the hosts can already reach the machine running the flask program along the network;
-    #   -- it doesn't mean to use http://0.0.0.0 to access the flask program.
