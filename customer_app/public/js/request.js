@@ -234,7 +234,7 @@ const app = Vue.createApp({
 
         //checkout
         submit_request() {
-            if (this.final_amount == 0 && this.new_items_added.length == 0) {
+            if (this.final_amount == 0 && this.new_items_added.length == 0 && this.shipping_info.shipping_method == this.old_shipping_info.shipping_method) {
                 alert("Please modify your order before submitting it!");
             }
             else {
