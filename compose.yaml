@@ -1,0 +1,134 @@
+version: "3.8"
+
+volumes:
+  rabbitmq_data:
+
+services:
+
+  # error, activity, complexes, messaging, payment
+ 
+
+  ###################################
+  # Messaging: The Messaging Microservice
+  ###################################
+  messaging:
+    build:
+      context: ./
+      dockerfile: order.Dockerfile #must change this accordingly
+    image: congvu18/order:esd #must change this accordingly 
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/order # is213 is username, so if need to change to my sql username, change it to root
+      PYTHONUNBUFFERED: 1
+
+  ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - ./rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+      - ./rabbitmq_definitions.json:/etc/rabbitmq/rabbitmq_definitions.json
+      - rabbitmq_data:/var/lib/rabbitmq
+      
+  #################################################
+  # Activity Log: The Activity Log Microservice [For all 3 scenarios]
+  #################################################
+  activity_log:
+    build:
+      context: ./
+      dockerfile: activity_log.Dockerfile    #must change this accordingly
+    image: congvu18/activity_log:esd         #must change this accordingly
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      a_queue_name: Activity_Log
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # Error: The Error microservice
+  ###################################
+  error:
+    build:
+      context: ./
+      dockerfile: error.Dockerfile            #must change this accordingly
+    image: congvu18/error:esd                 #must change this accordingly
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      e_queue_name: Error
+      PYTHONUNBUFFERED: 1
+
+  ###############################################
+  # Place Order: The Place Order Complex Microservice
+  ###############################################
+  place_order:
+    build:
+      context: ./
+      dockerfile: place_order.Dockerfile  #must change accordingly
+    image: congvu18/place_order:esd        #must change accordingly
+    restart: always
+    depends_on:
+      - payment
+      - messaging
+      - activity_log
+      - error
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      messaging_URL: http://messaging_ms:5005  #might need to change, like might need to slash "/messaging?"
+      payment_URL: http://payment:3005/ #might need to change, like might need to slash "/payment"
+      PYTHONUNBUFFERED: 1
+    ports: 
+      - "3000:5100"                    #edit to 3000 as microservice local host port is 3000, while the container port is still 5100 
+
+  
+  # Request: The Request Handler Microservice
+  ###############################################
+  place_order:
+    build:
+      context: ./
+      dockerfile: place_order.Dockerfile  #must change accordingly
+    image: congvu18/place_order:esd        #must change accordingly
+    restart: always
+    depends_on:
+      - payment
+      - messaging
+      - activity_log
+      - error
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      messaging_URL: http://messaging_ms:5005  #might need to change, like might need to slash "/messaging?"
+      payment_URL: http://payment:3005/ #might need to change, like might need to slash "/payment"
+      PYTHONUNBUFFERED: 1
+    ports: 
+      - "3000:5100"                    #edit to 3000 as microservice local host port is 3000, while the container port is still 5100 
+  
+  ##################################
+  # Book: The Book microservice
+  ##################################
+  book:
+    build:
+      context: ./
+      dockerfile: book.Dockerfile
+    image: congvu18/book:esd
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/book
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5000:5000"
