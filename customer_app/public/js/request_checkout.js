@@ -44,6 +44,12 @@ const app = Vue.createApp({
             
             // Set payment type to process when payment succeeds
             localStorage.setItem('payment_type', 'request');
+            const requestData = {
+                order_id: this.order_id,
+                request_id: this.request_id,
+                order_status: "ACC"
+            }
+            localStorage.setItem('requestData', JSON.stringify(requestData));
 
             process_one_time_payment(balance_amt, credit_used);
         },
