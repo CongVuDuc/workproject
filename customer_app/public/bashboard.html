@@ -49,18 +49,21 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr v-for="order of orders" class="text-center align-items-center">
-                          <td>{{order.order_id}}</td>
-                          <td>
-                              <p v-for="item of order.OrderItem">
-                                {{item.bouquet_name}} ({{item.size}}) x {{item.quantity}}
-                              </p>
-                          </td>
-                          <td>{{order.order_status}}</td>
-                          <td>
-                            <button class="btn btn-secondary">Request for Change</button>
-                          </td>
-                      </tr>
+                    <tr v-for="order in orders" class="text-center align-items-center">
+                      <td>{{ order.order_id }}</td>
+                      <td>
+                          <p v-for="item in order.OrderItem">
+                              {{ item.bouquet_name }} ({{ item.size }}) x {{ item.quantity }}
+                          </p>
+                      </td>
+                      <td>{{ order.order_status }}</td>
+                      <td> 
+                          <!-- Check if order_status is "PEN" -->
+                          <button class="btn btn-primary" v-if="order.order_status === 'CONF'">Make Payment</button>
+                          <!-- If order_status is not "PEN", show "Request for Change" button -->
+                          <button class="btn btn-secondary" v-else>Request for Change</button>
+                      </td>
+                  </tr>
                   </tbody>
               </table>
               </div>

@@ -121,6 +121,8 @@ def processOrderHandler(order):
     # - reply from the invocation is not used;
     # continue even if this invocation fails
 
+# invoke next microservice
+
 
     # 7. Return created order
     return {
