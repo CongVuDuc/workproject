@@ -74,7 +74,7 @@ def processRequest(order):
     
     order_id = order["order_id"]
     request_id = order["request_id"]
-    approval_status = order['approval_status']
+    order_status = order['order_status']
     print(order_id, request_id)
 
     
@@ -117,7 +117,7 @@ def processRequest(order):
         print("\nRequest published to RabbitMQ Exchange.\n")
 
 
-    if approval_status == "PEN":
+    if order_status == "PEN":
 
         print('\n-----Invoking request microservice to update-----')
 
@@ -165,7 +165,13 @@ def processRequest(order):
         }
         }
 
-    if approval_status == 'REJ':
+    if order_status == 'REJ':
+
+        print('\n-----Invoking request microservice to update-----')
+
+        request_URL = f"https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/{order_id}/{request_id}/REJ/"
+        status_result = invoke_http(request_URL,method="PUT")
+        print("status_result: ", status_result)
 
         print('\n-----START SMS microservice-----\n')
 
@@ -183,6 +189,11 @@ def processRequest(order):
 
         print('\n-----END SMS microservice-----\n')
         
+    print('\n-----Invoking request microservice to update-----')
+
+    request_URL = f"https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/{order_id}/{request_id}/ACC/"
+    status_result = invoke_http(request_URL,method="PUT")
+    print("status_result: ", status_result)
 
     print('\n-----Invoking Order microservice-----\n')
 
@@ -192,7 +203,7 @@ def processRequest(order):
         request_items = ticket['RequestItem']
     else:
         request_items = []
-    approval_status = ticket['approval_status']
+    # order_status = ticket['order_status']
     order_id = ticket['order_id']
 
     order_item = []
@@ -280,7 +291,7 @@ def processRequest(order):
     cust_id = ticket['cust_id']
     quantity_credited = int(ticket['balance_amt'])
 
-    if ticket['new_shipping_method']:
+    if ('new_shipping_method' in ticket) and (ticket['new_shipping_method'] == 'D'):
         customer_URL = "https://personal-4acjyryg.outsystemscloud.com/Customer/rest/v1/customer/"
 
         print(cust_id)

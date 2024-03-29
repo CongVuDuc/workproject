@@ -169,13 +169,14 @@
                         request_id: reqId 
                     };
 
+                    console.log(requestData)
 
-                    
                     fetch("http://localhost:5200/request_handler", {
-                            method: 'PUT',
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
-                            }
+                            },
+                            body: JSON.stringify(requestData)
                         })
                         .then(response => {
                             if (!response.ok) {
