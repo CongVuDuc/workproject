@@ -15,8 +15,11 @@ export async function create_order(requestBodyOrder) {
         }
     })
     .then(data => {
-        let order_id = data.NewOrder.order_id;
-        return order_id
+        if (data) {
+            let order_id = data.NewOrder.order_id;
+            return order_id
+        }
+
     })
     .catch(error => {
         console.error('Error creating order:', error);

@@ -30,7 +30,11 @@ let topup_amount = 0;
 if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
     
     // Order Data
-    payment_type = (localStorage.getItem('payment_type'));
+    payment_type = localStorage.getItem('payment_type');
+
+    // User ID
+    user = JSON.parse(localStorage.getItem('user'));
+    user_id = user.user_id;
 
     if (localStorage.getItem('cartData')) {
         cartData = JSON.parse(localStorage.getItem('cartData'));
@@ -60,10 +64,6 @@ if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
             "OrderItem" : orderItems
         }; 
     }
-    
-
-    user = JSON.parse(localStorage.getItem('user'));
-    user_id = JSON.stringify(user.user_id);
 
     if (localStorage.getItem('credit_used')) {
         credit_used = JSON.parse(localStorage.getItem('credit_used'))
@@ -93,6 +93,8 @@ if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
 
 // Process order
 async function process_order(cartItems, total_price, shipping_info, user_id, credit_used, deduct_credit, requestBodyOrder) {
+    console.log(requestBodyOrder)
+    console.log(user_id)
     fetch('/process-order', {
     method: 'POST',
     headers: {

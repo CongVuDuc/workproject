@@ -71,14 +71,21 @@ def request_order():
 def processRequest(order):
     # 2. Send the request info
     # Invoke the request microservice
-    print('\n-----Invoking request microservice-----')
+    
     order_id = order["order_id"]
     request_id = order["request_id"]
+    approval_status = order['approval_status']
     print(order_id, request_id)
+
+    
+    print('\n-----Invoking request microservice to get ticket-----')
+
     request_URL = f"https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/{order_id}/{request_id}/"
+
     request_result = invoke_http(request_URL,method="GET")
     print('request_result:', request_result)
 
+    ticket = request_result['Ticket']
 
     # Check the request result; if a failure, send it to the error microservice.
     code = request_result["Status_Code"]
@@ -109,17 +116,100 @@ def processRequest(order):
 
         print("\nRequest published to RabbitMQ Exchange.\n")
 
+
+    if approval_status == "PEN":
+
+        print('\n-----Invoking request microservice to update-----')
+
+        request_URL = f"https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/{order_id}/{request_id}/PEN/"
+        status_result = invoke_http(request_URL,method="PUT")
+        print("status_result: ", status_result)
+
+
+        print('\n-----START SMS microservice-----\n')
+
+        sms_URL = "http://localhost:5005/send_sms"
+        dummy_json = {"message": "MAKE PAYMENT LAH"}
+        sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+        print('SMS response: ', sms_response)
+
+        print('\n-----END SMS microservice-----\n')
+
+        print('\n-----START PAYMENT microservice-----\n')
+
+        reciept_details = {
+                "cust_id": ticket['cust_id'],
+                "subtotal": ticket['balance_amt'],
+                "address": ticket['address'],
+                "contact_no": ticket['contact_no'],
+                "order_id": order_id,
+                "request_id": request_id
+            }
+
+        if ticket['new_shipping_method']:
+            reciept_details['shipping_method'] = ticket['new_shipping_method']
+            reciept_details['address'] = ticket['address']
+
+        paymnt_URL = "https://personal-4acjyryg.outsystemscloud.com/Payment/rest/v2/payment/"
+        payment_result = invoke_http(paymnt_URL, method='POST', json=reciept_details)
+
+        print("payment result: ", payment_result)
+
+        print('\n-----END PAYMENT microservice-----\n')
+
+        return {
+        "Status_code": 201,
+        "data": {
+            "sms result" : sms_response,
+            "payment result" : payment_result
+        }
+        }
+
+    if approval_status == 'REJ':
+
+        print('\n-----START SMS microservice-----\n')
+
+        sms_URL = "http://localhost:5005/send_sms"
+        dummy_json = {"message": "YOU HAVE BEEN REJECTED"}
+        sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+        print('SMS response: ', sms_response)
+
+        return {
+        "Status_code": 201,
+        "data": {
+            "sms_response" : sms_response
+        }
+    } 
+
+        print('\n-----END SMS microservice-----\n')
+        
+
     print('\n-----Invoking Order microservice-----\n')
 
     order_URL = "https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/"
 
-    ticket = request_result['Ticket']
-    request_items = ticket['RequestItem']
+    if ticket['RequestItem']:
+        request_items = ticket['RequestItem']
+    else:
+        request_items = []
+    approval_status = ticket['approval_status']
     order_id = ticket['order_id']
+
+    order_item = []
+
+    for item in request_items:
+        item_data = {
+            "order_id": order_id,
+            "quantity": item['new_quantity'],
+            "bouquet_id": item['new_id'],
+            "price": item['new_price'],
+            "size": item['new_size']
+        }
+        order_item.append(item_data)
     
     combined_data = {
         "order_id": order_id,
-        "OrderItem": request_items
+        "OrderItem": order_item,
     }
 
     print('combined data: ', combined_data)
@@ -173,7 +263,7 @@ def processRequest(order):
             new_id = item['new_id']
 
             new_quantity = item['new_quantity']
-            add_quantity = new_quantity - old_quantity
+            add_quantity = old_quantity - new_quantity
 
             inventory_URL = f"https://personal-4acjyryg.outsystemscloud.com/Inventory/rest/v1/inventory/{new_id}/{add_quantity}"
 
@@ -187,8 +277,21 @@ def processRequest(order):
 
     print('\n-----START Customer microservice-----\n')
 
-    cust_id = order_result['UpdatedOrder']['cust_id']
-    quantity_credited = 10 #placeholder for now, need get from UI
+    cust_id = ticket['cust_id']
+    quantity_credited = int(ticket['balance_amt'])
+
+    if ticket['new_shipping_method']:
+        customer_URL = "https://personal-4acjyryg.outsystemscloud.com/Customer/rest/v1/customer/"
+
+        print(cust_id)
+
+        data = {
+            "cust_id" : cust_id,
+            "address" : ticket['address']
+        }
+        shipping_result = invoke_http(customer_URL,method='PUT', json=data) 
+
+        print("shipping_result: ", shipping_result)
 
     customer_URL = f"https://personal-4acjyryg.outsystemscloud.com/Customer/rest/v1/customer/{cust_id}/{quantity_credited}/"
 

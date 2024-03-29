@@ -64,6 +64,18 @@
                           <button class="btn btn-secondary" v-else>Request for Change</button>
                       </td>
                   </tr>
+                      <tr v-for="order of orders" class="text-center align-items-center">
+                          <td>{{order.order_id}}</td>
+                          <td>
+                              <p v-for="item of order.OrderItem">
+                                {{item.bouquet_name}} ({{item.size}}) x {{item.quantity}}
+                              </p>
+                          </td>
+                          <td>{{order.order_status}}</td>
+                          <td>
+                            <button v-on:click="request_change(order.order_id)" class="btn btn-secondary">Request for Change</button>
+                          </td>
+                      </tr>
                   </tbody>
               </table>
               </div>

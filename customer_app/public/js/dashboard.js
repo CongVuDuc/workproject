@@ -46,8 +46,15 @@ const app = Vue.createApp({
                 this.errorMessage = 'An error occurred while processing your request';
             });
             console.log(this.orders)
+        },
+        
+        request_change(order_id) {
+            localStorage.setItem("request_order_id", order_id);
+            window.location.href = 'request.html';
         }
-    }
+    },
+
+
 })
 
 app.mount('#app');
