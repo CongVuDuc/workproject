@@ -10,6 +10,7 @@ let user = {};
 // Data to pass in to process_order
 let requestBodyOrder = {};
 let requestBodyReceipt = {};
+let requestBodyRequest = {}
 
 let orderItems = [];
 let orderItem = {};
@@ -35,6 +36,14 @@ if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
     // User ID
     user = JSON.parse(localStorage.getItem('user'));
     user_id = user.user_id;
+
+    // RequestData
+    if (localStorage.getItem('requestData')) {
+        const requestData = JSON.parse(localStorage.getItem('requestData'));
+        requestBodyRequest = requestData;
+    }
+    
+
 
     if (localStorage.getItem('cartData')) {
         cartData = JSON.parse(localStorage.getItem('cartData'));
@@ -130,7 +139,30 @@ async function process_order(cartItems, total_price, shipping_info, user_id, cre
 
 // Process Request
 async function process_request() {
-    
+    fetch('localhost:5200/request_handler', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            requestData: requestBodyRequest
+        })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Request processed successfully');
+                return response.json(); // Parse response body as JSON
+            } else {
+                console.error('Failed to process request:', response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Error Processing Request:', error);
+        });
+        
+    // Rmb to remove these data after the function is triggered so that it won't trigger again on page reload
+    localStorage.removeItem('payment_type');
+    localStorage.removeItem('requestData');
 }
 
 // Process topup

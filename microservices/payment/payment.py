@@ -61,7 +61,7 @@ def one_time_payment():
         "price_data": {
             "currency": "sgd",
             "product_data": {
-                "name": "Lilee.coo Credit Top-up",
+                "name": "Lilee.coo Payment",
             },
             "unit_amount": int(total_amount) * 100,
         },
@@ -73,7 +73,7 @@ def one_time_payment():
             payment_method_types=['card'],
             mode='payment',
             success_url="http://localhost:3000/success",
-            cancel_url="http://localhost:3000/top-up",
+            cancel_url="http://localhost:3000/",
             line_items=line_items,
         )
         return jsonify({"url": session.url})
