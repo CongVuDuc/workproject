@@ -178,7 +178,7 @@
                         <h4>Shipping Method</h4>
                         <div class="input-group mb-3">
                             <label class="input-group-text" for="inputGroupSelect01">Shipping Methods</label>
-                            <select class="form-select shipping_method" id="inputGroupSelect01" v-model="shipping_info.shipping_method" required>
+                            <select @change="calculate_final_amount()" class="form-select shipping_method" id="inputGroupSelect01" v-model="shipping_info.shipping_method" required>
                               <option value="S">Self-collect</option>
                               <option selected value="D">Delivery</option>
                             </select>

@@ -36,8 +36,19 @@ const app = Vue.createApp({
                 address: '',
                 contact_number: ''
             },
-            old_shipping_method: [],
-            new_shipping_method: [],
+
+            old_shipping_info: {
+                name: '',
+                shipping_method: '',
+                address: '',
+                contact_number: ''
+            },
+            new_shipping_info: {
+                name: '',
+                shipping_method: '',
+                address: '',
+                contact_number: ''
+            },
         }
     },
 
@@ -163,7 +174,12 @@ const app = Vue.createApp({
                 let cart_quantity = item.cart_quantity;
                 new_total_price += (price * cart_quantity);
             }
+
             this.final_amount = new_total_price - this.old_total_price;
+
+            if (this.shipping_info.shipping_method == "D" && this.new_total_price < 50) {
+                this.final_amount += 5;
+            }
         },
 
         // Save cart items to local storage
@@ -198,9 +214,13 @@ const app = Vue.createApp({
 
                     this.old_total_price = data.Order.total_price
                     this.order_id = data.Order.order_id
+
+                    this.old_shipping_info.shipping_method = data.Order.shipping_method
+                    this.old_shipping_info.address = data.Order.address
+
                     this.shipping_info.shipping_method = data.Order.shipping_method
-                    this.shipping_info.address = data.Order.address
-                    this.old_shipping_method = [data.Order.shipping_method, data.Order.address];
+                    this.shipping_info.address = data.Order.address 
+    
                     // this.calculate_final_amount();
                 })
                 .catch(error => {
@@ -255,13 +275,35 @@ const app = Vue.createApp({
                 if (this.shipping_info.shipping_method == "S") {
                     this.shipping_info.address == "";
                 }
-                this.new_shipping_method = [this.shipping_info.shipping_method, this.shipping_info.address]
+
+                if (this.shipping_info.shipping_method !== this.old_shipping_info.shipping_method) {
+                    this.new_shipping_info.shipping_method = this.shipping_info.shipping_method;
+                    this.new_shipping_info.address = this.shipping_info.address;
+                }
 
                 requestItems = requestItems.filter(item => item.old_quantity !== item.new_quantity);
 
-                console.log(requestItems);
-                console.log(this.new_shipping_method);
+                console.log(user.user_id)
+
+                axios.post('https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/', {
+                    order_id: this.order_id, 
+                    cust_id: user.user_id, 
+                    new_shipping_method: this.new_shipping_info.shipping_method, 
+                    address: this.new_shipping_info.address, 
+                    RequestItem: requestItems 
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then((res) => {
+                    console.log(res.data); // Handle response data
+                })
+                .catch((err) => {
+                    console.log(err); // Handle error
+                });
             }
+
         },
 
         // Update item quantity based on input field

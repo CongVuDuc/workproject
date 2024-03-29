@@ -93,6 +93,8 @@ if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
 
 // Process order
 async function process_order(cartItems, total_price, shipping_info, user_id, credit_used, deduct_credit, requestBodyOrder) {
+    console.log(requestBodyOrder)
+    console.log(user_id)
     fetch('/process-order', {
     method: 'POST',
     headers: {
