@@ -316,7 +316,7 @@ def processRequest(order):
 
     sms_URL = "http://localhost:5005/send_sms"
 
-    dummy_json = {"message": "Your request is now pending"}
+    dummy_json = {"message": "order confirmed!"}
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
 
