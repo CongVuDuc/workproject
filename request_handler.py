@@ -129,7 +129,7 @@ def processRequest(order):
         print('\n-----START SMS microservice-----\n')
 
         sms_URL = "http://localhost:5005/send_sms"
-        dummy_json = {"message": "Please make payment"}
+        dummy_json = {"message": "MAKE PAYMENT LAH"}
         sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
         print('SMS response: ', sms_response)
 
@@ -164,6 +164,25 @@ def processRequest(order):
             "payment result" : payment_result
         }
         }
+
+    if approval_status == 'REJ':
+
+        print('\n-----START SMS microservice-----\n')
+
+        sms_URL = "http://localhost:5005/send_sms"
+        dummy_json = {"message": "YOU HAVE BEEN REJECTED"}
+        sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+        print('SMS response: ', sms_response)
+
+        return {
+        "Status_code": 201,
+        "data": {
+            "sms_response" : sms_response
+        }
+    } 
+
+        print('\n-----END SMS microservice-----\n')
+        
 
     print('\n-----Invoking Order microservice-----\n')
 
