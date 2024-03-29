@@ -163,7 +163,15 @@
 
                 updateApprovalStatus(orderId, reqId) {
                     const newStatus = this.selectedStatus[orderId + '-' + reqId];
-                    fetch(`https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/${orderId}/${reqId}/${newStatus}/`, {
+                    const requestData = {
+                        order_id: orderId,
+                        order_status: newStatus,
+                        request_id: reqId 
+                    };
+
+
+                    
+                    fetch("http://localhost:5200/request_handler", {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json'
