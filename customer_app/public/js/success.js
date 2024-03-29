@@ -30,7 +30,11 @@ let topup_amount = 0;
 if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
     
     // Order Data
-    payment_type = (localStorage.getItem('payment_type'));
+    payment_type = localStorage.getItem('payment_type');
+
+    // User ID
+    user = JSON.parse(localStorage.getItem('user'));
+    user_id = user.user_id;
 
     if (localStorage.getItem('cartData')) {
         cartData = JSON.parse(localStorage.getItem('cartData'));
@@ -60,10 +64,6 @@ if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
             "OrderItem" : orderItems
         }; 
     }
-    
-
-    user = JSON.parse(localStorage.getItem('user'));
-    user_id = JSON.stringify(user.user_id);
 
     if (localStorage.getItem('credit_used')) {
         credit_used = JSON.parse(localStorage.getItem('credit_used'))
