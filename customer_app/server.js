@@ -53,6 +53,8 @@ app.post('/process-order', async (req, res) => {
 
     const order_id = await create_order(requestBodyOrder);
 
+    console.log(credit_used)
+    console.log(deduct_credit)
     if (credit_used > 0) {
         update_store_credit(user_id, deduct_credit);
     }

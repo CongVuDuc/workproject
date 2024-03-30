@@ -49,6 +49,7 @@ const app = Vue.createApp({
             // Load shipping_info and set payment type to process when payment succeeds
             localStorage.setItem('shipping_info', JSON.stringify(shipping_info))
             localStorage.setItem('payment_type', 'order');
+            localStorage.setItem('credit_used', credit_used);
 
             process_payment_checkout(total_price, shipping_info, credit_used);
         },

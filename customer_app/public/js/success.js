@@ -78,6 +78,8 @@ if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
         credit_used = JSON.parse(localStorage.getItem('credit_used'))
         deduct_credit = parseInt(credit_used)*-1
     }
+
+    console.log(credit_used, deduct_credit)
     
     // Request Data
 
@@ -135,6 +137,9 @@ async function process_order(cartItems, total_price, shipping_info, user_id, cre
     // Rmb to remove these data after the function is triggered so that it won't trigger again on page reload
     localStorage.removeItem('cartData');
     localStorage.removeItem('payment_type');
+    localStorage.removeItem('shipping_info');
+    localStorage.removeItem('credit_used');
+    
 }
 
 // Process Request
@@ -163,6 +168,7 @@ async function process_request() {
     // Rmb to remove these data after the function is triggered so that it won't trigger again on page reload
     localStorage.removeItem('payment_type');
     localStorage.removeItem('requestData');
+    localStorage.removeItem('credit_used');
 }
 
 // Process topup
@@ -191,6 +197,7 @@ async function process_topup() {
         
     // Rmb to remove these data after the function is triggered so that it won't trigger again on page reload
     localStorage.removeItem('payment_type');
+    localStorage.removeItem('topup_amount');
 }
 
 
