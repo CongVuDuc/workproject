@@ -22,6 +22,12 @@ const app = Vue.createApp({
     data() {
         return {
             orders: [],
+            conf_orders: [],
+            prep_orders: [],
+            scol_orders: [],
+            dlvy_orders: [],
+            cmpl_orders: []
+
         }
 
     },
@@ -37,9 +43,23 @@ const app = Vue.createApp({
             })
             .then(data => {
                 for (order of data.Order) {
-                    this.orders.push(order);
+                    if (order.order_status == "CONF") {
+                        this.conf_orders.push(order)
+                    }
+                    if (order.order_status == "PREP") {
+                        this.prep_orders.push(order)
+                    }
+                    if (order.order_status == "SCOL") {
+                        this.scol_orders.push(order)
+                    }
+                    if (order.order_status == "DLVY") {
+                        this.dlvy_orders.push(order)
+                    }
+                    if (order.order_status == "CMPL") {
+                        this.cmpl_orders.push(order)
+                    }
                 }
-                console.log(this.orders)
+                console.log(this.conf_orders)
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);

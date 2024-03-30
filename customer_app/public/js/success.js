@@ -92,12 +92,12 @@ if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
     }
 
     if (payment_type == 'request') {
-        process_request()
+        process_request(requestBodyRequest)
     }
 
     console.log(payment_type)
     if (payment_type == 'topup') {
-        process_topup()
+        process_topup(user_id, topup_amount)
     }
 
 }
@@ -143,7 +143,7 @@ async function process_order(cartItems, total_price, shipping_info, user_id, cre
 }
 
 // Process Request
-async function process_request() {
+async function process_request(requestBodyRequest) {
     fetch('localhost:5200/request_handler', {
         method: 'POST',
         headers: {
@@ -172,7 +172,7 @@ async function process_request() {
 }
 
 // Process topup
-async function process_topup() {
+async function process_topup(user_id, topup_amount) {
     fetch('/process-topup', {
         method: 'POST',
         headers: {
