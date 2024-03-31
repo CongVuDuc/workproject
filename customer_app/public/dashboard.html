@@ -57,7 +57,7 @@
                           <p>${{ order.total_price }}</p>
                       </div>
                       <div class="col text-center align-items-center">
-                        <button>Request for Change</button>
+                        <button v-on:click="request_change(order.order_id)">Request for Change</button>
                       </div>
                     </div>
                 </div>
