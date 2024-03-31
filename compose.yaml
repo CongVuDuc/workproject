@@ -18,8 +18,9 @@ services:
     image: congvu18/order:project 
     restart: always
     environment:
-      messaging_URL: http://localhost:5005/send_sms
       PYTHONUNBUFFERED: 1
+    ports:
+     - "5005:5005"
 
   
   ###################################
