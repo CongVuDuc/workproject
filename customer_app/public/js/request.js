@@ -301,6 +301,8 @@ const app = Vue.createApp({
                 })
                 .then((res) => {
                     console.log(res.data); // Handle response data
+                    alert("Request submitted successfully!")
+                    window.location.href = 'home.html';
                 })
                 .catch((err) => {
                     console.log(err); // Handle error
