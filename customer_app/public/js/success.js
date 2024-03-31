@@ -144,13 +144,19 @@ async function process_order(cartItems, total_price, shipping_info, user_id, cre
 
 // Process Request
 async function process_request(requestBodyRequest) {
-    fetch('localhost:5200/request_handler', {
+    let order_id = requestBodyRequest.order_id
+    let request_id = requestBodyRequest.request_id
+    let order_status = requestBodyRequest.order_status
+
+    fetch('http://localhost:5200/request_handler', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            requestData: requestBodyRequest
+            order_id: order_id,
+            request_id: request_id,
+            order_status: order_status
         })
         })
         .then(response => {

@@ -50,7 +50,7 @@ const app = Vue.createApp({
                 order_status: "ACC"
             }
 
-            localStorage.setItem('requestData', JSON.stringify(requestData));
+            localStorage.setItem('requestData', JSON.stringify());
             localStorage.setItem('credit_used', credit_used);
             
             process_one_time_payment(balance_amt, credit_used);
