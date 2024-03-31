@@ -85,8 +85,6 @@ app.post('/process-topup', async (req, res) => {
     const message = "Top-up successfully!"
     send_sms(message)
 })
-// Process Request
-
 
 app.listen(3000, () => {
     console.log('listening on port 3000;');
