@@ -41,7 +41,7 @@ services:
   ####################################
   rabbitmq:
     image: rabbitmq:3-management
-    hostname: esd-rabbit
+    # hostname: esd-rabbit
     restart: always
     ports:
       - "5672:5672"
