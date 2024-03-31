@@ -47,10 +47,11 @@ const app = Vue.createApp({
             const requestData = {
                 order_id: this.order_id,
                 request_id: this.request_id,
-                order_status: "ACC"
+                order_status: "ACC",
+                credit_used: credit_used
             }
 
-            localStorage.setItem('requestData', JSON.stringify());
+            localStorage.setItem('requestData', JSON.stringify(requestData));
             localStorage.setItem('credit_used', credit_used);
             
             process_one_time_payment(balance_amt, credit_used);

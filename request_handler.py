@@ -74,6 +74,10 @@ def processRequest(order):
     order_id = order["order_id"]
     request_id = order["request_id"]
     order_status = order['order_status']
+
+    if 'credit_used' in order:
+        credit_used = order['credit_used']
+
     print(order_id, request_id)
 
     
@@ -148,7 +152,9 @@ def processRequest(order):
             reciept_details['shipping_method'] = ticket['new_shipping_method']
             reciept_details['address'] = ticket['address']
 
-        paymnt_URL = "https://personal-4acjyryg.outsystemscloud.com/Payment/rest/v2/payment/"
+        print(reciept_details)
+
+        paymnt_URL = "https://personal-4acjyryg.outsystemscloud.com/Receipt/rest/v2/payment/"
         payment_result = invoke_http(paymnt_URL, method='POST', json=reciept_details)
 
         print("payment result: ", payment_result)
@@ -290,6 +296,13 @@ def processRequest(order):
     quantity_credited = int(ticket['balance_amt'])
     if quantity_credited < 0:
         quantity_credited = quantity_credited*-1
+    
+    if int(credit_used) > 0 :
+        quantity_credited = int(credit_used) *-1
+
+    print(credit_used)
+    print(quantity_credited)
+
 
 
     if ('new_shipping_method' in ticket) and (ticket['new_shipping_method'] == 'D'):
@@ -301,7 +314,7 @@ def processRequest(order):
             "cust_id" : cust_id,
             "address" : ticket['address']
         }
-        shipping_result = invoke_http(customer_URL,method='PUT', json=data) 
+        shipping_result = invoke_http(customer_URL,method='PUT', json=data)
 
         print("shipping_result: ", shipping_result)
 

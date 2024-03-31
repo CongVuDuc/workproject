@@ -1,6 +1,6 @@
 export async function create_receipt(order_id, requestBodyReceipt) {
     if (order_id) {
-        fetch('https://personal-4acjyryg.outsystemscloud.com/Payment/rest/v1/payment/', {
+        fetch('https://personal-4acjyryg.outsystemscloud.com/Receipt/rest/v2/payment/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
