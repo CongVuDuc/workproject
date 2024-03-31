@@ -77,6 +77,8 @@ def processRequest(order):
 
     if 'credit_used' in order:
         credit_used = order['credit_used']
+    else:
+        credit_used = 0
 
     print(order_id, request_id)
 
