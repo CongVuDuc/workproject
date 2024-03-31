@@ -76,6 +76,7 @@
                                 <table v-if="ticket.RequestItem">
                                     <tr>
                                         <th>Item No</th>
+                                        <th>Bouquet Name</th>
                                         <th>Old ID</th>
                                         <th>Old Size</th>
                                         <th>Old Quantity</th>
@@ -87,6 +88,7 @@
                                     </tr>
                                     <tr v-for="item in ticket.RequestItem" :key="item.item_no">
                                         <td>{{ item.item_no }}</td>
+                                        <td>{{ item.bouquet_name }}</td>
                                         <td>{{ item.old_id }}</td>
                                         <td>{{ item.old_size }}</td>
                                         <td>{{ item.old_quantity }}</td>
