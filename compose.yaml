@@ -14,12 +14,26 @@ services:
   messaging:
     build:
       context: ./
-      dockerfile: order.Dockerfile #must change this accordingly
-    image: congvu18/order:esd #must change this accordingly 
+      dockerfile: messaging.Dockerfile 
+    image: congvu18/order:project 
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/order # is213 is username, so if need to change to my sql username, change it to root
+      messaging_URL: http://localhost:5005/send_sms
       PYTHONUNBUFFERED: 1
+
+  
+  ###################################
+  # Payment: The Payment Microservice
+  ###################################
+  # payment:
+  #   build:
+  #     context: ./
+  #     dockerfile: payment.Dockerfile 
+  #   image: congvu18/order:project 
+  #   restart: always
+  #   environment:
+  #     payment_URL: "http://localhost:3005/one-time-payment, http://localhost:3005/stripe-checkout"
+  #     PYTHONUNBUFFERED: 1
 
   ####################################
   # RabbitMQ: The messaging broker   
@@ -42,8 +56,8 @@ services:
   activity_log:
     build:
       context: ./
-      dockerfile: activity_log.Dockerfile    #must change this accordingly
-    image: congvu18/activity_log:esd         #must change this accordingly
+      dockerfile: activity_log.Dockerfile    #docker file name
+    image: congvu18/activity_log:project         #this is a name of the image which appear in docker
     restart: always
     depends_on:
       - rabbitmq
@@ -59,8 +73,8 @@ services:
   error:
     build:
       context: ./
-      dockerfile: error.Dockerfile            #must change this accordingly
-    image: congvu18/error:esd                 #must change this accordingly
+      dockerfile: error.Dockerfile            
+    image: congvu18/error:project                
     restart: always
     depends_on:
       - rabbitmq
@@ -73,26 +87,26 @@ services:
   ###############################################
   # Place Order: The Place Order Complex Microservice
   ###############################################
-  place_order:
-    build:
-      context: ./
-      dockerfile: place_order.Dockerfile  #must change accordingly
-    image: congvu18/place_order:esd        #must change accordingly
-    restart: always
-    depends_on:
-      - payment
-      - messaging
-      - activity_log
-      - error
-      - rabbitmq
-    environment:
-      rabbit_host: rabbitmq
-      rabbit_port: 5672
-      messaging_URL: http://messaging_ms:5005  #might need to change, like might need to slash "/messaging?"
-      payment_URL: http://payment:3005/ #might need to change, like might need to slash "/payment"
-      PYTHONUNBUFFERED: 1
-    ports: 
-      - "3000:5100"                    #edit to 3000 as microservice local host port is 3000, while the container port is still 5100 
+  # place_order:
+  #   build:
+  #     context: ./
+  #     dockerfile: place_order.Dockerfile  
+  #   image: congvu18/place_order:project      
+  #   restart: always
+  #   depends_on:
+  #     - payment
+  #     - messaging
+  #     - activity_log
+  #     - error
+  #     - rabbitmq
+  #   environment:
+  #     rabbit_host: rabbitmq
+  #     rabbit_port: 5672
+  #     messaging_URL: http://localhost:5005/send_sms 
+  #     payment_URL: "http://localhost:3005/one-time-payment, http://localhost:3005/stripe-checkout" 
+  #     PYTHONUNBUFFERED: 1
+  #   ports: 
+  #     - "3000:5100"                    # The place order complex hosted in port 3000(localhost:3000) is mapped to port 5100 inside 'place_order' container
 
   
   # Request Handler: The Request Handler Microservice
@@ -100,11 +114,11 @@ services:
   request_handler:
     build:
       context: ./
-      dockerfile: request_handler.Dockerfile  #must change accordingly
-    image: congvu18/request_handler:esd        #must change accordingly
+      dockerfile: request_handler.Dockerfile  
+    image: congvu18/request_handler:project        
     restart: always
     depends_on:
-      - payment
+      # - payment
       - messaging
       - activity_log
       - error
@@ -112,22 +126,22 @@ services:
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
-      messaging_URL: http://messaging_ms:5005  #might need to change, like might need to slash "/messaging?"
-      payment_URL: http://payment:3005/ #might need to change, like might need to slash "/payment"
+      messaging_URL: http://localhost:5005/send_sms 
+      # payment_URL: "http://localhost:3005/one-time-payment, http://localhost:3005/stripe-checkout" 
       PYTHONUNBUFFERED: 1
     ports: 
-      - "3000:5100"                    #edit to 3000 as microservice local host port is 3000, while the container port is still 5100 
+      - "5200:5200"                    # The place order complex hosted in port 3000(localhost:3000) is mapped to port 5100 inside 'place_order' container
   
   # Order handler: The Order Handler Microservice
   ###############################################
   order_handler:
     build:
       context: ./
-      dockerfile: request_handler.Dockerfile  #must change accordingly
-    image: congvu18/request_handler:esd        #must change accordingly
+      dockerfile: order_handler.Dockerfile  
+    image: congvu18/order_handler:project       
     restart: always
     depends_on:
-      - payment
+      # - payment
       - messaging
       - activity_log
       - error
@@ -135,8 +149,8 @@ services:
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
-      messaging_URL: http://messaging_ms:5005  #might need to change, like might need to slash "/messaging?"
-      payment_URL: http://payment:3005/ #might need to change, like might need to slash "/payment"
+      messaging_URL: http://localhost:5005/send_sms 
+      # payment_URL: "http://localhost:3005/one-time-payment, http://localhost:3005/stripe-checkout" 
       PYTHONUNBUFFERED: 1
     ports: 
-      - "3000:5100"                    #edit to 3000 as microservice local host port is 3000, while the container port is still 5100 
+      - "5100:5300"                    
