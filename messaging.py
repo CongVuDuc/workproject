@@ -23,7 +23,8 @@ def send_sms():
         return jsonify({'error': 'Method not allowed'}), 405
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 5005)
+    app.run(debug=True, host='0.0.0.0', port=5005)
+
 
 
 
