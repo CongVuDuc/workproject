@@ -5,7 +5,7 @@ volumes:
 
 services:
 
-  # error, activity, complexes, messaging, payment
+  # There are 4 microservices will be invoked using Docker Compose: Error, Activity Log, 3 Complex Microservices, Messaging, Payment
  
 
   ###################################
@@ -95,13 +95,13 @@ services:
       - "3000:5100"                    #edit to 3000 as microservice local host port is 3000, while the container port is still 5100 
 
   
-  # Request: The Request Handler Microservice
+  # Request Handler: The Request Handler Microservice
   ###############################################
-  place_order:
+  request_handler:
     build:
       context: ./
-      dockerfile: place_order.Dockerfile  #must change accordingly
-    image: congvu18/place_order:esd        #must change accordingly
+      dockerfile: request_handler.Dockerfile  #must change accordingly
+    image: congvu18/request_handler:esd        #must change accordingly
     restart: always
     depends_on:
       - payment
@@ -118,17 +118,25 @@ services:
     ports: 
       - "3000:5100"                    #edit to 3000 as microservice local host port is 3000, while the container port is still 5100 
   
-  ##################################
-  # Book: The Book microservice
-  ##################################
-  book:
+  # Order handler: The Order Handler Microservice
+  ###############################################
+  order_handler:
     build:
       context: ./
-      dockerfile: book.Dockerfile
-    image: congvu18/book:esd
+      dockerfile: request_handler.Dockerfile  #must change accordingly
+    image: congvu18/request_handler:esd        #must change accordingly
     restart: always
+    depends_on:
+      - payment
+      - messaging
+      - activity_log
+      - error
+      - rabbitmq
     environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/book
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      messaging_URL: http://messaging_ms:5005  #might need to change, like might need to slash "/messaging?"
+      payment_URL: http://payment:3005/ #might need to change, like might need to slash "/payment"
       PYTHONUNBUFFERED: 1
-    ports:
-      - "5000:5000"
+    ports: 
+      - "3000:5100"                    #edit to 3000 as microservice local host port is 3000, while the container port is still 5100 
