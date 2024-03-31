@@ -285,8 +285,7 @@ const app = Vue.createApp({
 
                 requestItems = requestItems.filter(item => item.old_quantity !== item.new_quantity);
 
-                console.log(user.user_id)
-                console.log(new_shipping_method)
+                console.log(requestItems);
 
                 axios.post('http://localhost:5200/post_request', {
                     order_id: this.order_id, 
