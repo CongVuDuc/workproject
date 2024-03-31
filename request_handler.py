@@ -220,7 +220,8 @@ def processRequest(order):
             "quantity": item['new_quantity'],
             "bouquet_id": item['new_id'],
             "price": item['new_price'],
-            "size": item['new_size']
+            "size": item['new_size'],
+            "bouquet_name": item['bouquet_name']
         }
         order_item.append(item_data)
     
@@ -401,6 +402,16 @@ def processPostRequest(data):
     post_result = invoke_http(request_URL, method='POST', json=body)
 
     print('post_result: ', post_result)
+
+    print('\n-----START SMS microservice-----\n')
+
+    sms_URL = "http://localhost:5005/send_sms"
+
+    dummy_json = {"message": "You have placed an order!"}
+
+    sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+
+    print('\n-----END SMS microservice-----\n')
 
     return{
         "Status_code": 201,
