@@ -42,7 +42,27 @@
     <div class="container mt-5">
       <div class="row">
         <div class="col">
-          <h2>Confirmed Orders</h2>
+        <h2>Confirmed Orders</h2>
+        <!-- Header -->
+        <div class="cart-item">
+          <div class="card rounded-3 mb-2">
+              <div class="card-body p-4">
+                  <div class="row d-flex justify-content-between align-items-center">
+                    <div class="col text-center align-items-center">
+                      <p>Order ID</p>
+                  </div>
+                    <div class="col text-center align-itesms-center">
+                        <p>Order Items</p>
+                    </div>
+                    <div class="col text-center align-items-center">
+                        <p>Total Price ($)</p>
+                    </div>
+                    <div class="col text-center align-items-center">
+                        <p>Action</p>
+                    </div>
+                  </div>
+              </div>
+          </div>
         <div class="cart-item" v-for="order in conf_orders">
             <div class="card rounded-3 mb-2">
                 <div class="card-body p-4">
@@ -57,59 +77,100 @@
                           <p>${{ order.total_price }}</p>
                       </div>
                       <div class="col text-center align-items-center">
-                        <button v-on:click="request_change(order.order_id)">Request for Change</button>
+                        <button class="btn btn-danger" v-on:click="request_change(order.order_id)">Request for Change</button>
                       </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h2>Orders in Preparation</h2>
+          <div class="cart-item" v-for="order in prep_orders">
+            <div class="card rounded-3 mb-2">
+                <div class="card-body p-4">
+                    <div class="row d-flex justify-content-between align-items-center">
+                      <div class="col text-center align-items-center">
+                        <p>{{ order.order_id }}</p>
+                    </div>
+                      <div class="col text-center align-itesms-center">
+                          <p v-for="item in order.OrderItem">{{item.bouquet_name}} ({{item.size}}) x {{item.quantity}}</p>
+                      </div>
+                      <div class="col text-center align-items-center">
+                          <p>${{ order.total_price }}</p>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col">
+          <h2>Out for Delivery Orders</h2>
+          <div class="cart-item" v-for="order in dlvy_orders">
+            <div class="card rounded-3 mb-2">
+                <div class="card-body p-4">
+                    <div class="row d-flex justify-content-between align-items-center">
+                      <div class="col text-center align-items-center">
+                        <p>{{ order.order_id }}</p>
+                    </div>
+                      <div class="col text-center align-itesms-center">
+                          <p v-for="item in order.OrderItem">{{item.bouquet_name}} ({{item.size}}) x {{item.quantity}}</p>
+                      </div>
+                      <div class="col text-center align-items-center">
+                          <p>${{ order.total_price }}</p>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
       </div>
-    <div class="container mt-5">
-          <div class="row">
-              <div class="col">
-                <table class="table table-border table-hover text-center align-items-center">
-                  <thead>
-                      <tr>
-                          <th>Order ID</th>
-                          <th>Order Details</th>
-                          <th>Order Status</th>
-                          <th>Action</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="order in orders" class="text-center align-items-center">
-                      <td>{{ order.order_id }}</td>
-                      <td>
-                          <p v-for="item in order.OrderItem">
-                              {{ item.bouquet_name }} ({{ item.size }}) x {{ item.quantity }}
-                          </p>
-                      </td>
-                      <td>{{ order.order_status }}</td>
-                      <td> 
-                          <!-- Check if order_status is "PEN" -->
-                          <button class="btn btn-primary" v-if="order.order_status === 'CONF'">Make Payment</button>
-                          <!-- If order_status is not "PEN", show "Request for Change" button -->
-                          <button class="btn btn-secondary" v-else>Request for Change</button>
-                      </td>
-                  </tr>
-                      <tr v-for="order of orders" class="text-center align-items-center">
-                          <td>{{order.order_id}}</td>
-                          <td>
-                              <p v-for="item of order.OrderItem">
-                                {{item.bouquet_name}} ({{item.size}}) x {{item.quantity}}
-                              </p>
-                          </td>
-                          <td>{{order.order_status}}</td>
-                          <td>
-                            <button v-on:click="request_change(order.order_id)" class="btn btn-secondary">Request for Change</button>
-                          </td>
-                      </tr>
-                  </tbody>
-              </table>
-              </div>
-          </div>
+    </div>
+    <div class="container mb-5">
+      <div class="row">
+        <div class="col">
+          <h2>Ready for Collection Orders</h2>
+          <div class="cart-item" v-for="order in scol_orders">
+            <div class="card rounded-3 mb-2">
+                <div class="card-body p-4">
+                    <div class="row d-flex justify-content-between align-items-center">
+                      <div class="col text-center align-items-center">
+                        <p>{{ order.order_id }}</p>
+                    </div>
+                      <div class="col text-center align-itesms-center">
+                          <p v-for="item in order.OrderItem">{{item.bouquet_name}} ({{item.size}}) x {{item.quantity}}</p>
+                      </div>
+                      <div class="col text-center align-items-center">
+                          <p>${{ order.total_price }}</p>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col">
+          <h2>Completed Orders</h2>
+          <div class="cart-item" v-for="order in cmpl_orders">
+            <div class="card rounded-3 mb-2">
+                <div class="card-body p-4">
+                    <div class="row d-flex justify-content-between align-items-center">
+                      <div class="col text-center align-items-center">
+                        <p>{{ order.order_id }}</p>
+                    </div>
+                      <div class="col text-center align-itesms-center">
+                          <p v-for="item in order.OrderItem">{{item.bouquet_name}} ({{item.size}}) x {{item.quantity}}</p>
+                      </div>
+                      <div class="col text-center align-items-center">
+                          <p>${{ order.total_price }}</p>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+      </div>
     </div>
   </div>
 

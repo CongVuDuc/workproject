@@ -319,6 +319,11 @@ const app = Vue.createApp({
             this.calculate_final_amount();
             this.save_request_data(); 
         },
+
+        logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        },
     }
 });
 
