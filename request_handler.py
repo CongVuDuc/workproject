@@ -71,7 +71,6 @@ def request_order():
 def processRequest(order):
     # 2. Send the request info
     # Invoke the request microservice
-    
     order_id = order["order_id"]
     request_id = order["request_id"]
     order_status = order['order_status']
@@ -341,7 +340,7 @@ def postRequest():
     if request.is_json:
         try:
             request_data = request.get_json()
-            print("\nReceived a change request in JSON:", order)
+            print("\nReceived a change request in JSON:", request_data)
 
             # Check if 'order_id' exists in the received JSON data
             if 'order_id' in request_data:

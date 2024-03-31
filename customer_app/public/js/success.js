@@ -144,10 +144,13 @@ async function process_order(cartItems, total_price, shipping_info, user_id, cre
 
 // Process Request
 async function process_request(requestBodyRequest) {
+<<<<<<< Updated upstream
     let order_id = requestBodyRequest.order_id
     let request_id = requestBodyRequest.request_id
     let order_status = requestBodyRequest.order_status
 
+=======
+>>>>>>> Stashed changes
     fetch('http://localhost:5200/request_handler', {
         method: 'POST',
         headers: {

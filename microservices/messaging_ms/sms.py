@@ -5,7 +5,7 @@ import sys
 
 # Twilio credentials
 account_sid = 'AC0969a67c65dfe21091c569dba2a9ac3c'
-auth_token = '1e11a0c568d9605dd314ae4a70cab3a8'
+auth_token = '97742fd73858efa7fb093a6eccf2344e'
 from_number = '+19164367167'
 to_number = '+6594518710'
 
