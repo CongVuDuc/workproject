@@ -248,7 +248,8 @@ const app = Vue.createApp({
                     new_id: oldItem.bouquet_id,
                     new_size: oldItem.size,
                     new_quantity: 0,
-                    new_price: oldItem.price
+                    new_price: oldItem.price,
+                    bouquet_name: oldItem.bouquet_name
                 }));
 
                 // Update requestItems based on cartItems
@@ -266,7 +267,8 @@ const app = Vue.createApp({
                             new_id: item.bouquet_id,
                             new_size: item.size,
                             new_quantity: item.cart_quantity,
-                            new_price: item.price
+                            new_price: item.price,
+                            bouquet_name: item.bouquet_name
                         });
                     }
                 });
