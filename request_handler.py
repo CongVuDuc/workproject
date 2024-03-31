@@ -117,7 +117,7 @@ def processRequest(order):
         print("\nRequest published to RabbitMQ Exchange.\n")
 
 
-    if order_status == "PEN":
+    if (order_status == "PEN") and (ticket['balance_amt'] > 0):
 
         print('\n-----Invoking request microservice to update-----')
 
@@ -140,13 +140,12 @@ def processRequest(order):
         reciept_details = {
                 "cust_id": ticket['cust_id'],
                 "subtotal": ticket['balance_amt'],
-                "address": ticket['address'],
                 "contact_no": ticket['contact_no'],
                 "order_id": order_id,
                 "request_id": request_id
             }
 
-        if ticket['new_shipping_method']:
+        if 'new_shipping_method' in ticket:
             reciept_details['shipping_method'] = ticket['new_shipping_method']
             reciept_details['address'] = ticket['address']
 
@@ -290,6 +289,9 @@ def processRequest(order):
 
     cust_id = ticket['cust_id']
     quantity_credited = int(ticket['balance_amt'])
+    if quantity_credited < 0:
+        quantity_credited = quantity_credited*-1
+
 
     if ('new_shipping_method' in ticket) and (ticket['new_shipping_method'] == 'D'):
         customer_URL = "https://personal-4acjyryg.outsystemscloud.com/Customer/rest/v1/customer/"
@@ -333,6 +335,65 @@ def processRequest(order):
         }
     }
 
+@app.route("/post_request", methods=['POST'])
+def postRequest():
+# Simple check if input format and data of the request are JSON
+    if request.is_json:
+        try:
+            request_data = request.get_json()
+            print("\nReceived a change request in JSON:", order)
+
+            # Check if 'order_id' exists in the received JSON data
+            if 'order_id' in request_data:
+                print("Order ID:", request_data['order_id'])
+            else:
+                print("Order ID is missing from the request.")
+
+            # do the actual work
+            # 1. Send order info {cart items}
+            result = processPostRequest(request_data)
+            print(result)
+            return jsonify(result), result["Status_code"]
+
+        except Exception as e:
+            # Unexpected error in code
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
+            print(ex_str)
+
+            return jsonify({
+                "code": 500,
+                "message": "place_order.py internal error: " + ex_str
+            }), 500
+
+    # If not a JSON request.
+    return jsonify({
+        "code": 400,
+        "message": "Invalid JSON input: " + str(request.get_data())
+    }), 400
+
+def processPostRequest(data):
+
+    body = {
+    "order_id": data['order_id'],
+    "cust_id": data['cust_id'],
+    "RequestItem": data['RequestItem'],
+    "address": data['address'],
+    "new_shipping_method": data['new_shipping_method'],
+}
+    
+    requestURL = "https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/"
+    post_result = invoke_http(request_URL, method='POST', json=body)
+
+    print('post_result: ', post_result)
+
+    return{
+        "Status_code": 201,
+        "data": {
+           "post_result": post_result
+        }
+    }
 
 # Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":

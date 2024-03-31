@@ -32,6 +32,8 @@ def callback(channel, method, properties, body): # required signature for the ca
 
 def processOrderLog(order):
     print("activity_log: Recording an order log:")
+    with open('activity.txt', 'w') as file:
+        file.write(json.dumps(order))
     print(order)
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')

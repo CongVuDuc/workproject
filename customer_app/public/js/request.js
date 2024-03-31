@@ -285,7 +285,7 @@ const app = Vue.createApp({
 
                 console.log(user.user_id)
 
-                axios.post('https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/', {
+                axios.post('http://localhost:5200/post_request', {
                     order_id: this.order_id, 
                     cust_id: user.user_id, 
                     new_shipping_method: this.new_shipping_info.shipping_method, 
