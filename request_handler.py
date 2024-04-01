@@ -140,34 +140,11 @@ def processRequest(order):
 
         print('\n-----END SMS microservice-----\n')
 
-        print('\n-----START PAYMENT microservice-----\n')
-
-        reciept_details = {
-                "cust_id": ticket['cust_id'],
-                "subtotal": ticket['balance_amt'],
-                "contact_no": ticket['contact_no'],
-                "order_id": order_id,
-                "request_id": request_id
-            }
-
-        if 'new_shipping_method' in ticket:
-            reciept_details['shipping_method'] = ticket['new_shipping_method']
-            reciept_details['address'] = ticket['address']
-
-        print(reciept_details)
-
-        reciept_URL = "https://personal-4acjyryg.outsystemscloud.com/Receipt/rest/v2/payment/"
-        reciept_result = invoke_http(reciept_URL, method='POST', json=reciept_details)
-
-        print("payment result: ", reciept_result)
-
-        print('\n-----END RECEIPT microservice-----\n')
 
         return {
         "Status_code": 201,
         "data": {
             "sms result" : sms_response,
-            "payment result" : reciept_result
         }
         }
 
@@ -201,7 +178,32 @@ def processRequest(order):
     status_result = invoke_http(request_URL,method="PUT")
     print("status_result: ", status_result)
 
+    print('\n-----START Reciept microservice-----\n')
+
+    reciept_details = {
+            "cust_id": ticket['cust_id'],
+            "subtotal": ticket['balance_amt'],
+            "contact_no": ticket['contact_no'],
+            "order_id": order_id,
+            "request_id": request_id
+        }
+
+    if ('new_shipping_method' in ticket) and ('new_shipping_method' == 'D'):
+        reciept_details['shipping_method'] = ticket['new_shipping_method']
+        reciept_details['address'] = ticket['address']
+
+    print(reciept_details)
+
+    reciept_URL = "https://personal-4acjyryg.outsystemscloud.com/Receipt/rest/v2/payment/"
+    reciept_result = invoke_http(reciept_URL, method='POST', json=reciept_details)
+
+    print("receipt result: ", reciept_result)
+
+    print('\n-----END RECEIPT microservice-----\n')
+
     print('\n-----Invoking Order microservice-----\n')
+
+    reciept_no = reciept_result['Receipt']['receipt_no']
 
     order_URL = "https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/"
 
@@ -227,6 +229,7 @@ def processRequest(order):
     
     combined_data = {
         "order_id": order_id,
+        "receipt_no": reciept_no,
         "OrderItem": order_item,
     }
 
@@ -346,7 +349,8 @@ def processRequest(order):
             "request_result": request_result,
             "order_result" : order_result,
             "customer_result" : customer_result,
-            "sms_response" : sms_response
+            "sms_response" : sms_response,
+            "receipt_result": reciept_result
         }
     }
 
