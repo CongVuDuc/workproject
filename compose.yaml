@@ -35,7 +35,8 @@ services:
     image: congvu18/payment:project 
     restart: always
     environment:
-      payment_URL: "http://payment:3005/one-time-payment,http://payment:3005/stripe-checkout"
+      payment_URL_checkout: http://payment:3005/stripe-checkout 
+      payment_URL_one_time: http://payment:3005/one-time-payment
       PYTHONUNBUFFERED: 1
     ports: 
     - "3005:3005"
@@ -106,7 +107,8 @@ services:
       # - rabbitmq
     environment:
       messaging_URL: http://messaging:5005/send_sms 
-      payment_URL: "http://payment:3005/one-time-payment, http://payment:3005/stripe-checkout" 
+      payment_URL_checkout: http://payment:3005/stripe-checkout 
+      payment_URL_one_time: http://payment:3005/one-time-payment
       PYTHONUNBUFFERED: 1
     ports: 
       - "3000:3000"                    # The place order complex hosted in port 3000(localhost:3000) is mapped to port 5100 inside 'place_order' container
@@ -130,7 +132,8 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       messaging_URL: http://messaging:5005/send_sms 
-      payment_URL: "http://payment:3005/one-time-payment, http://payment:3005/stripe-checkout" 
+      payment_URL_checkout: http://payment:3005/stripe-checkout 
+      payment_URL_one_time: http://payment:3005/one-time-payment
       PYTHONUNBUFFERED: 1
     ports: 
       - "5200:5200"                    # The place order complex hosted in port 3000(localhost:3000) is mapped to port 5100 inside 'place_order' container
@@ -153,7 +156,8 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       messaging_URL: http://messaging:5005/send_sms 
-      payment_URL: "http://payment:3005/one-time-payment, http://payment:3005/stripe-checkout" 
+      payment_URL_checkout: http://payment:3005/stripe-checkout 
+      payment_URL_one_time: http://payment:3005/one-time-payment
       PYTHONUNBUFFERED: 1
     ports: 
       - "5100:5100"                    

@@ -13,8 +13,8 @@ export function process_payment_checkout(total_price, shipping_info, credit_used
 
         let payment_url = "";
 
-        if (process.env.payment_URL) {
-            payment_url = process.env.payment_URL.split(',')[1];
+        if (process.env.payment_URL_checkout) {
+            payment_url = process.env.payment_URL_checkout;
         }
         else {
             payment_url = 'http://localhost:3005/stripe-checkout'
@@ -41,13 +41,16 @@ export function process_one_time_payment(payment_amount, credit_used = 0) {
 
         let payment_url = "";
 
-        if (process.env.payment_URL) {
-            payment_url = process.env.payment_URL.split(',')[0];
+        if (process.env.payment_URL_one_time) {
+            payment_url = process.env.payment_URL_one_time;
         }
         else {
             payment_url = 'http://127.0.0.1:3005/one-time-payment'
         }
 
+
+        console.log(payment_url)
+        
         axios.post(payment_url, {
             total_amount: total_amount,
         }, {
