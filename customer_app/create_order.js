@@ -19,7 +19,7 @@ export function create_order(requestBodyOrder) {
         .then(data => {
             if (data) {
                 let order_id = data.NewOrder.order_id;
-                resolve(order_id); // Resolve the Promise with the order_id
+                resolve(data); // Resolve the Promise with the order_id
             } else {
                 reject(new Error('No data returned from server'));
             }

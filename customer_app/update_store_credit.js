@@ -20,7 +20,6 @@ export function update_store_credit(user_id, store_credit) {
         })
         .catch(error => {
             console.error('Error updating customer store credit:', error);
-            reject(error); // Reject the Promise with the error
         });
     });
 }
