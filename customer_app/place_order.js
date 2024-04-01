@@ -49,6 +49,7 @@ app.post('/process-order', async (req, res) => {
     const requestBodyOrder = req.body.requestBodyOrder;
     const shipping_info = req.body.shipping_info;
 
+    // Create Order
     const result_order = await create_order(requestBodyOrder);
 
     console.log("result_order: " + result_order)
@@ -74,22 +75,36 @@ app.post('/process-order', async (req, res) => {
 
     await update_receipt_number(order_id, receipt_no)
 
-    const update_inventory_result = await update_inventory(cartItems);
+    const update_inventory_result = update_inventory(cartItems);
     console.log("update_inventory_result: " + update_inventory_result)
     console.log(update_inventory_result)
 
+
+    // Update credit_used
     if (credit_used > 0) {
-        const update_store_credit_result = await update_store_credit(user_id, deduct_credit);
-        console.log(update_store_credit_result)
+        update_store_credit(user_id, deduct_credit)
+        .then(data => {
+            // Handle successful response data
+            console.log("Customer store credit updated successfully:", data);
+        })
+        .catch(error => {
+            // Handle error
+            console.error("Error updating customer store credit:", error);
+        });
     }
 
+    // Invoke send_sms
     const message = "Order placed successfully!"
 
-    const send_sms_result = send_sms(message).catch(error => {
-        console.log(error)
+    send_sms(message)
+    .then(data => {
+        // Handle successful response data
+        console.log("SMS sent successfully:", data);
     })
-    console.log("send_sms_result: " + send_sms_result)
-    console.log(send_sms_result)
+    .catch(error => {
+        // Handle error
+        console.error("Failed to send SMS:", error);
+    });
 })
 
 // Process Top-up
