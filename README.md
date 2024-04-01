@@ -30,24 +30,31 @@ MAMP:
 https://mamp.info
 
 Terminal 1:
+Starts Customer UI
 cd customer_app
 npm install cors dotenv ejs express express.js nodemon stripe
+runs on port 3000
 
 
 Terminal 2
+Starts Payment Microservice (used by Customer UI)
 cd microservices/payment
 pip install pika 
 pip install stripe 
 pip install flask 
 pip install flask_cors
-
-
 python payment.py 
+
+python messaging.py
+python order_handler.py
+python request_handler.py
 
 
 Any modifications needed to be made to files/folders
 Executing program
-1. 
+1. To use customer UI: enable through Terminal
+localhost:3000
+2. To use supplier UI: run on localhost
 
 
 How to run the program
