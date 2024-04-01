@@ -5,7 +5,6 @@ import os, sys
 
 import requests
 from invokes import invoke_http
-from os import environ
 
 import pika
 import json
@@ -21,11 +20,11 @@ request_URL = "https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/req
 
 
 
-exchangename = os.environ.get('exchangename', 'order_topic')
-exchangetype = os.environ.get('exchangetype', 'topic')
+# exchangename = environ.get('exchangename') #order_topic
+# exchangetype = environ.get('exchangetype') #topic 
 
-# exchangename = "order_topic" # exchange name
-# exchangetype="topic" # use a 'topic' exchange to enable interaction
+exchangename = "order_topic" # exchange name
+exchangetype="topic" # use a 'topic' exchange to enable interaction
 
 #create a connection and a channel to the broker to publish messages to activity_log, error queues
 connection = amqp_connection.create_connection() 
@@ -94,6 +93,7 @@ def processRequest(order):
     ticket = request_result['Ticket']
 
     # Check the request result; if a failure, send it to the error microservice.
+    #AMQP SHITTTT START
     code = request_result["Status_Code"]
     print("checking: ", code)
     message = json.dumps(request_result)
@@ -122,6 +122,8 @@ def processRequest(order):
 
         print("\nRequest published to RabbitMQ Exchange.\n")
 
+    #AMQP SHITTT END
+
 
     if (order_status == "PEN") and (ticket['balance_amt'] > 0):
 
@@ -129,12 +131,45 @@ def processRequest(order):
 
         request_URL = f"https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/{order_id}/{request_id}/PEN/"
         status_result = invoke_http(request_URL,method="PUT")
+        
         print("status_result: ", status_result)
+
+        # Check the request result; if a failure, send it to the error microservice.
+        #AMQP SHITTTT START
+        code = status_result["Status_Code"]
+        print("checking: ", code)
+        message = json.dumps(status_result)
+
+        if code not in range(200, 300):
+
+            print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+
+            channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+                body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+
+            print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
+
+            return {
+                "Status_code": 500,
+                "data": {"status_result": status_result},
+                "message": "Order creation failure sent for error handling."
+            }
+
+        else:
+            print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+
+            channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+                body=message)
+
+            print("\nRequest published to RabbitMQ Exchange.\n")
+
+        #AMQP SHITTT END
 
 
         print('\n-----START SMS microservice-----\n')
 
         sms_URL = "http://localhost:5005/send_sms"
+        dummy_json = {"message": "MAKE PAYMENT LAH"}
         dummy_json = {"message": "CUSTOMER : MAKE PAYMENT LAH"}
         sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
         print('SMS response: ', sms_response)
@@ -146,6 +181,7 @@ def processRequest(order):
         "Status_code": 201,
         "data": {
             "sms result" : sms_response,
+            "status_result": status_result
         }
         }
 
@@ -157,9 +193,41 @@ def processRequest(order):
         status_result = invoke_http(request_URL,method="PUT")
         print("status_result: ", status_result)
 
+        # Check the request result; if a failure, send it to the error microservice.
+        #AMQP SHITTTT START
+        code = status_result["Status_Code"]
+        print("checking: ", code)
+        message = json.dumps(status_result)
+
+        if code not in range(200, 300):
+
+            print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+
+            channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+                body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+
+            print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
+
+            return {
+                "Status_code": 500,
+                "data": {"status_result": status_result},
+                "message": "Order creation failure sent for error handling."
+            }
+
+        else:
+            print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+
+            channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+                body=message)
+
+            print("\nRequest published to RabbitMQ Exchange.\n")
+
+        #AMQP SHITTT END
+
         print('\n-----START SMS microservice-----\n')
 
         sms_URL = "http://localhost:5005/send_sms"
+        dummy_json = {"message": "YOU HAVE BEEN REJECTED"}
         dummy_json = {"message": "CUSTOMER : YOU HAVE BEEN REJECTED"}
         sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
         print('SMS response: ', sms_response)
@@ -169,7 +237,8 @@ def processRequest(order):
         return {
         "Status_code": 201,
         "data": {
-            "sms_response" : sms_response
+            "sms_response" : sms_response,
+            "status_result": status_result
         }
     }
         
@@ -178,6 +247,37 @@ def processRequest(order):
     request_URL = f"https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/{order_id}/{request_id}/ACC/"
     status_result = invoke_http(request_URL,method="PUT")
     print("status_result: ", status_result)
+
+    # Check the request result; if a failure, send it to the error microservice.
+    #AMQP SHITTTT START
+    code = status_result["Status_Code"]
+    print("checking: ", code)
+    message = json.dumps(status_result)
+
+    if code not in range(200, 300):
+
+        print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+
+        channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+
+        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
+
+        return {
+            "Status_code": 500,
+            "data": {"status_result": status_result},
+            "message": "Order creation failure sent for error handling."
+        }
+
+    else:
+        print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+
+        channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+            body=message)
+
+        print("\nRequest published to RabbitMQ Exchange.\n")
+
+    #AMQP SHITTT END
 
     print('\n-----START Reciept microservice-----\n')
 
@@ -199,6 +299,37 @@ def processRequest(order):
     reciept_result = invoke_http(reciept_URL, method='POST', json=reciept_details)
 
     print("receipt result: ", reciept_result)
+
+    # Check the request result; if a failure, send it to the error microservice.
+    #AMQP SHITTTT START
+    code = reciept_result["Status_Code"]
+    print("checking: ", code)
+    message = json.dumps(reciept_result)
+
+    if code not in range(200, 300):
+
+        print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+
+        channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+
+        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", reciept_result)
+
+        return {
+            "Status_code": 500,
+            "data": {"status_result": reciept_result},
+            "message": "Order creation failure sent for error handling."
+        }
+
+    else:
+        print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+
+        channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+            body=message)
+
+        print("\nRequest published to RabbitMQ Exchange.\n")
+
+    #AMQP SHITTT END
 
     print('\n-----END RECEIPT microservice-----\n')
 
@@ -252,10 +383,12 @@ def processRequest(order):
         channel.basic_publish(exchange=exchangename, routing_key="order.error", 
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
        
+        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", order_result)
         print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", request_result)
 
         return {
             "Status_code": 500,
+            "data": {"order_result": order_result},
             "data": {"order_result": request_result},
             "message": "Order creation failure sent for error handling."
         }
@@ -292,6 +425,37 @@ def processRequest(order):
             inventory_result = invoke_http(inventory_URL, method='PUT')
 
             print(inventory_result)
+
+            # Check the request result; if a failure, send it to the error microservice.
+            #AMQP SHITTTT START
+            code = inventory_result["Status_Code"]
+            print("checking: ", code)
+            message = json.dumps(inventory_result)
+
+            if code not in range(200, 300):
+
+                print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+
+                channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+                    body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+
+                print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", inventory_result)
+
+                return {
+                    "Status_code": 500,
+                    "data": {"status_result": inventory_result},
+                    "message": "Order creation failure sent for error handling."
+                }
+
+            else:
+                print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+
+                channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+                    body=message)
+
+                print("\nRequest published to RabbitMQ Exchange.\n")
+
+            #AMQP SHITTT END
     
 
     print('\n-----END Inventory microservice-----\n')
@@ -325,9 +489,71 @@ def processRequest(order):
 
         print("shipping_result: ", shipping_result)
 
+        # Check the request result; if a failure, send it to the error microservice.
+        #AMQP SHITTTT START
+        code = shipping_result["Status_Code"]
+        print("checking: ", code)
+        message = json.dumps(shipping_result)
+
+        if code not in range(200, 300):
+
+            print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+
+            channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+                body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+
+            print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", shipping_result)
+
+            return {
+                "Status_code": 500,
+                "data": {"status_result": shipping_result},
+                "message": "Order creation failure sent for error handling."
+            }
+
+        else:
+            print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+
+            channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+                body=message)
+
+            print("\nRequest published to RabbitMQ Exchange.\n")
+
+        #AMQP SHITTT END
+
     customer_URL = f"https://personal-4acjyryg.outsystemscloud.com/Customer/rest/v1/customer/{cust_id}/{quantity_credited}/"
 
     customer_result = invoke_http(customer_URL, method='PUT')
+
+    # Check the request result; if a failure, send it to the error microservice.
+    #AMQP SHITTTT START
+    code = status_result["Status_Code"]
+    print("checking: ", code)
+    message = json.dumps(status_result)
+
+    if code not in range(200, 300):
+
+        print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+
+        channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+
+        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
+
+        return {
+            "Status_code": 500,
+            "data": {"status_result": status_result},
+            "message": "Order creation failure sent for error handling."
+        }
+
+    else:
+        print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+
+        channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+            body=message)
+
+        print("\nRequest published to RabbitMQ Exchange.\n")
+
+    #AMQP SHITTT END
 
     print("\nCustomer Result: ", customer_result)
 
@@ -337,6 +563,7 @@ def processRequest(order):
 
     sms_URL = "http://localhost:5005/send_sms"
 
+    dummy_json = {"message": "order confirmed!"}
     dummy_json = {"message": "CUSTOMER : order confirmed!"}
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
@@ -408,10 +635,42 @@ def processPostRequest(data):
 
     print('post_result: ', post_result)
 
+    # Check the request result; if a failure, send it to the error microservice.
+    #AMQP SHITTTT START
+    code = post_result["Status_Code"]
+    print("checking: ", code)
+    message = json.dumps(post_result)
+
+    if code not in range(200, 300):
+
+        print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+
+        channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+
+        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", post_result)
+
+        return {
+            "Status_code": 500,
+            "data": {"status_result": post_result},
+            "message": "Order creation failure sent for error handling."
+        }
+
+    else:
+        print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+
+        channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+            body=message)
+
+        print("\nRequest published to RabbitMQ Exchange.\n")
+
+    #AMQP SHITTT END
+
     print('\n-----START SMS microservice-----\n')
 
     sms_URL = "http://localhost:5005/send_sms"
 
+    dummy_json = {"message": "You have placed an order!"}
     dummy_json = {"message": "CUSTOMER : You have placed an order!"}
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
