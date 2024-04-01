@@ -52,7 +52,7 @@ const app = Vue.createApp({
             localStorage.setItem('requestData', JSON.stringify(requestData));
             localStorage.setItem('credit_used', credit_used);
             
-            fetch('/process-one-time-payment', {
+            fetch('http://localhost:5200/request_payment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -70,6 +70,7 @@ const app = Vue.createApp({
                     }
                 })
                 .then((data) => {
+                    console.log(data)
                     // Redirect to Stripe checkout url
                     window.location.href = data.url;
                 })

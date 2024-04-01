@@ -7,7 +7,7 @@ export function update_store_credit(user_id, store_credit) {
             },
         })
         .then(response => {
-            if (response.ok) {
+            if (response.status == 200) {
                 console.log('Customer store credit updated successfully');
                 return response.json(); // Parse response body as JSON
             } else {
