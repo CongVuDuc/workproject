@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from os import environ
 
 import os, sys
 
@@ -23,8 +24,8 @@ request_URL = "https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/req
 # exchangename = environ.get('exchangename') #order_topic
 # exchangetype = environ.get('exchangetype') #topic 
 
-exchangename = "order_topic" # exchange name
-exchangetype="topic" # use a 'topic' exchange to enable interaction
+exchangename = os.environ.get('exchangename', 'order_topic')
+exchangetype = os.environ.get('exchangetype', 'topic')
 
 #create a connection and a channel to the broker to publish messages to activity_log, error queues
 connection = amqp_connection.create_connection() 
