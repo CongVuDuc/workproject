@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export function process_payment_checkout(total_price, shipping_info, credit_used) {
     return new Promise((resolve, reject) => {
         let shipping_method = shipping_info.shipping_method;
@@ -9,20 +11,26 @@ export function process_payment_checkout(total_price, shipping_info, credit_used
 
         console.log('payment running')
 
-        fetch('http://127.0.0.1:3005/stripe-checkout', {
-            method: 'post',
-            headers: new Headers({'Content-Type': 'application/json'}),
-            body: JSON.stringify({
-                total_amount: total_amount,
-                shipping_method: shipping_method,
-            })
+        let payment_url = "";
+
+        if (process.env.payment_URL) {
+            payment_url = process.env.payment_URL.split(',')[1];
+        }
+        else {
+            payment_url = 'http://localhost:3005/stripe-checkout'
+        }
+
+        axios.post(payment_url, {
+            total_amount: total_amount,
+            shipping_method: shipping_method,
+        }, {
+            headers: {'Content-Type': 'application/json'}
         })
-        .then((res) => res.json())
-        .then((data) => {
-            resolve(data.url); // Resolve with the URL
+        .then((response) => {
+            resolve(response.data.url); // Resolve with the URL
         })
-        .catch((err) => {
-            reject(err); // Reject with the error
+        .catch((error) => {
+            reject(error); // Reject with the error
         });
     });
 }
@@ -31,20 +39,25 @@ export function process_one_time_payment(payment_amount, credit_used = 0) {
     return new Promise((resolve, reject) => {
         let total_amount = payment_amount - credit_used;
 
-        fetch('http://127.0.0.1:3005/one-time-payment', {
-            method: 'post',
-            headers: new Headers({'Content-Type': 'application/json'}),
-            body: JSON.stringify({
-                total_amount: total_amount,
-            })
+        let payment_url = "";
+
+        if (process.env.payment_URL) {
+            payment_url = process.env.payment_URL.split(',')[0];
+        }
+        else {
+            payment_url = 'http://127.0.0.1:3005/one-time-payment'
+        }
+
+        axios.post(payment_url, {
+            total_amount: total_amount,
+        }, {
+            headers: {'Content-Type': 'application/json'}
         })
-        .then((res) => res.json())
-        .then((data) => {
-            resolve(data.url); // Resolve with the URL
+        .then((response) => {
+            resolve(response.data.url); // Resolve with the URL
         })
-        .catch((err) => {
-            reject(err); // Reject with the error
+        .catch((error) => {
+            reject(error); // Reject with the error
         });
     });
 }
-

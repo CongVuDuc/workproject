@@ -1,8 +1,5 @@
 version: "3.8"
 
-volumes:
-  rabbitmq_data:
-
 services:
 
   # There are 4 microservices will be invoked using Docker Compose: Error, Activity Log, 3 Complex Microservices, Messaging, Payment
@@ -18,6 +15,7 @@ services:
     image: congvu18/messaging:project 
     restart: always
     environment:
+      messaging_URL: http://messaging:5005/send_sms 
       PYTHONUNBUFFERED: 1
     ports:
      - "5005:5005"
@@ -33,7 +31,7 @@ services:
     image: congvu18/payment:project 
     restart: always
     environment:
-      # payment_URL: "http://localhost:3005/one-time-payment, http://localhost:3005/stripe-checkout"
+      payment_URL: "http://payment:3005/one-time-payment,http://payment:3005/stripe-checkout"
       PYTHONUNBUFFERED: 1
     ports: 
     - "3005:3005"
@@ -90,26 +88,24 @@ services:
   ###############################################
   # Place Order: The Place Order Complex Microservice
   ###############################################
-  # place_order:
-  #   build:
-  #     context: ./
-  #     dockerfile: place_order.Dockerfile  
-  #   image: congvu18/place_order:project      
-  #   restart: always
-  #   depends_on:
-  #     - payment
-  #     - messaging
-  #     # - activity_log
-  #     # - error
-  #     # - rabbitmq
-  #   environment:
-  #     rabbit_host: rabbitmq
-  #     rabbit_port: 5672
-  #     messaging_URL: http://localhost:5005/send_sms 
-  #     payment_URL: "http://localhost:3005/one-time-payment, http://localhost:3005/stripe-checkout" 
-  #     PYTHONUNBUFFERED: 1
-  #   ports: 
-  #     - "3000:5100"                    # The place order complex hosted in port 3000(localhost:3000) is mapped to port 5100 inside 'place_order' container
+  place_order:
+    build:
+      context: ./
+      dockerfile: place_order.Dockerfile  
+    image: congvu18/place_order:project      
+    restart: always
+    depends_on:
+      - payment
+      - messaging
+      # - activity_log
+      # - error
+      # - rabbitmq
+    environment:
+      messaging_URL: http://messaging:5005/send_sms 
+      payment_URL: "http://payment:3005/one-time-payment, http://payment:3005/stripe-checkout" 
+      PYTHONUNBUFFERED: 1
+    ports: 
+      - "3000:3000"                    # The place order complex hosted in port 3000(localhost:3000) is mapped to port 5100 inside 'place_order' container
 
   
   # Request Handler: The Request Handler Microservice

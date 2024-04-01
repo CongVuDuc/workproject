@@ -106,7 +106,7 @@ if (localStorage.getItem('user') && localStorage.getItem('payment_type')) {
 async function process_order(cartItems, total_price, shipping_info, user_id, credit_used, deduct_credit, requestBodyOrder) {
     console.log(requestBodyOrder)
     console.log(user_id)
-    fetch('/process-order', {
+    fetch('http://localhost:3000/process-order', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'

@@ -49,7 +49,7 @@ const app = Vue.createApp({
             localStorage.setItem('payment_type', 'order');
             localStorage.setItem('credit_used', credit_used);
 
-            fetch('/process-payment-checkout', {
+            fetch('http://localhost:3000/process-payment-checkout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,27 +1,25 @@
+import axios from 'axios';
+
 export function create_order(requestBodyOrder) {
     return new Promise((resolve, reject) => {
-        fetch('https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/', {
-            method: 'POST',
+        axios.post('https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/', requestBodyOrder, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBodyOrder)
+            }
         })
         .then(response => {
-            if (response.ok) {
+            if (response.status === 200) {
                 console.log('Order created successfully');
-                return response.json(); // Parse response body as JSON
+                const data = response.data;
+                if (data && data.NewOrder && data.NewOrder.order_id) {
+                    const order_id = data.NewOrder.order_id;
+                    resolve(order_id); // Resolve the Promise with the order_id
+                } else {
+                    reject(new Error('No order ID returned from server'));
+                }
             } else {
                 console.error('Failed to create order:', response.statusText);
                 reject(new Error('Failed to create order: ' + response.statusText));
-            }
-        })
-        .then(data => {
-            if (data) {
-                let order_id = data.NewOrder.order_id;
-                resolve(data); // Resolve the Promise with the order_id
-            } else {
-                reject(new Error('No data returned from server'));
             }
         })
         .catch(error => {
