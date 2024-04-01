@@ -7,8 +7,9 @@ import { update_store_credit } from './functions/update_store_credit.js';
 import { create_order } from './functions/create_order.js';
 import { create_receipt } from './functions/create_receipt.js';
 import { update_inventory } from './functions/update_inventory.js';
-import { send_sms } from './functions/send_sms.js'
-import { process_payment_checkout, process_one_time_payment } from './functions/payment.js'
+import { send_sms } from './functions/send_sms.js';
+import { process_payment_checkout, process_one_time_payment } from './functions/payment.js';
+import { update_receipt_number } from './functions/update_receipt_number.js';
 
 // Load variables
 dotenv.config();
@@ -50,14 +51,14 @@ app.post('/process-order', async (req, res) => {
     const requestBodyOrder = req.body.requestBodyOrder;
     const shipping_info = req.body.shipping_info;
 
-    update_inventory(cartItems);
+    await update_inventory(cartItems);
 
     const order_id = await create_order(requestBodyOrder);
 
     console.log(credit_used)
     console.log(deduct_credit)
     if (credit_used > 0) {
-        update_store_credit(user_id, deduct_credit);
+        await update_store_credit(user_id, deduct_credit);
     }
 
     const requestBodyReceipt = {
@@ -69,9 +70,14 @@ app.post('/process-order', async (req, res) => {
         "order_id": order_id,
     }
     
-    create_receipt(user_id, requestBodyReceipt)
+    const result = await create_receipt(user_id, requestBodyReceipt)
+
+    const receipt_no = JSON.stringify(result.Receipt.receipt_no)
+
+    await update_receipt_number(order_id, receipt_no)
 
     const message = "Order placed successfully!"
+
     send_sms(message)
 })
 
@@ -81,10 +87,10 @@ app.post('/process-topup', async (req, res) => {
     const topup_amount = req.body.topup_amount;
     const user_id = req.body.user_id;
 
-    update_store_credit(user_id, topup_amount);
+    await update_store_credit(user_id, topup_amount);
 
     const message = "Top-up successfully!"
-    send_sms(message)
+    await send_sms(message)
 })
 
 // Process payment chekout
