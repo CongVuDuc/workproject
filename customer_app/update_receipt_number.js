@@ -14,7 +14,7 @@ export function update_receipt_number(order_id, receipt_no) {
             }
         })
         .then(response => {
-            if (response.status === 200) {
+            if ((response.status >= 200 && response.status < 300)) {
                 console.log('Receipt number updated successfully');
                 resolve(true); // Resolve the Promise with true if successful
             } else {

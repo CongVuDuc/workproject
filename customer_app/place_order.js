@@ -64,6 +64,39 @@ app.post('/process-order', async (req, res) => {
             "order_id": order_id,
         }
 
+        // Update Inventory
+        for (const cartItem of cartItems) {
+            update_inventory(cartItem)
+            .then(() => {
+                console.log("Inventory updated successfully for bouquet ID:", cartItem.bouquet_id);
+            })
+            .catch(error => {
+                console.error("Error updating inventory for bouquet ID:", cartItem.bouquet_id, error);
+            });
+        }
+
+        // Update credit_used
+        if (credit_used > 0) {
+            update_store_credit(user_id, deduct_credit)
+            .then(data => {
+                console.log("Customer store credit updated successfully:", data);
+            })
+            .catch(error => {
+                console.error("Error updating customer store credit:", error);
+            });
+        }
+
+        // Invoke send_sms
+        const message = "CUSTOMER : Order placed successfully!"
+
+        send_sms(message)
+        .then(data => {
+            console.log("SMS sent successfully:", data);
+        })
+        .catch(error => {
+            console.error("Failed to send SMS:", error);
+        });
+
         // Create Receipt
         try {
             const result_receipt = await create_receipt(user_id, requestBodyReceipt);
@@ -76,41 +109,8 @@ app.post('/process-order', async (req, res) => {
 
     } catch (error) {
         console.error("Failed to create order:", error);
+        console.error(error);
     }
-
-    // Update Inventory
-    for (const cartItem of cartItems) {
-        update_inventory(cartItem)
-        .then(() => {
-            console.log("Inventory updated successfully for bouquet ID:", cartItem.bouquet_id);
-        })
-        .catch(error => {
-            console.error("Error updating inventory for bouquet ID:", cartItem.bouquet_id, error);
-        });
-    }
-
-
-    // Update credit_used
-    if (credit_used > 0) {
-        update_store_credit(user_id, deduct_credit)
-        .then(data => {
-            console.log("Customer store credit updated successfully:", data);
-        })
-        .catch(error => {
-            console.error("Error updating customer store credit:", error);
-        });
-    }
-
-    // Invoke send_sms
-    const message = "CUSTOMER : Order placed successfully!"
-
-    send_sms(message)
-    .then(data => {
-        console.log("SMS sent successfully:", data);
-    })
-    .catch(error => {
-        console.error("Failed to send SMS:", error);
-    });
 })
 
 // Process Top-up

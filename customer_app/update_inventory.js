@@ -10,7 +10,7 @@ export function update_inventory(cartItem) {
             // Make Axios request
             axios.put(url)
                 .then(response => {
-                    if (response.status === 200) {
+                    if ((response.status >= 200 && response.status < 300)) {
                         console.log(`Inventory updated for bouquet ID ${bouquet_id}`);
                         resolve(); // Resolve the Promise if the inventory update is successful
                     } else {

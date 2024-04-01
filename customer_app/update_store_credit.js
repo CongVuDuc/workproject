@@ -8,7 +8,7 @@ export function update_store_credit(user_id, store_credit) {
             },
         })
         .then(response => {
-            if (response.status === 200) {
+            if ((response.status >= 200 && response.status < 300)) {
                 console.log('Customer store credit updated successfully');
                 resolve(response.data); // Resolve the Promise with the response data
             } else {

@@ -14,7 +14,7 @@ export function create_receipt(order_id, requestBodyReceipt) {
             }
         })
         .then(response => {
-            if (response.status === 200) {
+            if ((response.status >= 200 && response.status < 300)) {
                 console.log('Receipt created successfully');
                 resolve(response.data); // Resolve the Promise with the response data
             } else {
@@ -24,7 +24,7 @@ export function create_receipt(order_id, requestBodyReceipt) {
         })
         .catch(error => {
             console.error('Error creating receipt:', error);
-            reject(error); // Reject the Promise with the error
+            reject(error.Error); // Reject the Promise with the error
         });
     });
 }
