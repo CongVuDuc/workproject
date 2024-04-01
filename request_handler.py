@@ -729,8 +729,16 @@ def make_payment(data):
     body = {
     "total_amount": total_amt
 }
+    payment_URL = os.getenv("payment_URL_one_time")
+
+    if payment_URL:
+        # If payment_URL_one_time is set, use its value
+        pass  # No need to assign payment_url, it's already set by os.getenv()
+    else:
+        # If payment_URL_one_time is not set, use a default URL
+        payment_URL = "http://127.0.0.1:3005/one-time-payment" 
     
-    payment_URL = "http://127.0.0.1:3005/one-time-payment"
+    
     payment_result = invoke_http(payment_URL, method='POST', json=body)
 
     print('payment_result: ', payment_result)
