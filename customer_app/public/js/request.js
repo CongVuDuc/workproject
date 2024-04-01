@@ -285,6 +285,7 @@ const app = Vue.createApp({
 
                 requestItems = requestItems.filter(item => item.old_quantity !== item.new_quantity);
 
+                console.log(requestItems);
 
                 axios.post('http://localhost:5200/post_request', {
                     order_id: this.order_id, 
@@ -317,6 +318,11 @@ const app = Vue.createApp({
             }
             this.calculate_final_amount();
             this.save_request_data(); 
+        },
+
+        logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
         },
     }
 });

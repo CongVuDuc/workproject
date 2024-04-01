@@ -71,7 +71,12 @@ const app = Vue.createApp({
 
             // Re-direct to request_checkout.html
             window.location.href = 'request_checkout.html';
-        }
+        },
+        
+        logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        },
     },
 
 

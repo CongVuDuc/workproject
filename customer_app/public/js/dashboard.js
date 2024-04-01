@@ -74,6 +74,11 @@ const app = Vue.createApp({
         }
     },
 
+    logout() {
+        localStorage.clear();
+        window.location.href = 'login.html';
+    },
+
 
 })
 

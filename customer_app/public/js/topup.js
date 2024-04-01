@@ -1,4 +1,15 @@
-import { process_one_time_payment } from './payment.js'
+// Variables
+let user;
+let username;
+// Check if a user is logged
+if (localStorage.getItem('user')) {
+    user = JSON.parse(localStorage.getItem('user'));
+    username = user.username
+}
+else {
+    window.location.href = 'login.html';
+}
+
 const app = Vue.createApp({
     data() {
         return {
@@ -21,7 +32,30 @@ const app = Vue.createApp({
             let payment_amount = this.amount
             let credit_used = 0;
 
-            process_one_time_payment(payment_amount, credit_used)
+            fetch('/process-one-time-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    balance_amt: payment_amount,
+                    credit_used: credit_used
+                })
+                })
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        throw new Error('Failed to process payment');
+                    }
+                })
+                .then((data) => {
+                    // Redirect to Stripe checkout url
+                    window.location.href = data.url;
+                })
+                .catch(error => {
+                    console.error('Error Processing Payment:', error);
+                });
         }
     }
 });

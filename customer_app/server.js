@@ -8,6 +8,7 @@ import { create_order } from './functions/create_order.js';
 import { create_receipt } from './functions/create_receipt.js';
 import { update_inventory } from './functions/update_inventory.js';
 import { send_sms } from './functions/send_sms.js'
+import { process_payment_checkout, process_one_time_payment } from './functions/payment.js'
 
 // Load variables
 dotenv.config();
@@ -84,6 +85,36 @@ app.post('/process-topup', async (req, res) => {
 
     const message = "Top-up successfully!"
     send_sms(message)
+})
+
+// Process payment chekout
+app.post('/process-payment-checkout', async (req, res) => {
+    const total_price = req.body.total_price
+    const shipping_info = req.body.shipping_info
+    const credit_used = req.body.credit_used
+
+    process_payment_checkout(total_price, shipping_info, credit_used)
+    .then((url) => {
+        // Return url to client side
+        res.json({ url });
+    })
+    .catch((err) => {
+        console.error(err);
+    });
+})
+// Process one-time payment
+app.post('/process-one-time-payment', async (req, res) => {
+    const balance_amt = req.body.balance_amt
+    const credit_used = req.body.credit_used
+
+    process_one_time_payment(balance_amt, credit_used)
+    .then((url) => {
+        // Return url to client side
+        res.json({ url });
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 })
 
 app.listen(3000, () => {
