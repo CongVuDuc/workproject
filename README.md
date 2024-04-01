@@ -1,4 +1,4 @@
-# Project Title: Lilee.co 
+# Lilee.co 
 
 
 Description
@@ -28,7 +28,7 @@ https://www.geeksforgeeks.org/how-to-install-and-set-up-a-wamp-server/
 MAMP:
 https://mamp.info
 
-Pre-installation required:
+## Set up required:
 ### Terminal 1:
 Starts Customer UI (runes on port 3000)
 - cd customer_app
@@ -54,8 +54,8 @@ Starts Payment Microservice (used by Customer UI) \
 - python request_handler.py
 
 
-Any modifications needed to be made to files/folders \
-Executing program 
+
+## How to executing the program 
 1. To use customer UI: enable through Terminal 1 and 2
 2. Customer UI can be found on localhost:3000/login.html \
 Login information \
