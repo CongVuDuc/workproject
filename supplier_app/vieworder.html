@@ -162,16 +162,6 @@
                             alert("You update has been successful!")
                             console.log("Your update has been successful!")
 
-                            // Send SMS
-                            const statusMessage = {
-                                'CONF': 'confirmed',
-                                'PREP': 'preparing',
-                                'SCOL': 'ready for collection',
-                                'DLVY': 'out for delivery',
-                                'CMPL': 'completed'
-                            };
-                            this.sendSMS(`Your order is ${statusMessage[newStatus]}`);
-
                         })
                         .catch(error => {
                             console.error('Error updating order status:', error);
@@ -179,28 +169,7 @@
                             // Handle error, display message, etc.
                         });
                 },
-
-                // New method to send SMS
-                sendSMS(message) {
-                    fetch('http://localhost:5005/send_sms', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ message })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to send SMS');
-                        }
-                        console.log('SMS sent successfully!');
-                    })
-                    .catch(error => {
-                        console.error('Error sending SMS:', error.message);
-                    });
-                }
                 
-
 
             },
             created() {

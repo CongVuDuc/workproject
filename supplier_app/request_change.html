@@ -189,16 +189,6 @@
                             alert("You update has been successful!")
                             console.log("Your update has been successful!")
 
-                            // Send SMS
-                            const statusMessage = {
-                                'REV': 'under review',
-                                'PEN': 'pending payment',
-                                'ACC': 'accepted',
-                                'REJ': 'rejected'
-                            };
-
-                            //not sure if this works might need cong to try
-                            this.sendSMS(`Your request is ${statusMessage[newStatus]}`); 
 
                         })
                         .catch(error => {
@@ -229,25 +219,6 @@
                         this.message = 'Error fetching request ticket data. Please try again later.';
                 })
                 },
-
-                sendSMS(message) {
-                    fetch('http://localhost:5005/send_sms', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ message })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to send SMS');
-                        }
-                        console.log('SMS sent successfully!');
-                    })
-                    .catch(error => {
-                        console.error('Error sending SMS:', error.message);
-                    });
-                }
 
             },
             created() {

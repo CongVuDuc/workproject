@@ -159,7 +159,7 @@
                                 this.bouquets = this.bouquets.filter(bouquet => bouquet.bouquet_id !== bouquetId)
                                 alert('Bouquets are successfully removed!');
                                 // Call sendSMS when bouquet is successfully removed
-                                this.sendSMS('Bouquet removed successfully!');
+                                this.sendSMS('SUPPLIER : Bouquet removed successfully!');
                                 ;
                             })
                             .catch(error => {
@@ -199,7 +199,7 @@
                                 this.fetchBouquets();
                                 alert('Bouquet added successfully!');
                                 // Call sendSMS when bouquet is successfully added
-                                this.sendSMS('Bouquet added successfully!');
+                                this.sendSMS('SUPPLIER : Bouquet added successfully!');
                             })
                             .catch(error => {
                                 console.error('Error adding bouquet:', error.message);
