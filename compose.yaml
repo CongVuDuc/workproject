@@ -1,8 +1,5 @@
 version: "3.8"
 
-volumes:
-  rabbitmq_data:
-
 services:
 
   # There are 4 microservices will be invoked using Docker Compose: Error, Activity Log, 3 Complex Microservices, Messaging, Payment
@@ -33,7 +30,7 @@ services:
     image: congvu18/payment:project 
     restart: always
     environment:
-      # payment_URL: "http://localhost:3005/one-time-payment, http://localhost:3005/stripe-checkout"
+      payment_URL: "http://localhost:3005/one-time-payment,http://localhost:3005/stripe-checkout"
       PYTHONUNBUFFERED: 1
     ports: 
     - "3005:3005"
