@@ -29,6 +29,21 @@ https://www.geeksforgeeks.org/how-to-install-and-set-up-a-wamp-server/
 MAMP:
 https://mamp.info
 
+Terminal 1:
+cd customer_app
+npm install cors dotenv ejs express express.js nodemon stripe
+
+
+Terminal 2
+cd microservices/payment
+pip install pika 
+pip install stripe 
+pip install flask 
+pip install flask_cors
+
+
+python payment.py 
+
 
 Any modifications needed to be made to files/folders
 Executing program
