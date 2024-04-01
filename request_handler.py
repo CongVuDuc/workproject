@@ -431,17 +431,11 @@ def request_payment():
             request_data = request.get_json()
             print("\nReceived a change request in JSON:", request_data)
 
-            # Check if 'order_id' exists in the received JSON data
-            if 'order_id' in request_data:
-                print("Order ID:", request_data['order_id'])
-            else:
-                print("Order ID is missing from the request.")
-
             # do the actual work
             # 1. Send order info {cart items}
             result = make_payment(request_data)
             print(result)
-            return jsonify(result), result["Status_code"]
+            return result
 
         except Exception as e:
             # Unexpected error in code
@@ -463,36 +457,20 @@ def request_payment():
 
 def make_payment(data):
 
+    balance_amt = data['balance_amt']
+    credit_used = data['credit_used']
+    total_amt = int(balance_amt) - int(credit_used)
+
     body = {
-    "order_id": data['order_id'],
-    "cust_id": data['cust_id'],
-    "RequestItem": data['RequestItem'],
-    "address": data['address'],
-    "new_shipping_method": data['new_shipping_method'],
+    "total_amount": total_amt
 }
     
-    requestURL = "https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/"
-    post_result = invoke_http(request_URL, method='POST', json=body)
+    payment_URL = "http://127.0.0.1:3005/one-time-payment"
+    payment_result = invoke_http(payment_URL, method='POST', json=body)
 
-    print('post_result: ', post_result)
+    print('payment_result: ', payment_result)
 
-    print('\n-----START SMS microservice-----\n')
-
-    sms_URL = "http://localhost:5005/send_sms"
-
-    dummy_json = {"message": "You have placed an order!"}
-
-    sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
-
-    print('\n-----END SMS microservice-----\n')
-
-    return{
-        "Status_code": 201,
-        "data": {
-           "post_result": post_result,
-           "sms_response": sms_response
-        }
-    }
+    return payment_result
 
 # Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":
