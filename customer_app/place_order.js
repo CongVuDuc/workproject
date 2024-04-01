@@ -1,14 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import stripe from 'stripe';
 
-
-import { update_store_credit } from './functions/update_store_credit.js';
-import { create_order } from './functions/create_order.js';
-import { create_receipt } from './functions/create_receipt.js';
-import { update_inventory } from './functions/update_inventory.js';
-import { send_sms } from './functions/send_sms.js'
-import { process_payment_checkout, process_one_time_payment } from './functions/payment.js'
+import {update_store_credit} from './update_store_credit.js';
+import {create_order} from './create_order.js';
+import {create_receipt} from './create_receipt.js';
+import {update_inventory} from './update_inventory.js';
+import {send_sms} from './send_sms.js';
+import {process_one_time_payment, process_payment_checkout} from './payment.js';
+import {update_receipt_number} from './update_receipt_number.js';
 
 // Load variables
 dotenv.config();
@@ -50,15 +49,12 @@ app.post('/process-order', async (req, res) => {
     const requestBodyOrder = req.body.requestBodyOrder;
     const shipping_info = req.body.shipping_info;
 
-    update_inventory(cartItems);
+    const result_order = await create_order(requestBodyOrder);
 
-    const order_id = await create_order(requestBodyOrder);
+    console.log("result_order: " + result_order)
+    console.log(result_order)
 
-    console.log(credit_used)
-    console.log(deduct_credit)
-    if (credit_used > 0) {
-        update_store_credit(user_id, deduct_credit);
-    }
+    let order_id = result_order.NewOrder.order_id
 
     const requestBodyReceipt = {
         "cust_id": user_id,
@@ -69,10 +65,31 @@ app.post('/process-order', async (req, res) => {
         "order_id": order_id,
     }
     
-    create_receipt(user_id, requestBodyReceipt)
+    const result_recepit = await create_receipt(user_id, requestBodyReceipt)
+
+    console.log("result_receipt: " + result_recepit)
+    console.log(result_recepit)
+
+    const receipt_no = JSON.stringify(result_recepit.Receipt.receipt_no)
+
+    await update_receipt_number(order_id, receipt_no)
+
+    const update_inventory_result = await update_inventory(cartItems);
+    console.log("update_inventory_result: " + update_inventory_result)
+    console.log(update_inventory_result)
+
+    if (credit_used > 0) {
+        const update_store_credit_result = await update_store_credit(user_id, deduct_credit);
+        console.log(update_store_credit_result)
+    }
 
     const message = "Order placed successfully!"
-    send_sms(message)
+
+    const send_sms_result = send_sms(message).catch(error => {
+        console.log(error)
+    })
+    console.log("send_sms_result: " + send_sms_result)
+    console.log(send_sms_result)
 })
 
 // Process Top-up
@@ -81,10 +98,10 @@ app.post('/process-topup', async (req, res) => {
     const topup_amount = req.body.topup_amount;
     const user_id = req.body.user_id;
 
-    update_store_credit(user_id, topup_amount);
+    await update_store_credit(user_id, topup_amount);
 
     const message = "Top-up successfully!"
-    send_sms(message)
+    await send_sms(message)
 })
 
 // Process payment chekout
