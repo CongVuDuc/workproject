@@ -4,8 +4,7 @@ import json
 import pika
 from os import environ
 
-
-a_queue_name = 'Activity_Log' # queue to be subscribed by Activity_Log microservice
+a_queue_name = environ.get('a_queue_name') or 'Activity_Log' # queue to be subscribed by Activity_Log microservice
 
 # Instead of hardcoding the values, we can also get them from the environ as shown below
 # a_queue_name = environ.get('Activity_Log') #Activity_Log

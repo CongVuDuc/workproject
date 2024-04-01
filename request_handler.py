@@ -5,6 +5,7 @@ import os, sys
 
 import requests
 from invokes import invoke_http
+from os import environ
 
 import pika
 import json
@@ -20,11 +21,11 @@ request_URL = "https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/req
 
 
 
-# exchangename = environ.get('exchangename') #order_topic
-# exchangetype = environ.get('exchangetype') #topic 
+exchangename = os.environ.get('exchangename', 'order_topic')
+exchangetype = os.environ.get('exchangetype', 'topic')
 
-exchangename = "order_topic" # exchange name
-exchangetype="topic" # use a 'topic' exchange to enable interaction
+# exchangename = "order_topic" # exchange name
+# exchangetype="topic" # use a 'topic' exchange to enable interaction
 
 #create a connection and a channel to the broker to publish messages to activity_log, error queues
 connection = amqp_connection.create_connection() 

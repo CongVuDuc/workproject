@@ -2,9 +2,9 @@
 import amqp_connection
 import json
 import pika
-#from os import environ
+from os import environ
 
-e_queue_name = 'Error'        # queue to be subscribed by Error microservice
+e_queue_name = environ.get('e_queue_name') or 'Error' # queue to be subscribed by Error microservice
 
 # Instead of hardcoding the values, we can also get them from the environ as shown below
 # e_queue_name = environ.get('Error') #Error
