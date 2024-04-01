@@ -9,7 +9,7 @@ export function update_store_credit(user_id, store_credit) {
             if (response.ok) {
                 console.log('Customer store credit updated successfully');
             } else {
-                console.error('Failed to update customer store credit:', response);
+                console.error('Failed to update customer store credit:', response.status);
             }
         })
         .catch(error => {

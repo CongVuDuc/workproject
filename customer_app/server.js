@@ -93,11 +93,29 @@ app.post('/process-payment-checkout', async (req, res) => {
     const shipping_info = req.body.shipping_info
     const credit_used = req.body.credit_used
 
-    let payment_result = await process_payment_checkout(total_price, shipping_info, credit_used)
-    console.log(payment_result)
-    console.log(res.body)
+    process_payment_checkout(total_price, shipping_info, credit_used)
+    .then((url) => {
+        // Return url to client side
+        res.json({ url });
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 })
 // Process one-time payment
+app.post('/process-one-time-payment', async (req, res) => {
+    const balance_amt = req.body.balance_amt
+    const credit_used = req.body.credit_used
+
+    process_one_time_payment(balance_amt, credit_used)
+    .then((url) => {
+        // Return url to client side
+        res.json({ url });
+    })
+    .catch((err) => {
+        console.error(err);
+    });
+})
 
 app.listen(3000, () => {
     console.log('listening on port 3000;');

@@ -60,19 +60,20 @@ const app = Vue.createApp({
                     credit_used: credit_used
                 })
                 })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Checkout payment processed successfully');
-                        return response.json(); // Parse response body as JSON
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
                     } else {
-                        console.error('Failed to process checkout payment:', response.statusText);
+                        throw new Error('Failed to process payment');
                     }
                 })
+                .then((data) => {
+                    // Redirect to Stripe checkout url
+                    window.location.href = data.url;
+                })
                 .catch(error => {
-                    console.error('Error Processing Checkout Payment:', error);
+                    console.error('Error Processing Payment:', error);
                 });
-
-            // process_payment_checkout(total_price, shipping_info, credit_used);
         },
 
         apply_store_credit() {
