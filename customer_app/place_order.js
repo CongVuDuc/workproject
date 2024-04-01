@@ -49,47 +49,68 @@ app.post('/process-order', async (req, res) => {
     const requestBodyOrder = req.body.requestBodyOrder;
     const shipping_info = req.body.shipping_info;
 
-    const result_order = await create_order(requestBodyOrder);
+    // Create Order
+    try {
+        const result_order = await create_order(requestBodyOrder);
+        console.log("Order created successfully:", result_order);
+        let order_id = result_order.NewOrder.order_id
+        
+        const requestBodyReceipt = {
+            "cust_id": user_id,
+            "subtotal": total_price,
+            "shipping_method": shipping_info.shipping_method,
+            "credits_used": 0,
+            "contact_no": shipping_info.contact_number,
+            "order_id": order_id,
+        }
 
-    console.log("result_order: " + result_order)
-    console.log(result_order)
+        // Create Receipt
+        try {
+            const result_receipt = await create_receipt(user_id, requestBodyReceipt);
+            console.log("Receipt created successfully:", result_receipt);
+            const receipt_no = JSON.stringify(result_receipt.Receipt.receipt_no)
+            await update_receipt_number(order_id, receipt_no)
+        } catch (error) {
+            console.error("Failed to create receipt:", error);
+        }
 
-    let order_id = result_order.NewOrder.order_id
-
-    const requestBodyReceipt = {
-        "cust_id": user_id,
-        "subtotal": total_price,
-        "shipping_method": shipping_info.shipping_method,
-        "credits_used": 0,
-        "contact_no": shipping_info.contact_number,
-        "order_id": order_id,
+    } catch (error) {
+        console.error("Failed to create order:", error);
     }
-    
-    const result_recepit = await create_receipt(user_id, requestBodyReceipt)
 
-    console.log("result_receipt: " + result_recepit)
-    console.log(result_recepit)
+    // Update Inventory
+    for (const cartItem of cartItems) {
+        update_inventory(cartItem)
+        .then(() => {
+            console.log("Inventory updated successfully for bouquet ID:", cartItem.bouquet_id);
+        })
+        .catch(error => {
+            console.error("Error updating inventory for bouquet ID:", cartItem.bouquet_id, error);
+        });
+    }
 
-    const receipt_no = JSON.stringify(result_recepit.Receipt.receipt_no)
 
-    await update_receipt_number(order_id, receipt_no)
-
-    const update_inventory_result = await update_inventory(cartItems);
-    console.log("update_inventory_result: " + update_inventory_result)
-    console.log(update_inventory_result)
-
+    // Update credit_used
     if (credit_used > 0) {
-        const update_store_credit_result = await update_store_credit(user_id, deduct_credit);
-        console.log(update_store_credit_result)
+        update_store_credit(user_id, deduct_credit)
+        .then(data => {
+            console.log("Customer store credit updated successfully:", data);
+        })
+        .catch(error => {
+            console.error("Error updating customer store credit:", error);
+        });
     }
 
+    // Invoke send_sms
     const message = "Order placed successfully!"
 
-    const send_sms_result = send_sms(message).catch(error => {
-        console.log(error)
+    send_sms(message)
+    .then(data => {
+        console.log("SMS sent successfully:", data);
     })
-    console.log("send_sms_result: " + send_sms_result)
-    console.log(send_sms_result)
+    .catch(error => {
+        console.error("Failed to send SMS:", error);
+    });
 })
 
 // Process Top-up
@@ -98,10 +119,24 @@ app.post('/process-topup', async (req, res) => {
     const topup_amount = req.body.topup_amount;
     const user_id = req.body.user_id;
 
-    await update_store_credit(user_id, topup_amount);
+    // Update Store Credit
+    await update_store_credit(user_id, topup_amount)
+    .then(data => {
+        console.log("Customer store credit updated successfully:", data);
+    })
+    .catch(error => {
+        console.error("Error updating customer store credit:", error);
+    });
 
+    // Send sms
     const message = "Top-up successfully!"
     await send_sms(message)
+    .then(data => {
+        console.log("Customer store credit updated successfully:", data);
+    })
+    .catch(error => {
+        console.error("Error updating customer store credit:", error);
+    });
 })
 
 // Process payment chekout
