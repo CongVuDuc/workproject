@@ -8,6 +8,7 @@ import { create_order } from './functions/create_order.js';
 import { create_receipt } from './functions/create_receipt.js';
 import { update_inventory } from './functions/update_inventory.js';
 import { send_sms } from './functions/send_sms.js'
+import { process_payment_checkout, process_one_time_payment } from './functions/payment.js'
 
 // Load variables
 dotenv.config();
@@ -85,6 +86,18 @@ app.post('/process-topup', async (req, res) => {
     const message = "Top-up successfully!"
     send_sms(message)
 })
+
+// Process payment chekout
+app.post('/process-payment-checkout', async (req, res) => {
+    const total_price = req.body.total_price
+    const shipping_info = req.body.shipping_info
+    const credit_used = req.body.credit_used
+
+    let payment_result = await process_payment_checkout(total_price, shipping_info, credit_used)
+    console.log(payment_result)
+    console.log(res.body)
+})
+// Process one-time payment
 
 app.listen(3000, () => {
     console.log('listening on port 3000;');

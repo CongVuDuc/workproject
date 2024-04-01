@@ -1,5 +1,3 @@
-import { process_payment_checkout } from './payment.js'
-
 // Check if a user is logged
 let user;
 let username;
@@ -51,7 +49,30 @@ const app = Vue.createApp({
             localStorage.setItem('payment_type', 'order');
             localStorage.setItem('credit_used', credit_used);
 
-            process_payment_checkout(total_price, shipping_info, credit_used);
+            fetch('/process-payment-checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    total_price: total_price,
+                    shipping_info: shipping_info,
+                    credit_used: credit_used
+                })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Checkout payment processed successfully');
+                        return response.json(); // Parse response body as JSON
+                    } else {
+                        console.error('Failed to process checkout payment:', response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error Processing Checkout Payment:', error);
+                });
+
+            // process_payment_checkout(total_price, shipping_info, credit_used);
         },
 
         apply_store_credit() {
