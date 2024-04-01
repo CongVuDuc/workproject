@@ -16,17 +16,23 @@ Dependencies:
 - Node.js
 - WAMP/MAMP
 - Docker
-- 
+- Twilio
 
 ## How to install each dependency
 Node.js:
-Use this website and follow the steps according to which OS you are running on: https://kinsta.com/blog/how-to-install-node-js/
+https://kinsta.com/blog/how-to-install-node-js/
 
 WAMP:
 https://www.geeksforgeeks.org/how-to-install-and-set-up-a-wamp-server/
 
 MAMP:
 https://mamp.info
+
+Twilio:
+https://www.twilio.com/login
+If you do not have an account: please create a new account \
+This is the following information that you need to save: \
+Account ID, Auth Token, Twilio Number, Personal Number
 
 ## Set up required:
 ### Terminal 1:
@@ -55,14 +61,14 @@ Starts Payment Microservice (used by Customer UI) \
 
 
 
-## How to executing the program 
+## How to use the user interfaces:
 1. To use customer UI: enable through Terminal 1 and 2
 2. Customer UI can be found on localhost:3000/login.html \
-Login information \
-Username: ESDisFun \
-Password: 123456 
+Login information: \
+Username: iloveesd \
+Password: iloveesd 
 
 2. To use supplier UI: run on localhost/workproject/supplier_app/lilee_co.html \
-No login is required 
+No login is required \
 
 
