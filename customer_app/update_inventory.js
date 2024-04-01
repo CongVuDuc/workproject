@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export function update_inventory(cartItem) {
     return new Promise((resolve, reject) => {
         try {
@@ -5,10 +7,10 @@ export function update_inventory(cartItem) {
             const cart_quantity = -1 * cartItem.cart_quantity;
             const url = `https://personal-4acjyryg.outsystemscloud.com/Inventory/rest/v1/inventory/${bouquet_id}/${cart_quantity}/`;
 
-            // Make fetch request with 'no-cors' mode option
-            fetch(url, { method: 'put' })
+            // Make Axios request
+            axios.put(url)
                 .then(response => {
-                    if (response.ok) {
+                    if (response.status === 200) {
                         console.log(`Inventory updated for bouquet ID ${bouquet_id}`);
                         resolve(); // Resolve the Promise if the inventory update is successful
                     } else {
@@ -18,7 +20,7 @@ export function update_inventory(cartItem) {
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    reject(error); // Reject the Promise if any error occurs during the fetch request
+                    reject(error); // Reject the Promise if any error occurs during the Axios request
                 });
         } catch (error) {
             console.error('Error:', error);

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export function update_receipt_number(order_id, receipt_no) {
     return new Promise((resolve, reject) => {
         const url = `https://personal-4acjyryg.outsystemscloud.com/Order/rest/v1/order/`;
@@ -6,15 +8,13 @@ export function update_receipt_number(order_id, receipt_no) {
             order_id: order_id
         };
 
-        fetch(url, {
-            method: 'PUT',
+        axios.put(url, requestBody, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
+            }
         })
         .then(response => {
-            if (response.ok) {
+            if (response.status === 200) {
                 console.log('Receipt number updated successfully');
                 resolve(true); // Resolve the Promise with true if successful
             } else {
