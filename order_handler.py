@@ -121,7 +121,15 @@ def processOrderHandler(order):
     # - reply from the invocation is not used;
     # continue even if this invocation fails
 
-# invoke next microservice
+    print('\n-----START SMS microservice-----\n')
+
+    sms_URL = "http://localhost:5005/send_sms"
+
+    dummy_json = {"message": "You have placed an order!"}
+
+    sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+
+    print('\n-----END SMS microservice-----\n')
 
 
     # 7. Return created order
