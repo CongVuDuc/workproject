@@ -102,7 +102,7 @@ app.post('/process-order', async (req, res) => {
     }
 
     // Invoke send_sms
-    const message = "Order placed successfully!"
+    const message = "CUSTOMER : Order placed successfully!"
 
     send_sms(message)
     .then(data => {
@@ -129,7 +129,7 @@ app.post('/process-topup', async (req, res) => {
     });
 
     // Send sms
-    const message = "Top-up successfully!"
+    const message = "CUSTOMER : Top-up successfully!"
     await send_sms(message)
     .then(data => {
         console.log("Customer store credit updated successfully:", data);
