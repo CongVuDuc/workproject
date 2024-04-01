@@ -156,18 +156,18 @@ def processRequest(order):
 
         print(reciept_details)
 
-        paymnt_URL = "https://personal-4acjyryg.outsystemscloud.com/Receipt/rest/v2/payment/"
-        payment_result = invoke_http(paymnt_URL, method='POST', json=reciept_details)
+        reciept_URL = "https://personal-4acjyryg.outsystemscloud.com/Receipt/rest/v2/payment/"
+        reciept_result = invoke_http(reciept_URL, method='POST', json=reciept_details)
 
-        print("payment result: ", payment_result)
+        print("payment result: ", reciept_result)
 
-        print('\n-----END PAYMENT microservice-----\n')
+        print('\n-----END RECEIPT microservice-----\n')
 
         return {
         "Status_code": 201,
         "data": {
             "sms result" : sms_response,
-            "payment result" : payment_result
+            "payment result" : reciept_result
         }
         }
 
@@ -186,14 +186,14 @@ def processRequest(order):
         sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
         print('SMS response: ', sms_response)
 
+        print('\n-----END SMS microservice-----\n') 
+
         return {
         "Status_code": 201,
         "data": {
             "sms_response" : sms_response
         }
-    } 
-
-        print('\n-----END SMS microservice-----\n')
+    }
         
     print('\n-----Invoking request microservice to update-----')
 
@@ -416,7 +416,81 @@ def processPostRequest(data):
     return{
         "Status_code": 201,
         "data": {
-           "post_result": post_result
+           "post_result": post_result,
+           "sms_response": sms_response
+        }
+    }
+
+# MAKING PAYMENT
+
+@app.route("/request_payment", methods=['POST'])
+def request_payment():
+# Simple check if input format and data of the request are JSON
+    if request.is_json:
+        try:
+            request_data = request.get_json()
+            print("\nReceived a change request in JSON:", request_data)
+
+            # Check if 'order_id' exists in the received JSON data
+            if 'order_id' in request_data:
+                print("Order ID:", request_data['order_id'])
+            else:
+                print("Order ID is missing from the request.")
+
+            # do the actual work
+            # 1. Send order info {cart items}
+            result = make_payment(request_data)
+            print(result)
+            return jsonify(result), result["Status_code"]
+
+        except Exception as e:
+            # Unexpected error in code
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
+            print(ex_str)
+
+            return jsonify({
+                "code": 500,
+                "message": "place_order.py internal error: " + ex_str
+            }), 500
+
+    # If not a JSON request.
+    return jsonify({
+        "code": 400,
+        "message": "Invalid JSON input: " + str(request.get_data())
+    }), 400
+
+def make_payment(data):
+
+    body = {
+    "order_id": data['order_id'],
+    "cust_id": data['cust_id'],
+    "RequestItem": data['RequestItem'],
+    "address": data['address'],
+    "new_shipping_method": data['new_shipping_method'],
+}
+    
+    requestURL = "https://personal-4acjyryg.outsystemscloud.com/Request/rest/v1/request/"
+    post_result = invoke_http(request_URL, method='POST', json=body)
+
+    print('post_result: ', post_result)
+
+    print('\n-----START SMS microservice-----\n')
+
+    sms_URL = "http://localhost:5005/send_sms"
+
+    dummy_json = {"message": "You have placed an order!"}
+
+    sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+
+    print('\n-----END SMS microservice-----\n')
+
+    return{
+        "Status_code": 201,
+        "data": {
+           "post_result": post_result,
+           "sms_response": sms_response
         }
     }
 
