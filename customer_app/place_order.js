@@ -1,6 +1,5 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import stripe from 'stripe';
 
 import {update_store_credit} from './update_store_credit.js';
 import {create_order} from './create_order.js';
