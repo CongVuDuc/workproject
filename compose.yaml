@@ -1,5 +1,9 @@
 version: "3.8"
 
+volumes:
+  rabbitmq_data:
+    driver: local
+
 services:
 
   # There are 4 microservices will be invoked using Docker Compose: Error, Activity Log, 3 Complex Microservices, Messaging, Payment
@@ -39,34 +43,33 @@ services:
   ####################################
   # RabbitMQ: The messaging broker   
   ####################################
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   # hostname: esd-rabbit
-  #   restart: always
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-    # volumes: 
-    #   - ./rabbitmq.config:/etc/rabbitmq/rabbitmq.config
-    #   - ./rabbitmq_definitions.json:/etc/rabbitmq/rabbitmq_definitions.json
-    #   - rabbitmq_data:/var/lib/rabbitmq
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"  # RabbitMQ default port
+      - "15672:15672"  # RabbitMQ management plugin port
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq  # Persist RabbitMQ data
+    environment:
+      RABBITMQ_DEFAULT_USER: guest  # Set default RabbitMQ username
+      RABBITMQ_DEFAULT_PASS: guest  # Set default RabbitMQ password
       
   #################################################
   # Activity Log: The Activity Log Microservice [For all 3 scenarios]
   #################################################
-  # activity_log:
-  #   build:
-  #     context: ./
-  #     dockerfile: activity_log.Dockerfile    #docker file name
-  #   image: congvu18/activity_log:project         #this is a name of the image which appear in docker
-  #   restart: always
-  #   depends_on:
-  #     - rabbitmq
-  #   environment:
-  #     rabbit_host: rabbitmq
-  #     rabbit_port: 5672
-  #     a_queue_name: Activity_Log
-  #     PYTHONUNBUFFERED: 1
+  activity_log:
+    build:
+      context: ./
+      dockerfile: activity_log.Dockerfile    #docker file name
+    image: congvu18/activity_log:project         #this is a name of the image which appear in docker
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      a_queue_name: Activity_Log
+      PYTHONUNBUFFERED: 1
 
   ###################################
   # Error: The Error microservice
