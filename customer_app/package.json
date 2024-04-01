@@ -15,7 +15,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon place_order.js"
   },
   "keywords": [],
   "author": "",
