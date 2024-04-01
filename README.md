@@ -29,15 +29,14 @@ MAMP:
 https://mamp.info
 
 Pre-installation required:
-- Terminal 1:
-- Starts Customer UI
+### Terminal 1:
+Starts Customer UI (runes on port 3000)
 - cd customer_app
 - npm install cors dotenv ejs express express.js nodemon stripe
-- runs on port 3000
 
 
-- Terminal 2
-- Starts Payment Microservice (used by Customer UI)
+### Terminal 2
+Starts Payment Microservice (used by Customer UI) \
 - cd microservices/payment
 - pip install pika 
 - pip install stripe 
@@ -45,25 +44,25 @@ Pre-installation required:
 - pip install flask_cors
 - python payment.py 
 
-- Terminal 3
+### Terminal 3
 - python messaging.py
 
-- Terminal 4
+### Terminal 4
 - python order_handler.py
 
-- Terminal 5
+### Terminal 5
 - python request_handler.py
 
 
 Any modifications needed to be made to files/folders \
-Executing program \
+Executing program 
 1. To use customer UI: enable through Terminal 1 and 2
 2. Customer UI can be found on localhost:3000/login.html \
 Login information \
 Username: ESDisFun \
-Password: 123456 \
+Password: 123456 
 
-2. To use supplier UI: run on localhost/workproject/supplier_app/lilee_co.html
-No login is required \
+2. To use supplier UI: run on localhost/workproject/supplier_app/lilee_co.html \
+No login is required 
 
 
