@@ -48,7 +48,7 @@ For Mac Users:
 You may have difficulties using docker compose, therefore, you need to run each microservice individually through different terminals.
 
 ### Terminal 1:
-Starts Customer UI (runes on port 3000)
+Starts Customer UI (runs on port 3000)
 - cd customer_app
 - npm install cors dotenv ejs express express.js nodemon stripe
 - to run place_order.js (place_order complex microservice.) enter in: npm start
