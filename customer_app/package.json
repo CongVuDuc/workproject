@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "amqp": "^0.2.7",
-    "amqplib": "^0.10.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
@@ -9,9 +7,9 @@
     "express.js": "^1.0.0",
     "flask": "^0.2.10",
     "fund": "^1.0.0",
-    "node-fetch": "^3.0.0",
     "nodemon": "^3.1.0",
-    "stripe": "^14.22.0"
+    "stripe": "^14.22.0",
+    "node-fetch": "^3.0.0"
   },
   "name": "backend",
   "version": "1.0.0",
