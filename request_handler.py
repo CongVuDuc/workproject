@@ -475,9 +475,9 @@ def processRequest(order):
 
     # Check the request result; if a failure, send it to the error microservice.
     #AMQP SHITTTT START
-    code = status_result["Status_Code"]
+    code = customer_result["Status_Code"]
     print("checking: ", code)
-    message = json.dumps(status_result)
+    message = json.dumps(customer_result)
 
     if code not in range(200, 300):
 
@@ -486,7 +486,7 @@ def processRequest(order):
         channel.basic_publish(exchange=exchangename, routing_key="request.error", 
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
 
-        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
+        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", customer_result)
 
         return customer_result
 
@@ -515,6 +515,12 @@ def processRequest(order):
     dummy_json = {"message": "CUSTOMER : Request has been accepted!"}
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+
+    if quantity_credited > 0:
+
+        dummy_json = {"message": "CUSTOMER : Credit has been added to your account!"}
+
+        sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
 
     dummy_json = {"message": "SUPPLIER : Payment for request has been made!"}
 

@@ -31,7 +31,7 @@ def stripe_checkout():
         "price_data": {
             "currency": "sgd",
             "product_data": {
-                "name": "Lilee.coo Order",
+                "name": "Lilee.co Order",
             },
             "unit_amount": int(total_amount) * 100,
         },
@@ -61,7 +61,7 @@ def one_time_payment():
         "price_data": {
             "currency": "sgd",
             "product_data": {
-                "name": "Lilee.coo Payment",
+                "name": "Lilee.co Payment",
             },
             "unit_amount": int(total_amount) * 100,
         },
