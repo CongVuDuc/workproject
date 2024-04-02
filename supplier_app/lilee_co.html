@@ -68,6 +68,7 @@
                             <td>
                                 <button @click="removeBouquet(bouquet.bouquet_id)" class="btn btn-danger">Remove
                                 </button>
+                                <button @click="updateQuantity(bouquet.bouquet_id, bouquet.quantity)" class="btn btn-primary">Update</button>
                             </td>
                         </tr>
                     </tbody>
@@ -204,6 +205,28 @@
                             .catch(error => {
                                 console.error('Error adding bouquet:', error.message);
                                 alert('Failed to add bouquet. Please try again later.');
+                            });
+                    }
+                },
+                updateQuantity(bouquetId, quantity) {
+                    if (confirm("Are you sure you want to update the quantity?")) {
+                        fetch(getInventoryURL + bouquetId + "/" + quantity, {
+                                method: 'PUT'
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Failed to update quantity');
+                                }
+                                // Refresh bouquet list
+                                this.fetchBouquets();
+                                alert('Quantity is successfully updated!');
+                                // Call sendSMS when bouquet is successfully removed
+                                this.sendSMS('SUPPLIER : Bouquet quantity updated successfully!');
+                                ;
+                            })
+                            .catch(error => {
+                                console.error('Error updating quantity:', error.message);
+                                alert('Failed to delete bouquet. Please try again later.');
                             });
                     }
                 },
