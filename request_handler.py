@@ -169,7 +169,13 @@ def processRequest(order):
 
         print('\n-----START SMS microservice-----\n')
 
-        sms_URL = "http://localhost:5005/send_sms"
+        sms_URL = os.getenv("messaging_URL")
+
+        if sms_URL:
+            pass  # No need to assign payment_url, it's already set by os.getenv()
+        else:
+            sms_URL = "http://localhost:5005/send_sms" 
+
         dummy_json = {"message": "MAKE PAYMENT LAH"}
         dummy_json = {"message": "CUSTOMER : MAKE PAYMENT LAH"}
         sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
@@ -227,7 +233,13 @@ def processRequest(order):
 
         print('\n-----START SMS microservice-----\n')
 
-        sms_URL = "http://localhost:5005/send_sms"
+        sms_URL = os.getenv("messaging_URL")
+
+        if sms_URL:
+            pass  # No need to assign payment_url, it's already set by os.getenv()
+        else:
+            sms_URL = "http://localhost:5005/send_sms" 
+            
         dummy_json = {"message": "YOU HAVE BEEN REJECTED"}
         dummy_json = {"message": "CUSTOMER : YOU HAVE BEEN REJECTED"}
         sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
@@ -562,7 +574,11 @@ def processRequest(order):
 
     print('\n-----START SMS microservice-----\n')
 
-    sms_URL = "http://localhost:5005/send_sms"
+    sms_URL = os.getenv("messaging_URL")
+    if sms_URL:
+        pass  # No need to assign payment_url, it's already set by os.getenv()
+    else:
+        sms_URL = "http://localhost:5005/send_sms" 
 
     dummy_json = {"message": "order confirmed!"}
     dummy_json = {"message": "CUSTOMER : order confirmed!"}
@@ -669,7 +685,12 @@ def processPostRequest(data):
 
     print('\n-----START SMS microservice-----\n')
 
-    sms_URL = "http://localhost:5005/send_sms"
+    sms_URL = os.getenv("messaging_URL")
+
+    if sms_URL:
+        pass  # No need to assign payment_url, it's already set by os.getenv()
+    else:
+        sms_URL = "http://localhost:5005/send_sms" 
 
     dummy_json = {"message": "You have placed an order!"}
     dummy_json = {"message": "CUSTOMER : You have placed an order!"}
