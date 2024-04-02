@@ -480,9 +480,12 @@ def processRequest(order):
     quantity_credited = int(ticket['balance_amt'])
     if quantity_credited < 0:
         quantity_credited = quantity_credited*-1
-    
-    if int(credit_used) > 0 :
+
+    elif int(credit_used) > 0 :
         quantity_credited = int(credit_used) *-1
+
+    elif int(quantity_credited) > 0 and int(credit_used) == 0:
+        quantity_credited = 0
 
     print(credit_used)
     print(quantity_credited)
