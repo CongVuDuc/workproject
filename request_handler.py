@@ -588,6 +588,8 @@ def processRequest(order):
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
 
+    print("sms_response: ", sms_response)
+
     print('\n-----END SMS microservice-----\n')
 
     # 7. Return created order
