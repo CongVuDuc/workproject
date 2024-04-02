@@ -516,6 +516,12 @@ def processRequest(order):
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
 
+    if quantity_credited > 0:
+
+        dummy_json = {"message": "CUSTOMER : Credit has been added to your account!"}
+
+        sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+
     dummy_json = {"message": "SUPPLIER : Payment for request has been made!"}
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
