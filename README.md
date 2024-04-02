@@ -35,11 +35,20 @@ This is the following information that you need to save: \
 Account ID, Auth Token, Twilio Number, Personal Number
 
 ## Set up required:
+
+For Windows users:
+1. Open a terminal and key in the following
+- docker compose build
+2. Next, run the following command
+- docker compose up -d
+3. You should now be able to access the Customer UI via http://localhost:3000
+4. You can http://localhost/workproject/supplier_app/lilee_co.html
+
+For Mac Users:
 ### Terminal 1:
 Starts Customer UI (runes on port 3000)
 - cd customer_app
 - npm install cors dotenv ejs express express.js nodemon stripe
-
 
 ### Terminal 2
 Starts Payment Microservice (used by Customer UI) \
@@ -60,7 +69,6 @@ Starts Payment Microservice (used by Customer UI) \
 - python request_handler.py
 
 
-
 ## How to use the user interfaces:
 1. To use customer UI: enable through Terminal 1 and 2
 2. Customer UI can be found on localhost:3000/login.html \
@@ -69,6 +77,6 @@ Username: iloveesd \
 Password: iloveesd 
 
 2. To use supplier UI: run on localhost/workproject/supplier_app/lilee_co.html \
-No login is required \
+No login is required 
 
 
