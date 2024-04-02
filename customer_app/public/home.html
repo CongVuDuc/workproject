@@ -80,6 +80,7 @@
                                 <th>Flower Type</th>
                                 <th>Size</th>
                                 <th>Price</th>
+                                <th>Available Quantity</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -90,7 +91,8 @@
                                     <td>{{item.flower_type}}</td>
                                     <td>{{item.size}}</td>
                                     <td>${{item.price}}</td>
-                                    <td>
+                                    <td>{{item.quantity}}</td>
+                                    <td> 
                                         <button v-on:click="add_to_cart(item.bouquet_id)" class="btn btn-sm btn-secondary add-cart">
                                             Add
                                         </button>
