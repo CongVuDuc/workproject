@@ -132,7 +132,16 @@ def processOrderHandler(order):
     else:
         sms_URL = "http://localhost:5005/send_sms" 
 
-    dummy_json = {"message": "CUSTOMER : You have placed an order!"}
+    # dummy_json = {"message": "CUSTOMER : You have placed an order!"}
+    if order_status == "PREP":
+        dummy_json = {"message": "CUSTOMER : Your order is being prepared!"}
+    elif order_status == "SCOL":
+        dummy_json = {"message": "CUSTOMER : Your order is ready for collection!"}
+    elif order_status == "DLVY":
+        dummy_json = {"message": "CUSTOMER : Your order is out for delivery!"}
+    elif order_status == "CMPL":
+        dummy_json = {"message": "CUSTOMER : Your order has been completed!"}
+    
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
 
