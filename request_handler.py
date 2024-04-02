@@ -351,11 +351,21 @@ def processRequest(order):
         }
         order_item.append(item_data)
     
-    combined_data = {
-        "order_id": order_id,
-        "receipt_no": reciept_no,
-        "OrderItem": order_item,
-    }
+    if ('new_shipping_method' in ticket) and (ticket['new_shipping_method'] == 'D'):
+
+        combined_data = {
+            "order_id": order_id,
+            "receipt_no": reciept_no,
+            "OrderItem": order_item,
+            "shipping_method": ticket['new_shipping_method'],
+            "address" : ticket['address']
+        }
+    else:
+        combined_data = {
+            "order_id": order_id,
+            "receipt_no": reciept_no,
+            "OrderItem": order_item
+        }
 
     print('combined data: ', combined_data)
 
@@ -376,7 +386,6 @@ def processRequest(order):
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
        
         print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", order_result)
-        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", request_result)
 
         return order_result
 
@@ -459,48 +468,6 @@ def processRequest(order):
 
     print(credit_used)
     print(quantity_credited)
-
-
-
-    if ('new_shipping_method' in ticket) and (ticket['new_shipping_method'] == 'D'):
-        customer_URL = "https://personal-4acjyryg.outsystemscloud.com/Customer/rest/v1/customer/"
-
-        print(cust_id)
-
-        data = {
-            "cust_id" : cust_id,
-            "address" : ticket['address']
-        }
-        shipping_result = invoke_http(customer_URL,method='PUT', json=data)
-
-        print("shipping_result: ", shipping_result)
-
-        # Check the request result; if a failure, send it to the error microservice.
-        #AMQP SHITTTT START
-        code = shipping_result["Status_Code"]
-        print("checking: ", code)
-        message = json.dumps(shipping_result)
-
-        if code not in range(200, 300):
-
-            print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
-
-            channel.basic_publish(exchange=exchangename, routing_key="request.error", 
-                body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-
-            print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", shipping_result)
-
-            return shipping_result
-
-        else:
-            print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
-
-            channel.basic_publish(exchange=exchangename, routing_key="request.info", 
-                body=message)
-
-            print("\nRequest published to RabbitMQ Exchange.\n")
-
-        #AMQP SHITTT END
 
     customer_URL = f"https://personal-4acjyryg.outsystemscloud.com/Customer/rest/v1/customer/{cust_id}/{quantity_credited}/"
 
@@ -598,7 +565,7 @@ def postRequest():
 
             return jsonify({
                 "code": 500,
-                "message": "place_order.py internal error: " + ex_str
+                "message": "request_handler.py internal error: " + ex_str
             }), 500
 
     # If not a JSON request.
