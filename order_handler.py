@@ -125,7 +125,12 @@ def processOrderHandler(order):
 
     print('\n-----START SMS microservice-----\n')
 
-    sms_URL = "http://localhost:5005/send_sms"
+    sms_URL = os.getenv("messaging_URL")
+
+    if sms_URL:
+        pass  # No need to assign payment_url, it's already set by os.getenv()
+    else:
+        sms_URL = "http://localhost:5005/send_sms" 
 
     dummy_json = {"message": "CUSTOMER : You have placed an order!"}
 
