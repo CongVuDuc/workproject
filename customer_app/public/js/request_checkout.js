@@ -89,7 +89,7 @@ const app = Vue.createApp({
             else if (credit_used > this.balance_amt && credit_used < this.store_credit) {
                 alert('Credit used cannot exceed total price.')
             }
-            else {
+            else  if (credit_used > this.store_credit) {
                 alert('Credit used cannot exceed available store credit.')
             }
         },

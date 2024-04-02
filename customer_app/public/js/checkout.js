@@ -83,7 +83,7 @@ const app = Vue.createApp({
                 localStorage.setItem('credit_used', JSON.stringify(this.credit_used));
                 this.new_total_price = this.total_price - this.credit_used;
             }
-            else if (credit_used > this.total_price && credit_used < this.store_credit) {
+            else if (credit_used > this.total_price && credit_used <= this.store_credit) {
                 alert('Credit used cannot exceed total price.')
             }
             else {
