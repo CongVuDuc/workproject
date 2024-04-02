@@ -29,20 +29,32 @@ MAMP:
 https://mamp.info
 
 Twilio:
-https://www.twilio.com/login
+https://www.twilio.com/login \
 If you do not have an account: please create a new account \
 This is the following information that you need to save: \
 Account ID, Auth Token, Twilio Number, Personal Number
 
 ## Set up required:
+
+For Windows users:
+1. Open a terminal and key in the following
+- docker compose build
+2. Next, run the following command
+- docker compose up -d
+3. You are now able to access the Customer UI via http://localhost:3000
+4. You can are able to http://localhost/workproject/supplier_app/lilee_co.html
+
+For Mac Users:
+You may have difficulties using docker compose, therefore, you need to run each microservice individually through different terminals.
+
 ### Terminal 1:
-Starts Customer UI (runes on port 3000)
+Starts Customer UI (runs on port 3000)
 - cd customer_app
 - npm install cors dotenv ejs express express.js nodemon stripe
-
+- to run place_order.js (place_order complex microservice.) enter in: npm start
 
 ### Terminal 2
-Starts Payment Microservice (used by Customer UI) \
+Starts Payment Microservice (used by Customer UI) 
 - cd microservices/payment
 - pip install pika 
 - pip install stripe 
@@ -54,11 +66,16 @@ Starts Payment Microservice (used by Customer UI) \
 - python messaging.py
 
 ### Terminal 4
-- python order_handler.py
+- python activity_log.py
 
 ### Terminal 5
-- python request_handler.py
+- python error.py
 
+### Terminal 6
+- python order_handler.py
+
+### Terminal 7
+- python request_handler.py
 
 
 ## How to use the user interfaces:
@@ -69,6 +86,6 @@ Username: iloveesd \
 Password: iloveesd 
 
 2. To use supplier UI: run on localhost/workproject/supplier_app/lilee_co.html \
-No login is required \
+No login is required 
 
 
