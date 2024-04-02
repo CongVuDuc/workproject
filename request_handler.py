@@ -108,12 +108,7 @@ def processRequest(order):
 
         print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", request_result)
 
-        # 7. Return error
-        return {
-            "Status_code": 500,
-            "data": {"request_result": request_result},
-            "message": "Order creation failure sent for error handling."
-        }
+        return request_result
 
     else:
         print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
@@ -150,11 +145,7 @@ def processRequest(order):
 
             print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
 
-            return {
-                "Status_code": 500,
-                "data": {"status_result": status_result},
-                "message": "Order creation failure sent for error handling."
-            }
+            return status_result
 
         else:
             print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
@@ -215,11 +206,7 @@ def processRequest(order):
 
             print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
 
-            return {
-                "Status_code": 500,
-                "data": {"status_result": status_result},
-                "message": "Order creation failure sent for error handling."
-            }
+            return status_result
 
         else:
             print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
@@ -276,11 +263,7 @@ def processRequest(order):
 
         print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
 
-        return {
-            "Status_code": 500,
-            "data": {"status_result": status_result},
-            "message": "Order creation failure sent for error handling."
-        }
+        return status_result
 
     else:
         print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
@@ -328,11 +311,7 @@ def processRequest(order):
 
         print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", reciept_result)
 
-        return {
-            "Status_code": 500,
-            "data": {"status_result": reciept_result},
-            "message": "Order creation failure sent for error handling."
-        }
+        return reciept_result
 
     else:
         print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
@@ -399,12 +378,7 @@ def processRequest(order):
         print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", order_result)
         print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", request_result)
 
-        return {
-            "Status_code": 500,
-            "data": {"order_result": order_result},
-            "data": {"order_result": request_result},
-            "message": "Order creation failure sent for error handling."
-        }
+        return order_result
 
     else:
     
@@ -454,11 +428,7 @@ def processRequest(order):
 
                 print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", inventory_result)
 
-                return {
-                    "Status_code": 500,
-                    "data": {"status_result": inventory_result},
-                    "message": "Order creation failure sent for error handling."
-                }
+                return inventory_result
 
             else:
                 print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
@@ -520,11 +490,7 @@ def processRequest(order):
 
             print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", shipping_result)
 
-            return {
-                "Status_code": 500,
-                "data": {"status_result": shipping_result},
-                "message": "Order creation failure sent for error handling."
-            }
+            return shipping_result
 
         else:
             print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
@@ -555,11 +521,7 @@ def processRequest(order):
 
         print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
 
-        return {
-            "Status_code": 500,
-            "data": {"status_result": status_result},
-            "message": "Order creation failure sent for error handling."
-        }
+        return customer_result
 
     else:
         print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
@@ -675,11 +637,7 @@ def processPostRequest(data):
 
         print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", post_result)
 
-        return {
-            "Status_code": 500,
-            "data": {"status_result": post_result},
-            "message": "Order creation failure sent for error handling."
-        }
+        return post_result
 
     else:
         print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
@@ -743,7 +701,7 @@ def request_payment():
 
             return jsonify({
                 "code": 500,
-                "message": "place_order.py internal error: " + ex_str
+                "message": "request_handler.py internal error: " + ex_str
             }), 500
 
     # If not a JSON request.
