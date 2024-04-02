@@ -580,8 +580,8 @@ def processRequest(order):
     else:
         sms_URL = "http://localhost:5005/send_sms" 
 
-    dummy_json = {"message": "order confirmed!"}
-    dummy_json = {"message": "CUSTOMER : order confirmed!"}
+    dummy_json = {"message": "request accepted!"}
+    dummy_json = {"message": "CUSTOMER : request accepted!"}
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
 
