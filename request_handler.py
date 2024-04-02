@@ -176,8 +176,8 @@ def processRequest(order):
         else:
             sms_URL = "http://localhost:5005/send_sms" 
 
-        dummy_json = {"message": "MAKE PAYMENT LAH"}
-        dummy_json = {"message": "CUSTOMER : MAKE PAYMENT LAH"}
+        # dummy_json = {"message": "CUSTOMER : MAKE PAYMENT LAH"}
+        dummy_json = {"message": "CUSTOMER : Request pending payment!"}
         sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
         print('SMS response: ', sms_response)
 
@@ -240,8 +240,8 @@ def processRequest(order):
         else:
             sms_URL = "http://localhost:5005/send_sms" 
             
-        dummy_json = {"message": "YOU HAVE BEEN REJECTED"}
-        dummy_json = {"message": "CUSTOMER : YOU HAVE BEEN REJECTED"}
+        # dummy_json = {"message": "CUSTOMER : YOU HAVE BEEN REJECTED"}
+        dummy_json = {"message": "CUSTOMER : Request has been rejected!"}
         sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
         print('SMS response: ', sms_response)
 
@@ -580,8 +580,11 @@ def processRequest(order):
     else:
         sms_URL = "http://localhost:5005/send_sms" 
 
-    dummy_json = {"message": "request accepted!"}
-    dummy_json = {"message": "CUSTOMER : request accepted!"}
+    dummy_json = {"message": "CUSTOMER : Request has been accepted!"}
+
+    sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+
+    dummy_json = {"message": "SUPPLIER : Payment for request has been made!"}
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
 
@@ -692,8 +695,11 @@ def processPostRequest(data):
     else:
         sms_URL = "http://localhost:5005/send_sms" 
 
-    dummy_json = {"message": "request received"}
-    dummy_json = {"message": "CUSTOMER : request received"}
+    dummy_json = {"message": "CUSTOMER : Request placed successfully!"}
+
+    sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
+
+    dummy_json = {"message": "SUPPLIER : New request received!"}
 
     sms_response = invoke_http(sms_URL,method="POST", json=dummy_json)
 

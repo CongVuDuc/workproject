@@ -97,6 +97,16 @@ app.post('/process-order', async (req, res) => {
             console.error("Failed to send SMS:", error);
         });
 
+        const message_sup = "SUPPLIER : New order received!"
+
+        send_sms(message_sup)
+        .then(data => {
+            console.log("SMS sent successfully:", data);
+        })
+        .catch(error => {
+            console.error("Failed to send SMS:", error);
+        });
+
         // Create Receipt
         try {
             const result_receipt = await create_receipt(user_id, requestBodyReceipt);
