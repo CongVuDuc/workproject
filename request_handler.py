@@ -106,7 +106,7 @@ def processRequest(order):
         channel.basic_publish(exchange=exchangename, routing_key="request.error", 
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
 
-        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", request_result)
+        print(f"\Request status ({code}) published to the RabbitMQ Exchange:", request_result)
 
         return request_result
 
@@ -140,7 +140,7 @@ def processRequest(order):
 
             print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
 
-            channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+            channel.basic_publish(exchange=exchangename, routing_key="order.error", 
                 body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
 
             print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
@@ -153,7 +153,7 @@ def processRequest(order):
             channel.basic_publish(exchange=exchangename, routing_key="request.info", 
                 body=message)
 
-            print("\nRequest published to RabbitMQ Exchange.\n")
+            print("\nOrder published to RabbitMQ Exchange.\n")
 
         #AMQP SHITTT END
 
@@ -199,17 +199,17 @@ def processRequest(order):
 
         if code not in range(200, 300):
 
-            print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+            print('\n\n-----Publishing the (request error) message with routing_key=request.error-----')
 
             channel.basic_publish(exchange=exchangename, routing_key="request.error", 
                 body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
 
-            print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
+            print(f"\Request status ({code}) published to the RabbitMQ Exchange:", status_result)
 
             return status_result
 
         else:
-            print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+            print('\n\n-----Publishing the (order info) message with routing_key=request.info-----')        
 
             channel.basic_publish(exchange=exchangename, routing_key="request.info", 
                 body=message)
@@ -256,17 +256,17 @@ def processRequest(order):
 
     if code not in range(200, 300):
 
-        print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+        print('\n\n-----Publishing the (request error) message with routing_key=request.error-----')
 
         channel.basic_publish(exchange=exchangename, routing_key="request.error", 
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
 
-        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", status_result)
+        print(f"\nRequest status ({code}) published to the RabbitMQ Exchange:", status_result)
 
         return status_result
 
     else:
-        print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+        print('\n\n-----Publishing the (request info) message with routing_key=request.info-----')        
 
         channel.basic_publish(exchange=exchangename, routing_key="request.info", 
             body=message)
@@ -304,22 +304,22 @@ def processRequest(order):
 
     if code not in range(200, 300):
 
-        print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+        print('\n\n-----Publishing the (receipt error) message with routing_key=receipt.error-----')
 
-        channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+        channel.basic_publish(exchange=exchangename, routing_key="receipt.error", 
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
 
-        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", reciept_result)
+        print(f"\nReceipt status ({code}) published to the RabbitMQ Exchange:", reciept_result)
 
         return reciept_result
 
     else:
-        print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+        print('\n\n-----Publishing the (receipt info) message with routing_key=receipt.info-----')        
 
-        channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+        channel.basic_publish(exchange=exchangename, routing_key="receipt.info", 
             body=message)
 
-        print("\nRequest published to RabbitMQ Exchange.\n")
+        print("\nReceipt published to RabbitMQ Exchange.\n")
 
     #AMQP SHITTT END
 
@@ -430,22 +430,22 @@ def processRequest(order):
 
             if code not in range(200, 300):
 
-                print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+                print('\n\n-----Publishing the (inventory error) message with routing_key=inventory.error-----')
 
-                channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+                channel.basic_publish(exchange=exchangename, routing_key="inventory.error", 
                     body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
 
-                print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", inventory_result)
+                print(f"\nInventory status ({code}) published to the RabbitMQ Exchange:", inventory_result)
 
                 return inventory_result
 
             else:
-                print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+                print('\n\n-----Publishing the (inventory info) message with routing_key=inventory.info-----')        
 
-                channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+                channel.basic_publish(exchange=exchangename, routing_key="inventory.info", 
                     body=message)
 
-                print("\nRequest published to RabbitMQ Exchange.\n")
+                print("\nInventory published to RabbitMQ Exchange.\n")
 
             #AMQP SHITTT END
     
@@ -481,22 +481,22 @@ def processRequest(order):
 
     if code not in range(200, 300):
 
-        print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+        print('\n\n-----Publishing the (customer error) message with routing_key=customer.error-----')
 
-        channel.basic_publish(exchange=exchangename, routing_key="request.error", 
+        channel.basic_publish(exchange=exchangename, routing_key="customer.error", 
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
 
-        print(f"\nOrder status ({code}) published to the RabbitMQ Exchange:", customer_result)
+        print(f"\nCustomer status ({code}) published to the RabbitMQ Exchange:", customer_result)
 
         return customer_result
 
     else:
         print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
 
-        channel.basic_publish(exchange=exchangename, routing_key="request.info", 
+        channel.basic_publish(exchange=exchangename, routing_key="customer.info", 
             body=message)
 
-        print("\nRequest published to RabbitMQ Exchange.\n")
+        print("\nCustomer status published to RabbitMQ Exchange.\n")
 
     #AMQP SHITTT END
 
@@ -603,7 +603,7 @@ def processPostRequest(data):
 
     if code not in range(200, 300):
 
-        print('\n\n-----Publishing the (order error) message with routing_key=order.error-----')
+        print('\n\n-----Publishing the (request error) message with routing_key=request.error-----')
 
         channel.basic_publish(exchange=exchangename, routing_key="request.error", 
             body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
@@ -613,7 +613,7 @@ def processPostRequest(data):
         return post_result
 
     else:
-        print('\n\n-----Publishing the (order info) message with routing_key=order.info-----')        
+        print('\n\n-----Publishing the (request info) message with routing_key=request.info-----')        
 
         channel.basic_publish(exchange=exchangename, routing_key="request.info", 
             body=message)
