@@ -36,6 +36,12 @@ Account ID, Auth Token, Twilio Number, Personal Number
 
 ## Set up required:
 
+In compose.yaml, please replace the image: {YOUR_DOCKER_USERNAME}/request_handler:project for all images. 
+Next, replace with account_sid = {YOUR_TWILIO_ACC_ID} \
+auth_token = {YOUR_TWILIO_AUTHTOKEN} \
+from_number = {YOUR_TWILIO_NUMBER} \
+to_number = {PERSONAL_NUMBER} 
+
 For Windows users:
 1. Open a terminal and key in the following
 - docker compose build
@@ -45,7 +51,7 @@ For Windows users:
 4. You can are able to http://localhost/workproject/supplier_app/lilee_co.html
 
 For Mac Users:
-You may have difficulties using docker compose, therefore, you need to run each microservice individually through different terminals.
+Please try to run using docker but in the unlikely event it fails you need to run each microservice individually through different terminals.
 
 ### Terminal 1:
 Starts Customer UI (runs on port 3000)
